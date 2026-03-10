@@ -1,0 +1,240 @@
+info:
+  name: Get a team's access requests
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{baseUrl}}/teams/:teamId/access-requests"
+  headers:
+    - name: identifierType
+      value: scim
+      description: Use SCIM user and group IDs instead of Postman user IDs.
+      disabled: true
+  params:
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results. To view the next response, use the `nextCursor` value for this parameter.
+      disabled: true
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response.
+      disabled: true
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": [
+                  {
+                      "createdAt": "2025-10-10T18:54:09.000Z",
+                      "updatedAt": "2025-10-10T18:54:09.000Z",
+                      "id": 1,
+                      "role": "TEAM_DEVELOPER",
+                      "requestType": "REQUEST_TO_ADD_MEMBERS",
+                      "reason": "Needs the developer role.",
+                      "status": "Requested",
+                      "entityType": "user",
+                      "entityId": 1317604,
+                      "objectType": "team",
+                      "objectId": 1,
+                      "createdBy": 12345678
+                  },
+                  {
+                      "createdAt": "2025-10-10T18:57:58.000Z",
+                      "updatedAt": "2025-10-10T18:57:58.000Z",
+                      "id": 2,
+                      "role": "TEAM_MANAGER",
+                      "requestType": "UPGRADE_ROLE",
+                      "reason": "I need the team manager role for my team.",
+                      "status": "Requested",
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "objectType": "team",
+                      "objectId": 2,
+                      "createdBy": 12345678
+                  }
+              ],
+              "metadata": {
+                  "nextCursor": null
+              }
+          }
+  - name: Response with SCIM IDs
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: GET
+      headers:
+        - name: identifierType
+          value: scim
+          description: Use SCIM user and group IDs instead of Postman user IDs.
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+          description: The team's ID.
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": [
+                  {
+                      "createdAt": "2025-10-10T18:54:09.000Z",
+                      "updatedAt": "2025-10-10T18:54:09.000Z",
+                      "id": 1,
+                      "role": "TEAM_DEVELOPER",
+                      "requestType": "REQUEST_TO_ADD_MEMBERS",
+                      "reason": "Needs the developer role.",
+                      "status": "Requested",
+                      "entityType": "user",
+                      "entityId": "937a3efba0d1e20642fabd0aa692b3ce30969fb92a0b0d6d",
+                      "objectType": "team",
+                      "objectId": 1,
+                      "createdBy": "33d8e85cc5ec04715bb0c18b42312d80413bad8a96622eb7"
+                  },
+                  {
+                      "createdAt": "2025-10-10T18:57:58.000Z",
+                      "updatedAt": "2025-10-10T18:57:58.000Z",
+                      "id": 2,
+                      "role": "TEAM_MANAGER",
+                      "requestType": "UPGRADE_ROLE",
+                      "reason": "I need the team manager role for my team.",
+                      "status": "Requested",
+                      "entityType": "user",
+                      "entityId": "696e7061fe5aa0e7abb54851cdb0e3b21eed4f8daef24d13",
+                      "objectType": "team",
+                      "objectId": 2,
+                      "createdBy": "33d8e85cc5ec04715bb0c18b42312d80413bad8a96622eb7"
+                  }
+              ],
+              "metadata": {
+                  "nextCursor": null
+              }
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: GET
+      headers:
+        - name: identifierType
+          value: scim
+          description: Use SCIM user and group IDs instead of Postman user IDs.
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+          description: The team's ID.
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: GET
+      headers:
+        - name: identifierType
+          value: scim
+          description: Use SCIM user and group IDs instead of Postman user IDs.
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+          description: The team's ID.
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: GET
+      headers:
+        - name: identifierType
+          value: scim
+          description: Use SCIM user and group IDs instead of Postman user IDs.
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+          description: The team's ID.
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "status": 403,
+              "title": "Forbidden",
+              "detail": {
+                  "error": {
+                      "name": "NoPermission",
+                      "message": "You are not allowed to manage pending requests in team."
+                  }
+              },
+              "instance": "/teams/123/access-requests"
+          }
+
+docs: Gets a team's pending access requests.

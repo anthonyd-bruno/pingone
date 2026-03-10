@@ -1,0 +1,8 @@
+info:
+  name: OAuth 2.0
+  type: folder
+  seq: 11
+
+docs:
+  content: The **OAuth** endpoints enable you to manage your [OAuth 2.0 tokens](https://learning.postman.com/docs/sending-requests/authorization/oauth-20/) in Postman.
+  type: text/markdown

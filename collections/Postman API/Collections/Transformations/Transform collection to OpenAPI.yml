@@ -1,0 +1,132 @@
+info:
+  name: Transform collection to OpenAPI
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/collections/:collectionId/transformations"
+  params:
+    - name: format
+      value: json
+      type: query
+      description: |-
+        Return the OpenAPI definition in the given format:
+        - `json` (default)
+        - `yaml`
+      disabled: true
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful JSON Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/transformations
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "output": "{\n  \"openapi\": \"3.0.3\",\n  \"info\": {\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\\n\\nContact Support:\\n Name: Jon\",\n    \"version\": \"1.0.0\",\n    \"contact\": {}\n  },\n  \"servers\": [\n    {\n      \"url\": \"example.com\"\n    }\n  ],\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"get\": {\n        \"tags\": [\n          \"spacecrafts\",\n          \"{spacecraftId}\"\n        ],\n        \"summary\": \"Read a spacecraft\",\n        \"description\": \"Read a spacecraft\",\n        \"operationId\": \"readASpacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"description\": {\n                      \"type\": \"string\",\n                      \"example\": \"<string>\"\n                    },\n                    \"id\": {\n                      \"type\": \"string\",\n                      \"example\": \"<string>\"\n                    },\n                    \"name\": {\n                      \"type\": \"string\",\n                      \"example\": \"<string>\"\n                    },\n                    \"type\": {\n                      \"type\": \"string\",\n                      \"example\": \"satellite\"\n                    }\n                  }\n                },\n                \"examples\": {\n                  \"The spacecraft corresponding to the provided `spacecraftId`\": {\n                    \"value\": {\n                      \"description\": \"<string>\",\n                      \"id\": \"<string>\",\n                      \"name\": \"<string>\",\n                      \"type\": \"satellite\"\n                    }\n                  }\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"message\": {\n                      \"type\": \"string\",\n                      \"example\": \"<string>\"\n                    }\n                  }\n                },\n                \"examples\": {\n                  \"No spacecraft found for the provided `spacecraftId`\": {\n                    \"value\": {\n                      \"message\": \"<string>\"\n                    }\n                  }\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"type\": \"object\",\n                  \"properties\": {\n                    \"message\": {\n                      \"type\": \"string\",\n                      \"example\": \"<string>\"\n                    }\n                  }\n                },\n                \"examples\": {\n                  \"Unexpected error\": {\n                    \"value\": {\n                      \"message\": \"<string>\"\n                    }\n                  }\n                }\n              }\n            }\n          }\n        }\n      },\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"type\": \"string\",\n            \"example\": \"<string>\"\n          },\n          \"description\": \"(Required) The unique identifier of the spacecraft\"\n        }\n      ]\n    }\n  },\n  \"components\": {\n    \"securitySchemes\": {\n      \"apiKey\": {\n        \"type\": \"apiKey\",\n        \"name\": \"X-Api-Key\",\n        \"in\": \"header\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"apiKey\": []\n    }\n  ],\n  \"tags\": [\n    {\n      \"name\": \"spacecrafts\"\n    },\n    {\n      \"name\": \"{spacecraftId}\"\n    }\n  ]\n}"
+          }
+  - name: Successful YAML Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/transformations?format=yaml
+      method: GET
+      params:
+        - name: format
+          value: yaml
+          type: query
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "output": "openapi: 3.0.3\ninfo:\n  title: Sample API\n  description: |-\n    Buy or rent spacecrafts\n\n    Contact Support:\n     Name: Jon\n  version: 1.0.0\n  contact: {}\nservers:\n  - url: example.com\npaths:\n  /spacecrafts/{spacecraftId}:\n    get:\n      tags:\n        - spacecrafts\n        - \"{spacecraftId}\"\n      summary: Read a spacecraft\n      description: Read a spacecraft\n      operationId: readASpacecraft\n      responses:\n        \"200\":\n          description: The spacecraft corresponding to the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  description:\n                    type: string\n                    example: <string>\n                  id:\n                    type: string\n                    example: <string>\n                  name:\n                    type: string\n                    example: <string>\n                  type:\n                    type: string\n                    example: satellite\n              examples:\n                The spacecraft corresponding to the provided `spacecraftId`:\n                  value:\n                    description: <string>\n                    id: <string>\n                    name: <string>\n                    type: satellite\n        \"404\":\n          description: No spacecraft found for the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  message:\n                    type: string\n                    example: <string>\n              examples:\n                No spacecraft found for the provided `spacecraftId`:\n                  value:\n                    message: <string>\n        \"500\":\n          description: Unexpected error\n          content:\n            application/json:\n              schema:\n                type: object\n                properties:\n                  message:\n                    type: string\n                    example: <string>\n              examples:\n                Unexpected error:\n                  value:\n                    message: <string>\n    parameters:\n      - name: spacecraftId\n        in: path\n        required: true\n        schema:\n          type: string\n          example: <string>\n        description: (Required) The unique identifier of the spacecraft\ncomponents:\n  securitySchemes:\n    apiKey:\n      type: apiKey\n      name: X-Api-Key\n      in: header\nsecurity:\n  - apiKey: []\ntags:\n  - name: spacecrafts\n  - name: \"{spacecraftId}\"\n"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/transformations
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401,
+              "instance": "/collections/{collectionId}/apis"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/transformations
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404,
+              "instance": "/collections/{collectionId}/apis"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/transformations
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500,
+              "instance": "/collections/{collectionId}/apis"
+          }
+
+docs: |-
+  Transforms an existing Postman Collection into a stringified OpenAPI definition.
+
+  **Note:**
+
+  This does **not** create an API.

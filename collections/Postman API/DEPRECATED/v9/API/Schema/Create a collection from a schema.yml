@@ -1,0 +1,314 @@
+info:
+  name: Create a collection from a schema
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/schemas/{{schemaId}}/collections
+  headers:
+    - name: Content-Type
+      value: application/json
+  params:
+    - name: workspaceId
+      value: "{{workspaceId}}"
+      type: query
+      description: |-
+        Optional. The workspace ID in which to created the collection.
+
+        If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+      	"name": "{{collectionName}}",
+      	"relations": [
+      		{
+      			"type": "{{relationType}}"
+      		}	
+      	],
+          "options": {
+              "{{optionName}}": "{{optionValue}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/be50acd7-414e-4d65-9443-f919b847e29a/versions/56d5f9ac-69a7-4255-8343-cde8ea25ef8b/schemas/f087f7b9-018f-447f-ba64-74cb981957ce/collections
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: workspace
+          value: c90a3482-f80d-43d6-9dfb-0830f5e43605
+          type: query
+          description: |-
+            Optional. The workspace ID in which to created the collection.
+
+            If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+          	"name": "Test Collection"
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "uid": "12345678ß-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+              }
+          }
+  - name: Create a Collection with a Documentation Relation
+    request:
+      url: https://api.getpostman.com/apis/be50acd7-414e-4d65-9443-f919b847e29a/versions/56d5f9ac-69a7-4255-8343-cde8ea25ef8b/schemas/f087f7b9-018f-447f-ba64-74cb981957ce/collections
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: workspace
+          value: c90a3482-f80d-43d6-9dfb-0830f5e43605
+          type: query
+          description: |-
+            Optional. The workspace ID in which to created the collection.
+
+            If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+          	"name": "Test Collection",
+          	"relations": [
+          		{
+          			"type": "documentation"
+          		}	
+          	]
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+              },
+              "relations": [
+                  {
+                      "type": "documentation",
+                      "id": "d86b6c97-fdf9-4c37-825a-49b0223913c7"
+                  }
+              ]
+          }
+  - name: Create a Collection with Advanced Options
+    request:
+      url: https://api.getpostman.com/apis/be50acd7-414e-4d65-9443-f919b847e29a/versions/56d5f9ac-69a7-4255-8343-cde8ea25ef8b/schemas/f087f7b9-018f-447f-ba64-74cb981957ce/collections
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: workspace
+          value: c90a3482-f80d-43d6-9dfb-0830f5e43605
+          type: query
+          description: |-
+            Optional. The workspace ID in which to created the collection.
+
+            If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+          	"name": "Test Collection",
+          	"relations": [
+          		{
+          			"type": "documentation"
+          		}	
+          	],
+              "options": {
+                  "requestParametersResolution": "Example",
+                  "requestNameSource": "Fallback",
+                  "validateMetadata": true
+              }
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+              },
+              "relations": [
+                  {
+                      "type": "documentation",
+                      "id": "d86b6c97-fdf9-4c37-825a-49b0223913c7"
+                  }
+              ]
+          }
+  - name: Create a Collection from a Definition in a Workspace
+    request:
+      url: https://api.getpostman.com/apis/be50acd7-414e-4d65-9443-f919b847e29a/versions/56d5f9ac-69a7-4255-8343-cde8ea25ef8b/schemas/f087f7b9-018f-447f-ba64-74cb981957ce/collections?workspace=c90a3482-f80d-43d6-9dfb-0830f5e43605
+      method: POST
+      params:
+        - name: workspace
+          value: c90a3482-f80d-43d6-9dfb-0830f5e43605
+          type: query
+          description: |-
+            Optional. The workspace ID in which to created the collection.
+
+            If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+      body:
+        type: json
+        data: |-
+          {
+          	"name": "Test Collection",
+          	"relations": [
+          		{
+          			"type": "documentation"
+          		}	
+          	]
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+              },
+              "relations": [
+                  {
+                      "type": "documentation",
+                      "id": "d86b6c97-fdf9-4c37-825a-49b0223913c7"
+                  }
+              ]
+          }
+  - name: Invalid Parameter
+    request:
+      url: https://api.getpostman.com/apis/be50acd7-414e-4d65-9443-f919b847e29a/versions/56d5f9ac-69a7-4255-8343-cde8ea25ef8b/schemas/f087f7b9-018f-447f-ba64-74cb981957ce/collections
+      method: POST
+      params:
+        - name: workspace
+          value: c90a3482-f80d-43d6-9dfb-0830f5e43605
+          type: query
+          description: |-
+            Optional. The workspace ID in which to created the collection.
+
+            If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+          	"name": "Test Collection",
+          	"relations": [
+          		{
+          			"type": "mocks"
+          		}	
+          	]
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "invalidParamsError",
+                  "message": "The specified parameter is in an invalid format"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/be50acd7-414e-4d65-9443-f919b847e29a/versions/56d5f9ac-69a7-4255-8343-cde8ea25ef8b/schemas/f087f7b9-018f-447f-ba64-74cb981957ce/collections
+      method: POST
+      params:
+        - name: workspace
+          value: c90a3482-f80d-43d6-9dfb-0830f5e43605
+          type: query
+          description: |-
+            Optional. The workspace ID in which to created the collection.
+
+            If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+          	"name": "Test Collection",
+          	"relations": [
+          		{
+          			"type": "mocks"
+          		}	
+          	]
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  **This endpoint is deprecated in Postman v10 and higher.**
+
+  Creates a collection and links it to an API as one or multiple relations.
+
+  Include the following properties in the request body:
+
+  - `name` — A **string** that contains the name of the collection.
+      
+
+  You can also include the following additional properties in the request body:
+
+  - `relations` — An **array** that contains a list of relations to create:
+      - `contracttest` — **Deprecated.**
+      - `integrationtest` — **Deprecated.**
+      - `testsuite` — **Deprecated.**
+      - `documentation`
+  - `options` — An **object** that contains advanced creation options and their values. You can find a complete list of properties and their values in Postman's [OpenAPI 3.0 to Postman Collection v2.1.0 Converter OPTIONS documentation](https://github.com/postmanlabs/openapi-to-postman/blob/develop/OPTIONS.md). **These properties are case-sensitive.**

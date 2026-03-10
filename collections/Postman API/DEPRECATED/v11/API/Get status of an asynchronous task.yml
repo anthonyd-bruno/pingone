@@ -1,0 +1,230 @@
+info:
+  name: Get status of an asynchronous task
+  type: http
+  seq: 11
+
+http:
+  method: GET
+  url: "{{baseUrl}}/apis/:apiId/tasks/:taskId"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+    - name: taskId
+      value: "{{taskId}}"
+      type: path
+      description: The task's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Pending Status
+    request:
+      url: https://api.getpostman.com/apis/:apiId/tasks/:taskId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "url": "https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d/collections/e726de58-f1b3-4edd-a8a7-2579dc799d39/sync",
+                  "action": "update",
+                  "model": "collection"
+              },
+              "id": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "createdAt": "2023-02-12 19:34:49",
+              "updatedAt": "2023-02-12 19:34:49",
+              "status": "pending"
+          }
+  - name: Completed Status
+    request:
+      url: https://api.getpostman.com/apis/:apiId/tasks/:taskId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "url": "https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d/collections/e726de58-f1b3-4edd-a8a7-2579dc799d39/sync",
+                  "action": "update",
+                  "model": "collection"
+              },
+              "details": {
+                  "resources": [
+                      {
+                          "id": "collectionID",
+                          "url": "/apis/5360b75f-447e-467c-9299-12fd6c92450d/collections/e726de58-f1b3-4edd-a8a7-2579dc799d39"
+                      }
+                  ]
+              },
+              "id": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "createdAt": "2023-02-12 19:34:49",
+              "updatedAt": "2023-02-12 19:34:49",
+              "status": "completed"
+          }
+  - name: Failed Status
+    request:
+      url: https://api.getpostman.com/apis/:apiId/tasks/:taskId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "url": "https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d/collections/e726de58-f1b3-4edd-a8a7-2579dc799d39/sync",
+                  "action": "update",
+                  "model": "collection"
+              },
+              "details": {
+                  "error": {
+                      "message": "The API contains invalid schema"
+                  }
+              },
+              "id": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "createdAt": "2019-02-12 19:34:49",
+              "updatedAt": "2023-02-12 19:34:49",
+              "status": "failed"
+          }
+  - name: Invalid Parameter
+    request:
+      url: https://api.getpostman.com/apis/:apiId/tasks/:taskId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamsError",
+              "title": "The specified parameter is in an invalid format",
+              "detail": "Parameter, taskId is in an invalid format."
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/tasks/:taskId
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/tasks/:taskId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/tasks/:taskId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "Parameter, taskId is in an invalid format.",
+              "title": "The specified parameter is in an invalid format",
+              "type": "invalidParamsError"
+          }
+
+docs: Gets the status of an asynchronous task.

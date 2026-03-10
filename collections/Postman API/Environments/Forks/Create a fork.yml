@@ -1,0 +1,171 @@
+info:
+  name: Create a fork
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/environments/:environmentUid/forks?workspace="
+  params:
+    - name: workspace
+      value: ""
+      type: query
+      description: The workspace ID in which to fork the environment.
+    - name: environmentUid
+      value: ""
+      type: path
+      description: The environment's unique ID.
+  body:
+    type: json
+    data: |-
+      {
+          "forkName": "{{forkLabel}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/environments/:environmentUid/forks?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+        - name: environmentUid
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "forkName": "My fork"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "forkName": "Test Fork",
+                  "uid": "12345678-0fcea3ba-abcf-49c3-9f48-669c208fef25",
+                  "name": "Testing Environment"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/environments/:environmentUid/forks
+      method: POST
+      params:
+        - name: environmentUid
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "forkName": "My fork"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "",
+              "detail": "Query parameter 'workspaceId' is missing",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/environments/:environmentUid/forks?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+        - name: environmentUid
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "forkName": "My fork"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "AuthenticationError",
+                  "message": "Invalid API Key. Every request requires a valid API Key to be sent."
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/environments/:environmentUid/forks?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+        - name: environmentUid
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "forkName": "My fork"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Not Found",
+              "status": 404,
+              "detail": "We could not find the environment you are looking for",
+              "type": "https://api.postman.com/problems/notFound"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/environments/:environmentUid/forks?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+        - name: environmentUid
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "forkName": "My fork"
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error"
+          }
+
+docs: Creates a [fork](https://learning.postman.com/docs/collaborating-in-postman/using-version-control/forking-elements/) from an existing environment into a workspace.

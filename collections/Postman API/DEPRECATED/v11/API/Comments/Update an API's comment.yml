@@ -1,0 +1,268 @@
+info:
+  name: Update an API's comment
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/apis/:apiId/comments/:commentId"
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+    - name: commentId
+      value: "{{commentId}}"
+      type: path
+      description: The comment's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "body": "{{comment}}",
+          "tags": {
+              "{{userName}}": {
+                  "type": "user",
+                  "id": "{{userId}}"
+              }
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "id": 46814,
+                  "threadId": 12345,
+                  "status": "Open",
+                  "createdBy": 12345678,
+                  "createdAt": "2024-01-18T11:30:40.000Z",
+                  "updatedAt": "2024-01-18T11:30:40.000Z",
+                  "body": "This is an updated example."
+              }
+          }
+  - name: Tag User in Comment
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"body": "This is an updated example. @alex-cruz",
+              "tags": {
+                  "@alex-cruz": {
+                      "type": "user",
+                      "id": "87654321"
+                      }
+                  }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "id": 46814,
+                  "threadId": 12345,
+                  "status": "Open",
+                  "createdBy": 12345678,
+                  "createdAt": "2024-01-18T11:30:40.000Z",
+                  "updatedAt": "2024-01-18T11:30:40.000Z",
+                  "body": "This is an updated example. @alex-cruz"
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/comments/:commentId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Updates a comment on an API. Include the following in request body:
+
+  - `body` — (Required) A **string** that contains the updated comment.
+      
+  - `tags` — An **object** that contains information about users tagged in the `body` comment. Include the following in this object:
+      
+      - `userName` — (Required) An **object** that contains information about the tagged user. The object's name is the user's Postman username. For example, `@user-postman`. Include the following in this object:
+          
+          - `type` — (Required) A **string** that contains the user value.
+              
+          - `id` — (Required) An **integer** that contains the user's ID.
+              
+
+  **Note:**
+
+  This endpoint accepts a max of 10,000 characters.

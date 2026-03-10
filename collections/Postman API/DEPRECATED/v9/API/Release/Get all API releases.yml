@@ -1,0 +1,67 @@
+info:
+  name: Get all API releases
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/releases
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+    - name: apiVersionId
+      value: "{{apiVersionId}}"
+      type: path
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "releases": [
+                  {
+                      "id": "07d940bf-40fc-4acd-a11e-be6769894af0",
+                      "name": "Release 2.0",
+                      "description": "This is the second release of the Test API.",
+                      "visibility": "private"
+                  },
+                  {
+                      "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+                      "name": "Release 1.0",
+                      "description": "This is the first release of the Test API. For more information, read the documentation.",
+                      "visibility": "public"
+                  }
+              ]
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases
+      method: GET
+    response:
+      statusText: "429"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  **This endpoint is deprecated in Postman v10 and higher.**
+
+  Gets information about all of an API version's releases.

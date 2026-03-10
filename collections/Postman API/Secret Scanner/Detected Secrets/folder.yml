@@ -1,0 +1,11 @@
+info:
+  name: Detected Secrets
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage secrets detected by the Postman [Secret Scanner](https://learning.postman.com/docs/administration/secret-scanner/).
+  type: text/markdown

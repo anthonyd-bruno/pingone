@@ -1,0 +1,11 @@
+info:
+  name: Call Logs
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage [mock server call logs](https://learning.postman.com/docs/designing-and-developing-your-api/mocking-data/setting-up-mock/#viewing-mock-calls).
+  type: text/markdown

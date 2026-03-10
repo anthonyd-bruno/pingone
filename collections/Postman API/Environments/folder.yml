@@ -1,0 +1,11 @@
+info:
+  name: Environments
+  type: folder
+  seq: 7
+
+request:
+  auth: inherit
+
+docs:
+  content: The **Environments** endpoints enable you to manage your [environments](https://learning.postman.com/docs/sending-requests/managing-environments/).
+  type: text/markdown

@@ -1,0 +1,169 @@
+info:
+  name: Transfer folders
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/collection-folders-transfers"
+  body:
+    type: json
+    data: |-
+      {
+          "ids": [
+              "{{folderUid}}"
+          ],
+          "target": {
+              "model": "{{modelType}}",
+              "id": "{{modelUid}}"
+          },
+          "location": {
+              "position": "{{position}}",
+              "model": "{{modelId}}",
+              "id": "{{modelUid}}"
+          },
+          "mode": "{{modeType}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Copy Folder to Collection
+    request:
+      url: https://api.getpostman.com/collection-folders-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-bcb5648b-eecb-4468-ade7-4efb38431bd1"
+              ],
+              "target": {
+                  "model": "collection",
+                  "id": "12345678-2ba6b9c4-5327-4c46-9bf3-4ec84b74b720"
+              },
+              "location": {
+                  "position": "end",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "copy"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-bcb5648b-eecb-4468-ade7-4efb38431bd1"
+              ]
+          }
+  - name: Move Folder to a Collection
+    request:
+      url: https://api.getpostman.com/collection-folders-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-bcb5648b-eecb-4468-ade7-4efb38431bd1"
+              ],
+              "target": {
+                  "model": "collection",
+                  "id": "12345678-2ba6b9c4-5327-4c46-9bf3-4ec84b74b720"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-bcb5648b-eecb-4468-ade7-4efb38431bd1"
+              ]
+          }
+  - name: Move Folder Before Another Folder
+    request:
+      url: https://api.getpostman.com/collection-folders-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-bcb5648b-eecb-4468-ade7-4efb38431bd1"
+              ],
+              "target": {
+                  "model": "collection",
+                  "id": "12345678-2ba6b9c4-5327-4c46-9bf3-4ec84b74b720"
+              },
+              "location": {
+                  "position": "before",
+                  "model": "folder",
+                  "id": "12345678-45499451-e894-41b8-8c66-8191ab64932a"
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-bcb5648b-eecb-4468-ade7-4efb38431bd1"
+              ]
+          }
+  - name: Invalid ids Value
+    request:
+      url: https://api.getpostman.com/collection-folders-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678"
+              ],
+              "target": {
+                  "model": "collection",
+                  "id": "12345678-2ba6b9c4-5327-4c46-9bf3-4ec84b74b720"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |
+          {
+              "type": "Error",
+              "title": "One or more folder ids provided were not found",
+              "detail": {
+                  "missing": [
+                      "12345678"
+                  ]
+              }
+          }
+
+docs: Copies or moves folders into a collection or folder.

@@ -1,0 +1,1028 @@
+info:
+  name: Get a mock server's call logs
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/mocks/:mockId/call-logs"
+  params:
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response. This value defaults to 100.
+      disabled: true
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results. To view the next response, use the `nextCursor` value for this parameter.
+      disabled: true
+    - name: until
+      value: ""
+      type: query
+      description: Return only results created until this given time, in [ISO 8601](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format. This value cannot be earlier than the `since` value.
+      disabled: true
+    - name: since
+      value: ""
+      type: query
+      description: Return only results created since the given time, in [ISO 8601](https://datatracker.ietf.org/doc/html/rfc3339#section-5.6) format. This value cannot be later than the `until` value.
+      disabled: true
+    - name: responseStatusCode
+      value: ""
+      type: query
+      description: Return only call logs that match the given HTTP response status code.
+      disabled: true
+    - name: responseType
+      value: ""
+      type: query
+      description: Return only call logs that match the given response type. Matching is not case-sensitive.
+      disabled: true
+    - name: requestMethod
+      value: ""
+      type: query
+      description: Return only call logs that match the given HTTP method. Matching is not case-sensitive.
+      disabled: true
+    - name: requestPath
+      value: ""
+      type: query
+      description: Return only call logs that match the given request path. Matching is not case-sensitive.
+      disabled: true
+    - name: sort
+      value: ""
+      type: query
+      description: |-
+        Sort the results by the given value. If you use this query parameter, you must also use the `direction` parameter.
+
+        If you use this query parameter, you must also use the `direction` parameter.
+      disabled: true
+    - name: direction
+      value: ""
+      type: query
+      description: |-
+        Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+        If you use this query parameter, you must also use the `sort` parameter.
+      disabled: true
+    - name: include
+      value: ""
+      type: query
+      description: |-
+        Include call log records with header and body data. This query parameter accepts the `request.headers`, `request.body`, `response.headers`, and `response.body` values.
+
+        For multiple include types, comma-separate each value.
+      disabled: true
+    - name: mockId
+      value: ""
+      type: path
+      description: The mock's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs
+      method: GET
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "c4505a1e-7261-497c-91ff-db4bd51351a6-9545",
+          			"responseName": "Double check your method and the request path and try again.",
+          			"servedAt": "2022-01-17T06:19:30.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "error",
+          				"statusCode": 404
+          			}
+          		},
+          		{
+          			"id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+          			"responseName": "Bad request",
+          			"servedAt": "2022-01-17T06:19:22.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 400
+          			}
+          		},
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "a5330463-26e1-4812-a962-e44b569a2054-9894",
+          			"responseName": "Get Animals",
+          			"servedAt": "2022-01-17T06:18:06.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by Limit
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?limit=2
+      method: GET
+      params:
+        - name: limit
+          value: "2"
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "call-logs": [
+                  {
+                      "id": "c4505a1e-7261-497c-91ff-db4bd51351a6-9545",
+                      "responseName": "Double check your method and the request path and try again.",
+                      "servedAt": "2022-01-17T06:19:30.000Z",
+                      "request": {
+                          "method": "POST",
+                          "path": "/animals"
+                      },
+                      "response": {
+                          "type": "error",
+                          "statusCode": 404
+                      }
+                  },
+                  {
+                      "id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+                      "responseName": "Bad request",
+                      "servedAt": "2022-01-17T06:19:22.000Z",
+                      "request": {
+                          "method": "POST",
+                          "path": "/animals"
+                      },
+                      "response": {
+                          "type": "success",
+                          "statusCode": 400
+                      }
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "eyJzY2hlbWUiOiJjdXJzb3JfcGFnaW5hdGlvbklkIiwiZGlyZWN0aW9uVHlwZSI6Im5leHQiLCJwaXZvdCI6InBhZ2luYXRpb25JZCIsInZhbHVlIjoxNjQyNDAwMzU2MDAwNTc5fQ=="
+              }
+          }
+  - name: Filter by Cursor
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?cursor=eyJzY2hlbWUiOiJjdXJzb3JfcGFnaW5hdGlvbklkIiwiZGlyZWN0aW9uVHlwZSI6Im5leHQiLCJwaXZvdCI6InBhZ2luYXRpb25JZCIsInZhbHVlIjoxNjQyNDAwMzU2MDAwNTc5fQ==
+      method: GET
+      params:
+        - name: cursor
+          value: eyJzY2hlbWUiOiJjdXJzb3JfcGFnaW5hdGlvbklkIiwiZGlyZWN0aW9uVHlwZSI6Im5leHQiLCJwaXZvdCI6InBhZ2luYXRpb25JZCIsInZhbHVlIjoxNjQyNDAwMzU2MDAwNTc5fQ==
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "a5330463-26e1-4812-a962-e44b569a2054-9894",
+          			"responseName": "Get Animals",
+          			"servedAt": "2022-01-17T06:18:06.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by a Date Range
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?until=2022-01-20T06:19:22.000Z&since=2022-01-17T06:19:22.000Z
+      method: GET
+      params:
+        - name: until
+          value: 2022-01-20T06:19:22.000Z
+          type: query
+        - name: since
+          value: 2022-01-17T06:19:22.000Z
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "c4505a1e-7261-497c-91ff-db4bd51351a6-9545",
+          			"responseName": "Double check your method and the request path and try again.",
+          			"servedAt": "2022-01-17T06:19:30.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "error",
+          				"statusCode": 404
+          			}
+          		},
+          		{
+          			"id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+          			"responseName": "Bad request",
+          			"servedAt": "2022-01-17T06:19:22.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 400
+          			}
+          		},
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "a5330463-26e1-4812-a962-e44b569a2054-9894",
+          			"responseName": "Get Animals",
+          			"servedAt": "2022-01-17T06:18:06.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by Date Since
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?since=2022-01-17T06:19:16.000Z
+      method: GET
+      params:
+        - name: since
+          value: 2022-01-17T06:19:16.000Z
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "c4505a1e-7261-497c-91ff-db4bd51351a6-9545",
+          			"responseName": "Double check your method and the request path and try again.",
+          			"servedAt": "2022-01-17T06:19:30.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "error",
+          				"statusCode": 404
+          			}
+          		},
+          		{
+          			"id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+          			"responseName": "Bad request",
+          			"servedAt": "2022-01-17T06:19:22.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 400
+          			}
+          		},
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by responseStatusCode
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?responseStatusCode=200
+      method: GET
+      params:
+        - name: responseStatusCode
+          value: "200"
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "a5330463-26e1-4812-a962-e44b569a2054-9894",
+          			"responseName": "Get Animals",
+          			"servedAt": "2022-01-17T06:18:06.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by responseType
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?responseType=success
+      method: GET
+      params:
+        - name: responseType
+          value: success
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+          			"responseName": "Bad request",
+          			"servedAt": "2022-01-17T06:19:22.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "error",
+          				"statusCode": 400
+          			}
+          		},
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "a5330463-26e1-4812-a962-e44b569a2054-9894",
+          			"responseName": "Get Animals",
+          			"servedAt": "2022-01-17T06:18:06.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by requestMethod
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?requestMethod=post
+      method: GET
+      params:
+        - name: requestMethod
+          value: post
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "c4505a1e-7261-497c-91ff-db4bd51351a6-9545",
+          			"responseName": "Double check your method and the request path and try again.",
+          			"servedAt": "2022-01-17T06:19:30.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "error",
+          				"statusCode": 404
+          			}
+          		},
+          		{
+          			"id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+          			"responseName": "Bad request",
+          			"servedAt": "2022-01-17T06:19:22.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 400
+          			}
+          		},
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by requestPath
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?requestPath=/animals?type=Dog
+      method: GET
+      params:
+        - name: requestPath
+          value: /animals?type=Dog
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Sort by servedAt
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?sort=servedAt&direction=asc
+      method: GET
+      params:
+        - name: sort
+          value: servedAt
+          type: query
+        - name: direction
+          value: asc
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "a5330463-26e1-4812-a962-e44b569a2054-9894",
+          			"responseName": "Get Animals",
+          			"servedAt": "2022-01-17T06:18:06.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200
+          			}
+          		},
+          		{
+          			"id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+          			"responseName": "Bad request",
+          			"servedAt": "2022-01-17T06:19:22.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 400
+          			}
+          		},
+          		{
+          			"id": "c4505a1e-7261-497c-91ff-db4bd51351a6-9545",
+          			"responseName": "Double check your method and the request path and try again.",
+          			"servedAt": "2022-01-17T06:19:30.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals"
+          			},
+          			"response": {
+          				"type": "error",
+          				"statusCode": 404
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Filter by Header and Body Data
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?until=2024-06-21T14:39:21.438Z&since=2024-01-21T14:39:21.438Z
+      method: GET
+      params:
+        - name: until
+          value: 2024-06-21T14:39:21.438Z
+          type: query
+        - name: since
+          value: 2024-01-21T14:39:21.438Z
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+          	"call-logs": [
+          		{
+          			"id": "c4505a1e-7261-497c-91ff-db4bd51351a6-9545",
+          			"responseName": "Double check your method and the request path and try again.",
+          			"servedAt": "2022-01-17T06:19:30.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals",
+          				"headers": [
+          					{
+          						"key": "content-length",
+          						"value": "50"
+          					},
+          					{
+          						"key": "x-mock-match-request-body",
+          						"value": "true"
+          					},
+          					{
+          						"key": "content-type",
+          						"value": "application/json"
+          					}
+          				],
+          				"body": {
+          					"mode": "raw",
+          					"data": "{\"type\":\"hamster\",\"breed\":\"Syrian Hamster\"}"
+          				}
+          			},
+          			"response": {
+          				"type": "error",
+          				"statusCode": 404,
+          				"headers": [],
+          				"body": {
+          					"data": "{\"error\":{\"name\":\"mockRequestNotFoundError\",\"message\":\"Double check your method and the request path and try again.\"}}"
+          				}
+          			}
+          		},
+          		{
+          			"id": "0f63f54d-665e-436a-95b4-c1302d7685a9-3925",
+          			"responseName": "Bad request",
+          			"servedAt": "2022-01-17T06:19:22.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals",
+          				"headers": [
+          					{
+          						"key": "content-length",
+          						"value": "69"
+          					},
+          					{
+          						"key": "x-mock-match-request-body",
+          						"value": "true"
+          					},
+          					{
+          						"key": "content-type",
+          						"value": "application/json"
+          					}
+          				],
+          				"body": {
+          					"mode": "raw",
+          					"data": "{\"type\":\"hamster\",\"breed\":\"Syrian Hamster\",\"age\":\"1 month\"}"
+          				}
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 400,
+          				"headers": [
+          					{
+          						"description": {
+          							"content": "",
+          							"type": "text/plain"
+          						},
+          						"key": "Content-Type",
+          						"value": "application/json"
+          					}
+          				],
+          				"body": {
+          					"data": "{\n\t\"message\": \"Malformed request. You need to send gender as part of the request.\"\n}"
+          				}
+          			}
+          		},
+          		{
+          			"id": "adab0d30-5c38-43bf-af90-4119925138e2-3795",
+          			"responseName": "Successful addition of animals to the store",
+          			"servedAt": "2022-01-17T06:19:16.000Z",
+          			"request": {
+          				"method": "POST",
+          				"path": "/animals",
+          				"headers": [
+          					{
+          						"key": "content-length",
+          						"value": "88"
+          					},
+          					{
+          						"key": "x-mock-match-request-body",
+          						"value": "true"
+          					},
+          					{
+          						"key": "content-type",
+          						"value": "application/json"
+          					}
+          				],
+          				"body": {
+          					"mode": "raw",
+          					"data": "{\"type\":\"hamster\",\"breed\":\"Syrian Hamster\",\"age\":\"1 month\",\"gender\":\"male\"}"
+          				}
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200,
+          				"headers": [
+          					{
+          						"description": {
+          							"content": "",
+          							"type": "text/plain"
+          						},
+          						"key": "Content-Type",
+          						"value": "application/json"
+          					}
+          				],
+          				"body": {
+          					"data": "{\n\t\"message\": \"Animal added successfully to the store\"\n}"
+          				}
+          			}
+          		},
+          		{
+          			"id": "dae50669-f4c1-460a-b3a4-3a2445f4f39d-2468",
+          			"responseName": "Get filtered list of Animals",
+          			"servedAt": "2022-01-17T06:18:26.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals?type=dog",
+          				"headers": [],
+          				"body": {}
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200,
+          				"headers": [
+          					{
+          						"description": {
+          							"content": "",
+          							"type": "text/plain"
+          						},
+          						"key": "Content-Type",
+          						"value": "application/json"
+          					}
+          				],
+          				"body": {
+          					"data": "[\n\t{\n\t\t\"type\": \"dog\",\n\t\t\"breed\": \"German Sheperd\",\n\t\t\"age\": \"6 months\",\n\t\t\"gender\": \"male\"\n\t},\n\t{\n\t\t\"type\": \"dog\",\n\t\t\"breed\": \"Bulldog\",\n\t\t\"age\": \"1 year\",\n\t\t\"gender\": \"female\"\n\t}\n]"
+          				}
+          			}
+          		},
+          		{
+          			"id": "a5330463-26e1-4812-a962-e44b569a2054-9894",
+          			"responseName": "Get Animals",
+          			"servedAt": "2022-01-17T06:18:06.000Z",
+          			"request": {
+          				"method": "GET",
+          				"path": "/animals",
+          				"headers": [],
+          				"body": {}
+          			},
+          			"response": {
+          				"type": "success",
+          				"statusCode": 200,
+          				"headers": [
+          					{
+          						"description": {
+          							"content": "",
+          							"type": "text/plain"
+          						},
+          						"key": "Content-Type",
+          						"value": "application/json"
+          					}
+          				],
+          				"body": {
+          					"data": "[\n\t{\n\t\t\"type\": \"dog\",\n\t\t\"breed\": \"German Sheperd\",\n\t\t\"age\": \"6 months\",\n\t\t\"gender\": \"male\"\n\t},\n\t{\n\t\t\"type\": \"dog\",\n\t\t\"breed\": \"Bulldog\",\n\t\t\"age\": \"1 year\",\n\t\t\"gender\": \"female\"\n\t},\n\t{\n\t\t\"type\": \"cat\",\n\t\t\"breed\": \"Persian cat\",\n\t\t\"age\": \"3 months\",\n\t\t\"gender\": \"female\"\n\t}\n]"
+          				}
+          			}
+          		}
+          	],
+          	"meta": {
+          		"nextCursor": null
+          	}
+          }
+  - name: Log Retention Period Exceeded
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs?until=2024-06-21T14:39:21.438Z&since=2024-01-21T14:39:21.438Z
+      method: GET
+      params:
+        - name: until
+          value: 2024-06-21T14:39:21.438Z
+          type: query
+        - name: since
+          value: 2024-01-21T14:39:21.438Z
+          type: query
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "invalidParamsError",
+                  "message": "Invalid value for parameter: since. Cannot view logs beyond the call log retention period based on your plan i.e. 30 days."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/call-logs
+      method: GET
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Gets a mock server's call logs. You can get a maximum of 6.5MB of call logs or a total of 100 call logs, whichever limit is met first in one API call.
+
+  Call logs contain exchanged request and response data made to mock servers. The logs provide visibility into how the mock servers are being used. You can log data to debug, test, analyze, and more, depending upon the use case.
+
+  **Note:**
+
+  Call logs have a retention period based on your [Postman plan](https://www.postman.com/pricing/#mock-calls). For more information, see [this article](https://support.postman.com/hc/en-us/articles/21219973964951-I-can-t-see-my-mock-server-logs-history) in the [Postman Support Center](https://support.postman.com/).

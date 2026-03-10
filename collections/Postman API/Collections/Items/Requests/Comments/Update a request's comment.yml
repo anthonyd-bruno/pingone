@@ -1,0 +1,251 @@
+info:
+  name: Update a request's comment
+  type: http
+  seq: 3
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collections/:collectionUid/requests/:requestUid/comments/:commentId"
+  params:
+    - name: collectionUid
+      value: ""
+      type: path
+      description: The collection's unique ID.
+    - name: requestUid
+      value: ""
+      type: path
+      description: The request's unique ID.
+    - name: commentId
+      value: ""
+      type: path
+      description: The comment's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "body": "{{comment}}",
+          "tags": {
+              "{{userName}}": {
+                  "type": "user",
+                  "id": "{{userId}}"
+              }
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/requests/:requestUid/comments/:commentId
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestUid
+          value: 12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "id": 46814,
+                  "threadId": 12345,
+                  "status": "Open",
+                  "createdBy": 12345678,
+                  "createdAt": "2024-01-18T11:30:40.000Z",
+                  "updatedAt": "2024-01-18T11:30:40.000Z",
+                  "body": "This is an updated example."
+              }
+          }
+  - name: Tag User in Comment
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/requests/:requestUid/comments/:commentId
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestUid
+          value: 12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"body": "This is an updated example. @alex-cruz",
+              "tags": {
+                  "@alex-cruz": {
+                      "type": "user",
+                      "id": "87654321"
+                      }
+                  }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "id": 46814,
+                  "threadId": 12345,
+                  "status": "Open",
+                  "createdBy": 12345678,
+                  "createdAt": "2024-01-18T11:30:40.000Z",
+                  "updatedAt": "2024-01-18T11:30:40.000Z",
+                  "body": "This is an updated example. @alex-cruz"
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/requests/:requestUid/comments/:commentId
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestUid
+          value: 12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type":   "https://api.postman.com/problems/unauthorized",
+              "title":  "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/requests/:requestUid/comments/:commentId
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestUid
+          value: 12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/requests/:requestUid/comments/:commentId
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestUid
+          value: 12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/requests/:requestUid/comments/:commentId
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestUid
+          value: 12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "body": "This is an updated example."
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Updates a comment on a request.
+
+  **Note:**
+
+  This endpoint accepts a max of 10,000 characters.

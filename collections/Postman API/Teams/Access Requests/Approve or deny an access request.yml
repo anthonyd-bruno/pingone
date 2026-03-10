@@ -1,0 +1,278 @@
+info:
+  name: Approve or deny an access request
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/teams/:teamId/access-requests/:requestId"
+  headers:
+    - name: identifierType
+      value: scim
+      description: Use SCIM user and group IDs instead of Postman user IDs.
+      disabled: true
+  params:
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+    - name: requestId
+      value: ""
+      type: path
+      description: The access request's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "action": "{{approvalAction}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Approve an Access Request
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests/:requestId
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+        - name: requestId
+          value: "1095"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "approve"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": {
+                  "entityType": "user",
+                  "entityId": 87654321,
+                  "role": "TEAM_DEVELOPER",
+                  "previousRole": null,
+                  "status": "Accepted",
+                  "accessRequest": {
+                      "id": 1095,
+                      "requestType": "REQUEST_TO_ADD_MEMBERS",
+                      "reason": "",
+                      "status": "Accepted",
+                      "objectType": "team",
+                      "objectId": 1095,
+                      "createdBy": 87654321
+                  }
+              }
+          }
+  - name: Deny an Access Request
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests/:requestId
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+        - name: requestId
+          value: "1096"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "deny"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": {
+                  "entityType": "user",
+                  "entityId": 87654321,
+                  "role": "TEAM_DEVELOPER",
+                  "status": "Denied",
+                  "accessRequest": {
+                      "id": 1095,
+                      "requestType": "REQUEST_TO_ADD_MEMBERS",
+                      "reason": "",
+                      "status": "Denied",
+                      "objectType": "team",
+                      "objectId": 1095,
+                      "createdBy": 87654321
+                  }
+              }
+          }
+  - name: Invalid Action
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests/:requestId
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+        - name: requestId
+          value: "1095"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "Accept"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Action must be either approve or deny",
+              "instance": "/teams/123/access-requests/1095"
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests/:requestId
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+        - name: requestId
+          value: "1095"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "approve"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams/123/access-requests/1095"
+          }
+  - name: Request Already Processed
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests/:requestId
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+        - name: requestId
+          value: "1095"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "approve"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "status": 404,
+              "title": "Not Found",
+              "detail": {
+                  "error": {
+                      "name": "EntityNotFound",
+                      "message": "Access request not found or already processed."
+                  }
+              },
+              "instance": "/teams/123/access-requests/1095"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests/:requestId
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+        - name: requestId
+          value: "1096"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "deny"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+  - name: No Access Request Management Permissions
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests/:requestId
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+        - name: requestId
+          value: "1096"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "deny"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "status": 403,
+              "title": "Forbidden",
+              "detail": {
+                  "error": {
+                      "name": "NoPermission",
+                      "message": "You are not allowed to manage pending requests in team."
+                  }
+              },
+              "instance": "/teams/123/access-requests/1096"
+          }
+
+docs: Approve or deny a team's access request.

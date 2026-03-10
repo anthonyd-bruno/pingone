@@ -1,0 +1,365 @@
+info:
+  name: Create a workspace
+  type: http
+  seq: 7
+
+http:
+  method: POST
+  url: "{{baseUrl}}/workspaces"
+  body:
+    type: json
+    data: |-
+      {
+          "workspace": {
+              "name": "{{workspaceName}}",
+              "type": "{{workspaceType}}",
+              "description": "{{workspaceDescription}}",
+              "about": "{{workspaceSummary}}",
+              "teamId": "{{teamId}}" // Required if Postman Organizations is enabled.
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Create a Personal Workspace
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Personal Workspace",
+                  "type": "personal",
+                  "description": "This is a personal workspace.",
+                  "about": "Personal workspace."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Personal Workspace"
+              }
+          }
+  - name: Create a Public Workspace
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Public Workspace",
+                  "type": "public",
+                  "description": "This is a public workspace.",
+                  "about": "Public workspace."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Public Workspace"
+              }
+          }
+  - name: Create a Private Workspace
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Private Workspace",
+                  "type": "private",
+                  "description": "This is a private workspace.",
+                  "about": "Private workspace."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Private Workspace"
+              }
+          }
+  - name: Create a Team Workspace
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "description": "This is a team workspace.",
+                  "about": "Team workspace."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Team Workspace"
+              }
+          }
+  - name: Create a Partner Workspace
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Partner Workspace",
+                  "type": "partner",
+                  "description": "This is a partner workspace.",
+                  "about": "Partner workspace."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Partner Workspace"
+              }
+          }
+  - name: Create a Workspace in a Team
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "description": "This is a team workspace.",
+                  "about": "Team workspace.",
+                  "teamId": "123"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Team Workspace"
+              }
+          }
+  - name: Workspace Missing
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Public Workspace",
+              "type": "public",
+              "description": "This is a public workspace.",
+              "about": "Public workspace."
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "malformedRequestError",
+                  "message": "'workspace' object missing in the request"
+              }
+          }
+  - name: Publish Limit Exceeded
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Public Workspace",
+                  "type": "public",
+                  "description": "This is a public workspace.",
+                  "about": "Public workspace."
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "rateLimit",
+                  "message": "team~1234"
+              }
+          }
+  - name: Not a Unique Public Workspace Name
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Public Workspace",
+                  "type": "public",
+                  "description": "This is a public workspace.",
+                  "about": "Public workspace."
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "workspaceSlugNotUniqueError",
+                  "message": "Workspace Slug is not unique in the account context"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "type": "personal",
+                  "description": "This is a test personal workspace."
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "invalidParamError",
+                  "message": "body should have required property 'name'"
+              }
+          }
+  - name: No Permission
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Public Workspace",
+                  "type": "public",
+                  "description": "This is a public workspace.",
+                  "about": "Public workspace."
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "status": 403,
+                  "name": "forbiddenError",
+                  "message": "You are not authorized to perform this action",
+                  "detail": "You do not have permission to create team workspaces.",
+                  "instance": ""
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Personal Workspace",
+                  "type": "personal",
+                  "description": "This is a personal workspace.",
+                  "about": "Personal workspace."
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Creates a new [workspace](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/).
+
+  **Note:**
+
+  - This endpoint returns a 403 `Forbidden` response if the user does not have permission to create workspaces. [Admins and Super Admins](https://learning.postman.com/docs/collaborating-in-postman/roles-and-permissions/#team-roles) can configure workspace permissions to restrict users and/or user groups from creating workspaces or require approvals for the creation of team workspaces.
+      
+  - Private and [Partner Workspaces](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/) are available on Postman [<b>Team</b> and <b>Enterprise</b> plans](https://www.postman.com/pricing).
+      
+  - There are rate limits when publishing public workspaces.
+      
+  - Public team workspace names must be unique.
+      
+  - The `teamId` property must be passed in the request body if [Postman Organizations](https://learning.postman.com/docs/administration/onboarding-checklist) is enabled.

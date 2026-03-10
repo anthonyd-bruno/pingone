@@ -1,0 +1,116 @@
+info:
+  name: Delete a collection access key
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/collection-access-keys/:keyId"
+  params:
+    - name: keyId
+      value: ""
+      type: path
+      description: The collection access key's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: No Content
+    request:
+      url: https://api.getpostman.com/collection-access-keys/:keyId
+      method: DELETE
+      params:
+        - name: keyId
+          value: Njg5OjU3MDQ1NjYtYmQxZDU3NzktMWVkNS00ZDhjLWI0ZmQtZWRhOGY2Mzg1NTY0
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collection-access-keys/:keyId
+      method: DELETE
+      params:
+        - name: keyId
+          value: Njg5OjU3MDQ1NjYtYmQxZDU3NzktMWVkNS00ZDhjLWI0ZmQtZWRhOGY2Mzg1NTY0
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collection-access-keys/:keyId
+      method: DELETE
+      params:
+        - name: keyId
+          value: Njg5OjU3MDQ1NjYtYmQxZDU3NzktMWVkNS00ZDhjLWI0ZmQtZWRhOGY2Mzg1NTY0
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collection-access-keys/:keyId
+      method: DELETE
+      params:
+        - name: keyId
+          value: "9"
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not found",
+              "detail": "The key was not found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collection-access-keys/:keyId
+      method: DELETE
+      params:
+        - name: keyId
+          value: Njg5OjU3MDQ1NjYtYmQxZDU3NzktMWVkNS00ZDhjLWI0ZmQtZWRhOGY2Mzg1NTY0
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Something went wrong",
+              "detail": "Something went wrong",
+              "status": 500
+          }
+
+docs: |-
+  Deletes a collection access key. To get a collection access key's ID, use the GET `/collection-access-key` endpoint.
+
+  On success, this returns an HTTP `204 No Content` response.

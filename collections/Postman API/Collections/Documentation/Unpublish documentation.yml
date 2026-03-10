@@ -1,0 +1,165 @@
+info:
+  name: Unpublish documentation
+  type: http
+  seq: 2
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/collections/:collectionId/public-documentations"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's unique ID.
+  body:
+    type: multipart-form
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/json
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Collection Id not present",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/collections/:collectionId/public-documentations
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "status": 404,
+              "detail": "The resource you're looking for can't be found. Please check the URL before trying again.",
+              "title": "Not Found"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: Unpublishes a collection's documentation.

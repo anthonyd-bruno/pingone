@@ -1,0 +1,201 @@
+info:
+  name: Transfer requests
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/collection-requests-transfers"
+  body:
+    type: json
+    data: |-
+      {
+          "ids": [
+              "{{requestUid}}"
+          ],
+          "target": {
+              "model": "{{modelType}}",
+              "id": "{{modelUid}}"
+          },
+          "location": {
+              "position": "{{position}}",
+              "model": "{{modelId}}",
+              "id": "{{modelUid}}"
+          },
+          "mode": "{{modeType}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Copy Request to Collection
+    request:
+      url: https://api.getpostman.com/collection-requests-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ],
+              "target": {
+                  "model": "collection",
+                  "id": "12345678-6ce99ba5-fd64-40d5-b4f1-3569df4554a0"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "copy"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ]
+          }
+  - name: Move Request to Top of Folder
+    request:
+      url: https://api.getpostman.com/collection-requests-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ],
+              "target": {
+                  "model": "folder",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb9"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ]
+          }
+  - name: Move Request After Another Request
+    request:
+      url: https://api.getpostman.com/collection-requests-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ],
+              "target": {
+                  "model": "folder",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb9"
+              },
+              "location": {
+                  "position": "after",
+                  "model": "request",
+                  "id": "12345678-78749c26-69c7-4c07-8fca-8055d1a732db"
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ]
+          }
+  - name: Invalid ids Value
+    request:
+      url: https://api.getpostman.com/collection-requests-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678"
+              ],
+              "target": {
+                  "model": "folder",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb9"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |
+          {
+              "type": "Error",
+              "title": "One or more request ids provided were not found",
+              "detail": {
+                  "missing": [
+                      "12345678"
+                  ]
+              }
+          }
+  - name: Target Folder Not Found
+    request:
+      url: https://api.getpostman.com/collection-requests-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ],
+              "target": {
+                  "model": "folder",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb9"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |
+          {
+              "type": "Error",
+              "title": "Target folder 12345678-bcb5648b-eecb-4468-ade7-4efb38431bb9 not found",
+              "detail": {}
+          }
+
+docs: Copies or moves requests into a collection or folder.

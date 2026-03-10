@@ -1,0 +1,158 @@
+info:
+  name: Get a group
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/groups/:groupId"
+  params:
+    - name: groupId
+      value: ""
+      type: path
+      description: The group's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/groups/:groupId
+      method: GET
+      params:
+        - name: groupId
+          value: "123"
+          type: path
+          description: The group's ID.
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": 123,
+              "teamId": 1,
+              "name": "API Test Group",
+              "summary": "API testing group.",
+              "createdBy": 12345678,
+              "createdAt": "2024-10-03T14:05:05.000Z",
+              "updatedAt": "2024-10-03T14:05:05.000Z",
+              "members": [
+                  12345678,
+                  87654321,
+                  56781234
+              ],
+              "roles": [
+                  "user"
+              ],
+              "managers": [
+                  12345678
+              ]
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/groups/:groupId
+      method: GET
+      params:
+        - name: groupId
+          value: ""
+          type: path
+          description: The group's ID.
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Bad Request",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/groups/:groupId
+      method: GET
+      params:
+        - name: groupId
+          value: "123"
+          type: path
+          description: The group's ID.
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/groups/:groupId
+      method: GET
+      params:
+        - name: groupId
+          value: "123"
+          type: path
+          description: The group's ID.
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/groups/:groupId
+      method: GET
+      params:
+        - name: groupId
+          value: "123"
+          type: path
+          description: The group's ID.
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/groups/:groupId
+      method: GET
+      params:
+        - name: groupId
+          value: "123"
+          type: path
+          description: The group's ID.
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: Gets information about a Postman [user group](https://learning.postman.com/docs/collaborating-in-postman/user-groups/).

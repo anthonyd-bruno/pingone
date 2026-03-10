@@ -1,0 +1,244 @@
+info:
+  name: Create an API
+  type: http
+  seq: 8
+
+http:
+  method: POST
+  url: "{{baseUrl}}/apis?workspaceId={{workspaceId}}"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: workspaceId
+      value: "{{workspaceId}}"
+      type: query
+      description: The workspace ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{apiName}}",
+          "summary": "{{apiSummary}}",
+          "description": "{{apiDescription}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API."
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-06-29T20:46:58.000Z",
+              "updatedAt": "2022-06-29T20:46:58.000Z",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API.",
+              "createdBy": "12345678",
+              "updatedBy": "12345678"
+          }
+  - name: Missing Workspace ID
+    request:
+      url: https://api.getpostman.com/apis
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API."
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "paramMissingError",
+              "title": "Parameter is missing in the request.",
+              "detail": "Parameter, workspaceId is missing in the request."
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API."
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "forbiddenError",
+              "title": "You are not permitted to perform the action.",
+              "detail": "You do not have access to perform this operation."
+          }
+  - name: API Limit Reached
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "limitReachedError",
+              "title": "You've reached the API limit",
+              "message": "You can create up to 3 APIs on your current plan.",
+              "detail": {
+                  "model": "api",
+                  "action": "create",
+                  "message": "You can create up to 3 APIs on your current plan."
+              }
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Workspace Not Found
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API",
+              "summary": "Test API Schema",
+              "description": "This is a test API."
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "We could not find the workspace you are looking for",
+              "detail": "We could not find the workspace you are looking for.",
+              "type": "instanceNotFoundError"
+          }
+
+docs: Creates an API.

@@ -1,0 +1,87 @@
+info:
+  name: Get all API versions
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: https://api.getpostman.com/apis/{{apiId}}/versions
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions
+      method: GET
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "versions": [
+                  {
+                      "id": "a9879d02-74bf-425a-bbec-6d27aa135507",
+                      "name": "Draft",
+                      "summary": null,
+                      "createdBy": "20891195",
+                      "updatedBy": "20891195",
+                      "stage": "Planning",
+                      "visibility": "public",
+                      "api": "387c2863-6ee3-4a56-8210-225f774edade",
+                      "createdAt": "2023-02-14T14:26:05.000Z",
+                      "updatedAt": "2023-02-14T14:26:05.000Z",
+                      "repositoryIntegration": null
+                  }
+              ]
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions
+      method: GET
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the API you are looking for"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Gets information about an API's versions.
+
+  **In Postman v9 and earlier:**
+
+  When you create an API, the system creates a single, default API version. You can use this version’s ID with any endpoints that require an API version ID.

@@ -1,0 +1,169 @@
+info:
+  name: List account invoices
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/accounts/:accountId/invoices?status=PAID"
+  params:
+    - name: status
+      value: PAID
+      type: query
+      description: (Required) The invoice status. Currently accepts only the `PAID` value.
+    - name: accountId
+      value: ""
+      type: path
+      description: The account's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/accounts/:accountId/invoices?status=PAID
+      method: GET
+      params:
+        - name: status
+          value: PAID
+          type: query
+        - name: accountId
+          value: "123456"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": [
+                  {
+                      "id": "inv_7UDSYBJPGQU93N7M",
+                      "status": "PAID",
+                      "issuedAt": "2023-10-12",
+                      "totalAmount": {
+                          "value": 440,
+                          "currency": "USD"
+                      },
+                      "links": {
+                          "web": {
+                              "href": "https://pay.postman.com/invoices/pay?invoice_public_id=inv_7UDSYBJPGQU93N7M"
+                          }
+                      }
+                  }
+              ]
+          }
+  - name: No Invoices
+    request:
+      url: https://api.getpostman.com/accounts/:accountId/invoices?status=PAID
+      method: GET
+      params:
+        - name: status
+          value: PAID
+          type: query
+        - name: accountId
+          value: "123456"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": []
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/accounts/:accountId/invoices?status=PAID
+      method: GET
+      params:
+        - name: status
+          value: PAID
+          type: query
+        - name: accountId
+          value: "123456"
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "Please provide a valid status to fetch invoices"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/accounts/:accountId/invoices?status=PAID
+      method: GET
+      params:
+        - name: status
+          value: PAID
+          type: query
+        - name: accountId
+          value: "123456"
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/accounts/:accountId/invoices?status=PAID
+      method: GET
+      params:
+        - name: status
+          value: PAID
+          type: query
+        - name: accountId
+          value: "123456"
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "You are not authorized to perform this action"
+          }
+  - name: Invalid Account ID
+    request:
+      url: https://api.getpostman.com/accounts/:accountId/invoices?status=PAID
+      method: GET
+      params:
+        - name: status
+          value: PAID
+          type: query
+        - name: accountId
+          value: "123456"
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "Could not fetch invoices for the team."
+          }
+
+docs: Gets all invoices for a Postman billing account filtered by the status of the invoice.

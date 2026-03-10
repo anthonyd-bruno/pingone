@@ -1,0 +1,11 @@
+info:
+  name: v11
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: The endpoints in this folder are only available in Postman v11. They are considered deprecated and no longer in active development.
+  type: text/markdown

@@ -1,0 +1,154 @@
+info:
+  name: Generate spec from collection
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/collections/:collectionUid/generations/:elementType"
+  params:
+    - name: collectionUid
+      value: ""
+      type: path
+      description: The collection's unique ID.
+    - name: elementType
+      value: spec
+      type: path
+      description: The `spec` value.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{specName}}",
+          "type": "{{specType}}",
+          "format": "{{formatType}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/generations/:elementType
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: elementType
+          value: spec
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "format": "JSON"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "taskId": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "url": "/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2/tasks/66ae9950-0869-4e65-96b0-1e0e47e771af"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/generations/:elementType
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: elementType
+          value: spec
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "format": "JSON"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/generations/:elementType
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: elementType
+          value: spec
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "format": "JSON"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "status": 404,
+              "detail": "Entity that you are trying to access does not exist."
+          }
+  - name: Generation in Progress
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/generations/:elementType
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: elementType
+          value: spec
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "format": "JSON"
+          }
+    response:
+      statusText: "423"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "actionLockedError",
+              "title": "Collection generation in progress",
+              "status": 423,
+              "detail": "Collection generation is already in progress for the spec."
+          }
+
+docs: Generates an API specification for the given collection. The response contains a polling link to the task status.

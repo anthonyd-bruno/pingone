@@ -1,0 +1,75 @@
+info:
+  name: Delete a spec
+  type: http
+  seq: 8
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/specs/:specId"
+  params:
+    - name: specId
+      value: ""
+      type: path
+      description: The spec's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Deleted
+    request:
+      url: https://api.getpostman.com/specs/:specId
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs/:specId
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/specs/:specId
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "status": 404,
+              "detail": "Entity that you are trying to access does not exist."
+          }
+
+docs: Deletes an API specification. On success, this returns an HTTP `204 No Content` response.

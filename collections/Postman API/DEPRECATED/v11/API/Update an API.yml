@@ -1,0 +1,214 @@
+info:
+  name: Update an API
+  type: http
+  seq: 9
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/apis/:apiId"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{apiName}}",
+          "summary": "{{apiSummary}}",
+          "description": "{{apiDescription}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API A",
+              "summary": "Test API A Schema",
+              "description": "This is Test API A."
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-06-29T20:46:58.000Z",
+              "updatedAt": "2022-06-29T20:46:58.000Z",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "name": "Test API A",
+              "summary": "Test API A Schema",
+              "description": "This is Test API A.",
+              "createdBy": "12345678",
+              "updatedBy": "12345678"
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: PUT
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API A",
+              "summary": "Test API A Schema",
+              "description": "This is Test API A."
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API A",
+              "summary": "Test API A Schema",
+              "description": "This is Test API A."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "forbiddenError",
+              "title": "You are not permitted to perform the action.",
+              "detail": "You do not have access to perform this operation."
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API A",
+              "summary": "Test API A Schema",
+              "description": "This is Test API A."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API A",
+              "summary": "Test API A Schema",
+              "description": "This is Test API A."
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "We could not find the API you are looking for",
+              "detail": "We could not find the API you are looking for."
+          }
+  - name: v9 Unsupported
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test API A",
+              "summary": "Test API A Schema",
+              "description": "This is Test API A."
+          }
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "unsupportedEntityError",
+              "title": "Unsupported API",
+              "detail": "This endpoint does not support v9 APIs."
+          }
+
+docs: Updates an API.

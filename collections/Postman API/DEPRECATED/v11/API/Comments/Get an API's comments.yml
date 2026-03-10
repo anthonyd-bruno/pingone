@@ -1,0 +1,163 @@
+info:
+  name: Get an API's comments
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/apis/:apiId/comments"
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": [
+                  {
+                      "id": 46818,
+                      "threadId": 12345,
+                      "status": "Open",
+                      "createdBy": 12345678,
+                      "createdAt": "2024-01-18T12:00:54.000Z",
+                      "updatedAt": "2024-01-18T12:00:54.000Z",
+                      "body": "This is also an example."
+                  },
+                  {
+                      "id": 46817,
+                      "threadId": 67890,
+                      "status": "Resolved",
+                      "createdBy": 87654321,
+                      "createdAt": "2024-01-18T11:48:01.000Z",
+                      "updatedAt": "2024-01-18T11:48:01.000Z",
+                      "body": "Another example."
+                  },
+                  {
+                      "id": 46814,
+                      "threadId": 23456,
+                      "status": "Open",
+                      "createdBy": 12345678,
+                      "createdAt": "2024-01-18T11:30:40.000Z",
+                      "updatedAt": "2024-01-18T11:30:40.000Z",
+                      "body": "This is an example."
+                  }
+              ]
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/comments
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: Gets all comments left by users in an API.

@@ -1,0 +1,404 @@
+info:
+  name: Create a monitor
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/monitors?workspace="
+  params:
+    - name: workspace
+      value: ""
+      type: query
+      description: |-
+        The workspace ID.
+
+        If you do not pass this parameter, the system creates the monitor in the oldest personal Internal workspace you own.
+  body:
+    type: json
+    data: |-
+      {
+          "monitor": {
+              "name": "{{monitorName}}",
+              "collection": "{{collectionUid}}",
+              "environment": "{{environmentUid}}",
+              "active": true,
+              "schedule": {
+                  "cron": "{{cronFrequencyPattern}}",
+                  "timezone": "{{monitorTimezone}}"
+              },
+              "notificationLimit": 1,
+              "distribution": [
+                  {
+                      "region": "{{regionId}}"
+                  }
+              ],
+              "options": {
+                  "followRedirects": true,
+                  "requestDelay": 1,
+                  "requestTimeout": 1,
+                  "strictSSL": true
+              },
+              "notifications": {
+                  "onError": [
+                      {
+                          "email": "{{emailAddress}}"
+                      }
+                  ],
+                  "onFailure": [
+                      {
+                          "email": "{{emailAddress}}"
+                      }
+                  ]
+              },
+              "retry": {
+                  "attempts": 1
+              }
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/monitors?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "monitor": {
+                  "name": "Test Monitor",
+                  "schedule": {
+                      "cron": "0 0 * * *",
+                      "timezone": "America/Chicago"
+                  },
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitor": {
+                  "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "name": "Test Monitor",
+                  "active": true,
+                  "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1"
+              }
+          }
+  - name: Create Monitor with Options
+    request:
+      url: https://api.getpostman.com/monitors?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: GET
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "monitor": {
+                  "name": "Test Monitor",
+                  "active": false,
+                  "notificationLimit": 2,
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "retry": {
+                      "attempts": 1
+                  },
+                  "options": {
+                      "strictSSL": true,
+                      "followRedirects": true,
+                      "requestTimeout": 5000,
+                      "requestDelay": 5
+                  },
+                  "notifications": {
+                      "onError": [
+                          {
+                              "email": "user@example.com"
+                          }
+                      ],
+                      "onFailure": [
+                          {
+                              "email": "user@example.com"
+                          }
+                      ]
+                  },
+                  "distribution": [
+                      {
+                          "region": "us-east"
+                      }
+                  ],
+                  "schedule": {
+                      "cron": "0 0 * * *",
+                      "timezone": "America/Chicago"
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitor": {
+                  "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "name": "Test Monitor",
+                  "active": true,
+                  "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1"
+              }
+          }
+  - name: Invalid Collection UID
+    request:
+      url: https://api.getpostman.com/monitors
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"name": "Test Monitor",
+          		"schedule": {
+          			"cron": "0 0 * * *",
+          			"timezone": "America/Chicago"
+          		},
+          		"collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+          		"environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+          	}
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "invalidUidError",
+                  "message": "The specified uid is invalid.",
+                  "details": {
+                      "param": "collection",
+                      "uid": "12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                  }
+              }
+          }
+  - name: Invalid Environment UID
+    request:
+      url: https://api.getpostman.com/monitors
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "monitor": {
+                  "name": "Test Monitor",
+                  "schedule": {
+                      "cron": "0 0 * * *",
+                      "timezone": "America/Chicago"
+                  },
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "invalidUidError",
+                  "message": "The specified uid is invalid.",
+                  "details": {
+                      "param": "environment",
+                      "uid": "5daabc50-8451-43f6-922d-96b403b4f28e"
+                  }
+              }
+          }
+  - name: Invalid Timezone
+    request:
+      url: https://api.getpostman.com/monitors
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "monitor": {
+                  "name": "Test Monitor",
+                  "schedule": {
+                      "cron": "0 0 * * *",
+                      "timezone": "USA"
+                  },
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "invalidParamsError",
+                  "message": "The request had invalid parameters",
+                  "details": {
+                      "param": "schedule.timezone"
+                  }
+              }
+          }
+  - name: Invalid Cron Pattern
+    request:
+      url: https://api.getpostman.com/monitors
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"name": "Test Monitor",
+          		"schedule": {
+          			"cron": "* * * * *",
+          			"timezone": "America/Chicago"
+          		},
+          		"collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+          		"environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+          	}
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "cronPatternNotAllowedError",
+                  "message": "Invalid cron pattern. Enter a valid cron pattern, such as \"0 17 * * *\"",
+                  "details": {
+                      "pattern": "* * * * *"
+                  }
+              }
+          }
+  - name: Missing Parameter
+    request:
+      url: https://api.getpostman.com/monitors
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "monitor": {
+                  "schedule": {
+                      "cron": "0 0 * * *",
+                      "timezone": "America/Chicago"
+                  },
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "paramMissingError",
+                  "message": "Parameter is missing in the request.",
+                  "details": {
+                      "param": [
+                          "name"
+                      ]
+                  }
+              }
+          }
+  - name: Forbidden Error
+    request:
+      url: https://api.getpostman.com/monitors
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "monitor": {
+                  "name": "Test Monitor",
+                  "schedule": {
+                      "cron": "0 0 * * *",
+                      "timezone": "America/Chicago"
+                  },
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You need read access to this collection in order to perform this action."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/monitors
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "monitor": {
+                  "name": "Test Monitor",
+                  "schedule": {
+                      "cron": "0 0 * * *",
+                      "timezone": "America/Chicago"
+                  },
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Creates a monitor.
+
+  **Note:**
+
+  - You cannot create monitors for collections added to an API definition.
+      
+  - If you do not include the `workspace` query parameter, the system creates the monitor in the oldest personal Internal workspace you own.

@@ -1,0 +1,11 @@
+info:
+  name: Collections
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage [collections](https://learning.postman.com/docs/design-apis/specifications/generate-collections/) generated from your API specification. Postman automatically creates collections with folders, requests, and response examples based on the specification.
+  type: text/markdown

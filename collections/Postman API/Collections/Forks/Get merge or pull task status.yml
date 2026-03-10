@@ -1,0 +1,142 @@
+info:
+  name: Get merge or pull task status
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{baseUrl}}/collection-merges-tasks/:taskId"
+  params:
+    - name: taskId
+      value: ""
+      type: path
+      description: The task's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: https://api.getpostman.com/collection-merges-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3",
+              "status": "successful"
+          }
+  - name: In Progress
+    request:
+      url: https://api.getpostman.com/collection-merges-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3",
+              "status": "in-progress"
+          }
+  - name: Failed
+    request:
+      url: https://api.getpostman.com/collection-merges-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3",
+              "status": "failed",
+              "details": {
+                  "error": {
+                      "message": "All conflicts have not be resolved"
+                  }
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collection-merges-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collection-merges-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "You do not have enough permissions to perform this action.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collection-merges-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Task not found",
+              "status": 404,
+              "detail": "Workflow :: pm~vc:merge-workflow~12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3 not found"
+          }
+
+docs: |-
+  Gets the status of a collection's merge or a pull changes task.
+
+  **Note:**
+
+  After a merge's success or failure, the task's status is only available for a period of 24 hours. Afterwards, this endpoint returns an HTTP `404 Not Found` response.

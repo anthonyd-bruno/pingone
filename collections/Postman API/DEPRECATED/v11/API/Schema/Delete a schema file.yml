@@ -1,0 +1,246 @@
+info:
+  name: Delete a schema file
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/apis/:apiId/schemas/:schemaId/files/:filePath"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+    - name: schemaId
+      value: "{{schemaId}}"
+      type: path
+      description: The API schema's ID.
+    - name: filePath
+      value: "{{filePath}}"
+      type: path
+      description: The path to the schema file.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Deleted
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Schema Not Linked to API
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamError",
+              "title": "Invalid param error",
+              "detail": "Schema is not linked to the API"
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Path Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "detail": "File not found: Folder1/nestedFile.json"
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "detail": "We could not find the API you are looking for"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "You do not have access to perform this operation.",
+              "title": "You are not permitted to perform the action.",
+              "type": "forbiddenError"
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Git-Linked API Errror
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 5381f010-c4c1-11ed-afa1-0242ac120002
+          type: path
+        - name: filePath
+          value: data-model/index.json
+          type: path
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "This action is not allowed for git linked APIs",
+              "type": "actionNotAllowedError",
+              "title": "Action not allowed"
+          }
+
+docs: Deletes a file in an API schema. On success, this returns an HTTP `204 No Content` response.

@@ -1,0 +1,185 @@
+info:
+  name: Update spec sync options
+  type: http
+  seq: 10
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/specs/:specId/collections/:collectionId/sync-options"
+  params:
+    - name: specId
+      value: ""
+      type: path
+      description: The spec's ID.
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "syncOptions": {
+              "syncExamples": true
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/specs/:specId/collections/:collectionId/sync-options
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "syncOptions": {
+                  "syncExamples": true
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "syncOptions": {
+                  "syncExamples": true
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/specs/:specId/collections/:collectionId/sync-options
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "syncExamples": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "syncOptions should be there in the request body."
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/specs/:specId/collections/:collectionId/sync-options
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "syncOptions": {
+                  "syncExamples": true
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "status": 401,
+              "detail": "Unauthorized",
+              "instance": "/specifications/73e15000-bc7a-4802-b80e-05fff18fd7f8/collections/12ece9e1-2abf-4edc-8e34-de66e74114d2"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs/:specId/collections/:collectionId/sync-options
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "syncOptions": {
+                  "syncExamples": true
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "AuthenticationError",
+              "status": 403,
+              "detail": "Invalid API Key. Every request requires a valid API Key to be sent.",
+              "instance": "/specifications/73e15000-bc7a-4802-b80e-05fff18fd7f8/collections/12ece9e1-2abf-4edc-8e34-de66e74114d2"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/specs/:specId/collections/:collectionId/sync-options
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "syncOptions": {
+                  "syncExamples": true
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "status": 404,
+              "detail": "Entity that you are trying to access does not exist."
+          }
+
+docs: Updates the [sync options](https://learning.postman.com/docs/design-apis/specifications/generate-collections/#configure-sync-settings) for a specification's generated collection.

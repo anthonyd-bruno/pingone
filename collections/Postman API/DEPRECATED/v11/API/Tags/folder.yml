@@ -1,0 +1,11 @@
+info:
+  name: Tags
+  type: folder
+  seq: 4
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage API tags with Postman's [tagging](https://learning.postman.com/docs/designing-and-developing-your-api/managing-apis/#tagging-apis) feature. Tagging is available on Postman [<b>Enterprise</b> plans](https://www.postman.com/pricing/).
+  type: text/markdown

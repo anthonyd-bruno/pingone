@@ -1,0 +1,486 @@
+info:
+  name: Get a workspace
+  type: http
+  seq: 8
+
+http:
+  method: GET
+  url: "{{baseUrl}}/workspaces/:workspaceId"
+  params:
+    - name: include
+      value: ""
+      type: query
+      description: |-
+        Include the following information in the endpoint's response:
+        - `mocks:deactivated` — Include all deactivated mock servers in the response.
+        - `scim` — Return the SCIM user IDs of the workspace creator and who last modified it.
+      disabled: true
+    - name: workspaceId
+      value: ""
+      type: path
+      description: The workspace's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Include SCIM IDs
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId?include=scim
+      method: GET
+      params:
+        - name: include
+          value: scim
+          type: query
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Partner Workspace",
+                  "type": "team",
+                  "description": "This is a partner workspace.",
+                  "visibility": "partner",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678",
+                  "createdAt": "2022-07-06T16:18:32.000Z",
+                  "updatedAt": "2022-07-06T20:55:13.000Z",
+                  "about": "Partner workspace.",
+                  "collections": [
+                      {
+                          "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "name": "Test Collection",
+                          "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      }
+                  ],
+                  "environments": [
+                      {
+                          "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                          "name": "Test Environment",
+                          "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+                      }
+                  ],
+                  "mocks": [
+                      {
+                          "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "name": "Test Mock",
+                          "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "deactivated": false
+                      }
+                  ],
+                  "monitors": [
+                      {
+                          "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "name": "Test Monitor",
+                          "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "deactivated": false
+                      }
+                  ],
+                  "specs": [
+                      {
+                          "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                          "name": "Sample API",
+                          "uid": "12345678-73e15000-bc7a-4802-b80e-05fff18fd7f8"
+                      }
+                  ],
+                  "scim": {
+                      "createdBy": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+                      "updatedBy": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99"
+                  }
+              }
+          }
+  - name: Get a Personal Workspace
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "My Workspace",
+                  "type": "personal",
+                  "description": "This is your personal, private workspace to play around in. Only you can see the collections and APIs you create here - unless you share them with your team.",
+                  "visibility": "personal",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678",
+                  "createdAt": "2022-07-06T16:18:32.000Z",
+                  "updatedAt": "2022-07-06T20:55:13.000Z",
+                  "about": "Personal workspace.",
+                  "collections": [
+                      {
+                          "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "name": "Test Collection",
+                          "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      }
+                  ],
+                  "environments": [
+                      {
+                          "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                          "name": "Test Environment",
+                          "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+                      }
+                  ],
+                  "mocks": [
+                      {
+                          "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "name": "Test Mock",
+                          "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "deactivated": false
+                      }
+                  ],
+                  "monitors": [
+                      {
+                          "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "name": "Test Monitor",
+                          "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "deactivated": false
+                      }
+                  ],
+                  "specs": [
+                      {
+                          "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                          "name": "Sample API",
+                          "uid": "12345678-73e15000-bc7a-4802-b80e-05fff18fd7f8"
+                      }
+                  ]
+              }
+          }
+  - name: Get a Public Workspace
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Public Workspace",
+                  "type": "team",
+                  "description": "This is a public workspace.",
+                  "visibility": "public",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678",
+                  "createdAt": "2022-07-06T16:18:32.000Z",
+                  "updatedAt": "2022-07-06T20:55:13.000Z",
+                  "about": "Public workspace.",
+                  "collections": [
+                      {
+                          "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "name": "Test Collection",
+                          "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      }
+                  ],
+                  "environments": [
+                      {
+                          "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                          "name": "Test Environment",
+                          "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+                      }
+                  ],
+                  "mocks": [
+                      {
+                          "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "name": "Test Mock",
+                          "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "deactivated": false
+                      }
+                  ],
+                  "monitors": [
+                      {
+                          "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "name": "Test Monitor",
+                          "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "deactivated": false
+                      }
+                  ],
+                  "specs": [
+                      {
+                          "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                          "name": "Sample API",
+                          "uid": "12345678-73e15000-bc7a-4802-b80e-05fff18fd7f8"
+                      }
+                  ]
+              }
+          }
+  - name: Get a Private Workspace
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Private Workspace",
+                  "type": "team",
+                  "description": "This is a private workspace.",
+                  "visibility": "private",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678",
+                  "createdAt": "2022-07-06T16:18:32.000Z",
+                  "updatedAt": "2022-07-06T20:55:13.000Z",
+                  "about": "Private workspace.",
+                  "collections": [
+                      {
+                          "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "name": "Test Collection",
+                          "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      }
+                  ],
+                  "environments": [
+                      {
+                          "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                          "name": "Test Environment",
+                          "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+                      }
+                  ],
+                  "mocks": [
+                      {
+                          "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "name": "Test Mock",
+                          "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "deactivated": false
+                      }
+                  ],
+                  "monitors": [
+                      {
+                          "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "name": "Test Monitor",
+                          "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "deactivated": false
+                      }
+                  ],
+                  "specs": [
+                      {
+                          "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                          "name": "Sample API",
+                          "uid": "12345678-73e15000-bc7a-4802-b80e-05fff18fd7f8"
+                      }
+                  ]
+              }
+          }
+  - name: Get a Team Workspace
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "description": "This is a team workspace.",
+                  "visibility": "team",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678",
+                  "createdAt": "2022-07-06T16:18:32.000Z",
+                  "updatedAt": "2022-07-06T20:55:13.000Z",
+                  "about": "Team workspace.",
+                  "collections": [
+                      {
+                          "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "name": "Test Collection",
+                          "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      }
+                  ],
+                  "environments": [
+                      {
+                          "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                          "name": "Test Environment",
+                          "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+                      }
+                  ],
+                  "mocks": [
+                      {
+                          "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "name": "Test Mock",
+                          "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "deactivated": false
+                      }
+                  ],
+                  "monitors": [
+                      {
+                          "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "name": "Test Monitor",
+                          "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "deactivated": false
+                      }
+                  ],
+                  "specs": [
+                      {
+                          "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                          "name": "Sample API",
+                          "uid": "12345678-73e15000-bc7a-4802-b80e-05fff18fd7f8"
+                      }
+                  ]
+              }
+          }
+  - name: Get a Partner Workspace
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Partner Workspace",
+                  "type": "team",
+                  "description": "This is a partner workspace.",
+                  "visibility": "partner",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678",
+                  "createdAt": "2022-07-06T16:18:32.000Z",
+                  "updatedAt": "2022-07-06T20:55:13.000Z",
+                  "about": "Partner workspace.",
+                  "collections": [
+                      {
+                          "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "name": "Test Collection",
+                          "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      }
+                  ],
+                  "environments": [
+                      {
+                          "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                          "name": "Test Environment",
+                          "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+                      }
+                  ],
+                  "mocks": [
+                      {
+                          "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "name": "Test Mock",
+                          "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                          "deactivated": false
+                      }
+                  ],
+                  "monitors": [
+                      {
+                          "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "name": "Test Monitor",
+                          "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                          "deactivated": false
+                      }
+                  ],
+                  "specs": [
+                      {
+                          "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                          "name": "Sample API",
+                          "uid": "12345678-73e15000-bc7a-4802-b80e-05fff18fd7f8"
+                      }
+                  ]
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "workspaceNotFoundError",
+                  "message": "Workspace not found",
+                  "statusCode": 404
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Gets information about a workspace.
+
+  **Note:**
+
+  This endpoint's response also contains the `visibility` field. [Visibility](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/managing-workspaces/#changing-workspace-visibility) determines who can access the workspace:
+
+  - `personal` — Only you can access the workspace.
+      
+  - `team` — All team members can access the workspace.
+      
+  - `private` — Only invited team members can access the workspace ([<b>Team</b> and <b>Enterprise</b> plans only](https://www.postman.com/pricing)).
+      
+  - `public` — Everyone can access the workspace.
+      
+  - `partner` — Only invited team members and [partners](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/) can access the workspace ([<b>Team</b> and <b>Enterprise</b> plans only](https://www.postman.com/pricing)).

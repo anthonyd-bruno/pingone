@@ -1,0 +1,71 @@
+info:
+  name: Get accounts
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/accounts"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/accounts
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": 12345678,
+              "teamId": 1234,
+              "state": "PAID",
+              "slots": {
+                  "total": 10,
+                  "unbilled": 0,
+                  "consumed": 2,
+                  "available": 8
+              },
+              "salesChannel": "SELF_SERVE",
+              "billingEmail": "taylor.lee@example.com"
+          }
+  - name: Not Part of Team
+    request:
+      url: https://api.getpostman.com/accounts
+      method: GET
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "You must be part of a team"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/accounts
+      method: GET
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+
+docs: Gets Postman billing account details for the given team.

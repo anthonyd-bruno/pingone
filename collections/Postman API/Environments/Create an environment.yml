@@ -1,0 +1,311 @@
+info:
+  name: Create an environment
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/environments?workspace="
+  params:
+    - name: workspace
+      value: ""
+      type: query
+      description: |-
+        A workspace ID in which to create the environment.
+
+        If you do not include this query parameter, the system creates the environment in the oldest personal Internal workspace you own.
+  body:
+    type: json
+    data: |-
+      {
+          "environment": {
+              "name": "{{environmentName}}",
+              "values": [
+                  {
+                      "key": "{{environmentVariableName}}",
+                      "value": "{{environmentVariableValue}}",
+                      "enabled": true,
+                      "type": "{{environmentVariableType}}",
+                      "description": "{{environmentVariableDescription}}"
+                  }
+              ]
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Create Environment
+    request:
+      url: https://api.getpostman.com/environments?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "enabled": true,
+                          "type": "default",
+                          "description": "The collection's ID."
+                      },
+                      {
+                          "key": "variable_1",
+                          "value": "The variable_1 value.",
+                          "enabled": false,
+                          "type": "default",
+                          "description": "Placeholder variable value."
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test Environment",
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Malformed Request
+    request:
+      url: https://api.getpostman.com/environments
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "enabled": true,
+                          "type": "default"
+                      },
+                      {
+                          "key": "variable_1",
+                          "value": "The variable_1 value.",
+                          "enabled": false,
+                          "type": "default"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "malformedRequestError",
+                  "message": "Found 1 errors with the supplied environment.",
+                  "details": [
+                      "environment: must have required property 'name'"
+                  ]
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/environments?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "enabled": true,
+                          "type": "default"
+                      },
+                      {
+                          "key": "variable_1",
+                          "value": "The variable_1 value.",
+                          "enabled": false,
+                          "type": "default"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You are not permitted to perform the action."
+              }
+          }
+  - name: Length Required
+    request:
+      url: https://api.getpostman.com/environments?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "enabled": true,
+                          "type": "default"
+                      },
+                      {
+                          "key": "variable_1",
+                          "value": "The variable_1 value.",
+                          "enabled": false,
+                          "type": "default"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "411"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/length-required",
+              "title": "Length Required",
+              "detail": "A valid Content-Length header is required",
+              "status": 411,
+              "instance": "/"
+          }
+  - name: Payload Too Large
+    request:
+      url: https://api.getpostman.com/environments?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "enabled": true,
+                          "type": "default"
+                      },
+                      {
+                          "key": "variable_1",
+                          "value": "The variable_1 value.",
+                          "enabled": false,
+                          "type": "default"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "413"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/payload-too-large",
+              "title": "Payload Too Large",
+              "detail": "Request size limit exceeded",
+              "status": 413,
+              "instance": "/"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/environments?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "enabled": true,
+                          "type": "default"
+                      },
+                      {
+                          "key": "variable_1",
+                          "value": "The variable_1 value.",
+                          "enabled": false,
+                          "type": "default"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Creates an environment.
+
+  **Note:**
+
+  - The request body size cannot exceed the maximum allowed size of 30MB.
+      
+  - If you receive an HTTP `411 Length Required` error response, manually pass the `Content-Length` header and its value in the request header.
+      
+  - If you do not include the `workspace` query parameter, the system creates the environment in the oldest personal Internal workspace you own.

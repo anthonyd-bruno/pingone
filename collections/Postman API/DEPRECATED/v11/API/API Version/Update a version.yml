@@ -1,0 +1,204 @@
+info:
+  name: Update a version
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/apis/:apiId/versions/:versionId"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+    - name: versionId
+      value: "{{versionId}}"
+      type: path
+      description: The API's version ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{apiVersionName}}",
+          "releaseNotes": "{{releaseNotes}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions/:versionId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: versionId
+          value: 3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update."
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "id": "8d7ba74e-2c36-4e36-a263-f3c0c9ae21d2",
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update."
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions/:versionId
+      method: PUT
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: versionId
+          value: 3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update."
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions/:versionId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: versionId
+          value: 3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "You do not have access to perform this operation.",
+              "type": "forbiddenError",
+              "title": "You are not permitted to perform the action."
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/versions/:versionId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: versionId
+          value: 3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update."
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: VersionNotFound Error When API Version is Pending Publishing
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions/:versionId
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: versionId
+          value: 3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update."
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "VersionNotFound",
+              "title": "API Version not found.",
+              "details": "We could not find the API Version you are looking for."
+          }
+
+docs: |-
+  Updates an API version. Include at least one of the following properties in the request body:
+
+  - `name` — A **string** value that contains the version name.
+  - `releaseNotes` — A **string** value that contains the Markdown-supported release notes.
+      
+
+  **Note:**
+
+  This endpoint returns an HTTP `404 Not Found` response when an API version is pending publication.

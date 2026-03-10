@@ -1,0 +1,121 @@
+info:
+  name: Merge or pull changes into a collection fork
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collection-merges"
+  body:
+    type: json
+    data: |-
+      {
+          "strategy": "{{mergeStrategy}}",
+          "source": "{{sourceCollectionUid}}",
+          "destination": "{{destinationCollectionUid}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collection-merges
+      method: PUT
+      body:
+        type: json
+        data: |-
+          {
+              "strategy": "default",
+              "source": "12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3",
+              "destination": "12345678-b04fa319-3e7e-4fa3-b6a2-f5b29ad67583"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "task": {
+                  "id": "pm~vc:merge-workflow~12345678-4824989b-cd77-4e2f-856c-1ff2a3e9aaca",
+                  "status": "in-progress"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/collection-merges
+      method: PUT
+      body:
+        type: json
+        data: |-
+          {
+              "strategy": "default",
+              "destination": "20891195-b04fa319-3e7e-4fa3-b6a2-f5b29ad67583"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "Some validation errors occurred"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collection-merges
+      method: PUT
+      body:
+        type: json
+        data: |-
+          {
+              "strategy": "default",
+              "source": "12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3",
+              "destination": "12345678-b04fa319-3e7e-4fa3-b6a2-f5b29ad67583"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collection-merges
+      method: PUT
+      body:
+        type: json
+        data: |-
+          {
+              "strategy": "default",
+              "source": "12345678-5a027c05-056b-49f5-ac9d-37c29f2d91c3",
+              "destination": "12345678-b04fa319-3e7e-4fa3-b6a2-f5b29ad67583"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "You need Editor role on the destination entity and Viewer role on the source entity to merge changes. Additionally, you may also need Editor role on the source entity to update or delete while merging.",
+              "status": 403
+          }
+
+docs: |-
+  [Merges](https://learning.postman.com/docs/collaborating-in-postman/using-version-control/forking-elements/#merge-changes-from-a-fork) a forked (source) collection and its parent (destination) collection asynchronously. To pull changes into a fork, pass the forked collection's ID as the `destination` value and the parent collection ID as the `source` value.
+
+  The response returns a task `id` value, which you can use to track the merge's status with the GET `/collection-merges-tasks/{taskId}` endpoint.

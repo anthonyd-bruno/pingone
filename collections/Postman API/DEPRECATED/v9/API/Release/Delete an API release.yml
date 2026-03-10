@@ -1,0 +1,68 @@
+info:
+  name: Delete an API release
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/releases/{{apiReleaseId}}
+  auth:
+    type: apikey
+    key: X-API-KEY
+    value: "{{postman-API-key}}"
+    placement: header
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases/3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+      method: DELETE
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "release": {
+                  "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases/3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+      method: DELETE
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the release you are looking for"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases/3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+      method: DELETE
+    response:
+      statusText: "429"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  **This endpoint is deprecated in Postman v10 and higher.**
+
+  Deletes an API version's release.

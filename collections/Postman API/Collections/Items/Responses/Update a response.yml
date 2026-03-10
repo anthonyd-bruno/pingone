@@ -1,0 +1,284 @@
+info:
+  name: Update a response
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collections/:collectionId/responses/:responseId"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+    - name: responseId
+      value: ""
+      type: path
+      description: The response's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "Successful Response",
+          "responseCode": {
+              "code": 200,
+              "name": "OK"
+          },
+          "headers": [
+              {
+                  "key": "Content-Type",
+                  "value": "application/json",
+                  "description": "",
+                  "type": "text"
+              }
+          ],
+          "cookies": [
+              ""
+          ],
+          "mime": "",
+          "text": "{\n    \"id\": \"405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99\",\n    \"userName\": \"taylor-lee@example.com\",\n    \"name\": \"Taylor Lee\",\n    \"email\": \"taylor-lee@example.com\",\n    \"active\": true\n}",
+          "language": "json",
+          "requestObject": "{\"data\":null,\"dataMode\":\"raw\",\"dataOptions\":{\"raw\":{\"language\":\"json\"}},\"headerData\":[{\"key\":\"Content-Type\",\"value\":\"application/json\"}],\"method\":\"POST\",\"pathVariableData\":[{\"key\":\"id\",\"value\":\"{{value}}\"}],\"queryParams\":[{\"key\":\"active\",\"value\":\"{{boolean}}\",\"description\":\"\",\"enabled\":true,\"equals\":true}],\"url\":\"https://postman-echo.com/user/:id?active={{boolean}}\",\"headers\":\"Content-Type: application/json\\n\",\"pathVariables\":{\"id\":\"{{value}}\"},\"protocolProfileBehavior\":{\"disableBodyPruning\":true},\"rawModeData\":\"{\\n    \\\"name\\\": \\\"{{value}}\\\",\\n    \\\"email\\\": \\\"{{email}}\\\",\\n    \\\"username\\\": \\\"{{username}}\\\"\\n}\",\"graphqlModeData\":{}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: 16473433-f4a74a54-c003-c27a-8d79-e91c6ea2c5d1
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "owner": "12345678",
+              "lastUpdatedBy": "12345678",
+              "lastRevision": 32368133468,
+              "request": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "name": "Example Response",
+              "status": null,
+              "responseCode": {
+                  "code": 200,
+                  "name": "OK"
+              },
+              "time": "50",
+              "headers": [
+                  {
+                      "key": "Date",
+                      "value": "Fri, 01 Sep 2023 07:36:18 GMT"
+                  },
+                  {
+                      "key": "Content-Type",
+                      "value": "application/json; charset=utf-8"
+                  },
+                  {
+                      "key": "Content-Length",
+                      "value": "607"
+                  },
+                  {
+                      "key": "Connection",
+                      "value": "keep-alive"
+                  }
+              ],
+              "cookies": null,
+              "mime": null,
+              "text": "{\n    \"args\": {},\n    \"data\": {\n        \"field\": \"Value\"\n    },\n    \"files\": {},\n    \"form\": {},\n    \"headers\": {\n        \"x-forwarded-proto\": \"https\",\n        \"x-forwarded-port\": \"443\",\n        \"host\": \"postman-echo.com\",\n        \"x-amzn-trace-id\": \"Root=1-64f9cd12-62f18f3a048796d345508073\",\n        \"content-length\": \"24\",\n        \"content-type\": \"application/json\",\n        \"x-api-key\": \"xxx\",\n        \"user-agent\": \"PostmanRuntime/7.32.3\",\n        \"accept\": \"*/*\",\n        \"postman-token\": \"XXX\",\n        \"accept-encoding\": \"gzip, deflate, br\"\n    },\n    \"json\": {\n        \"field\": \"Value\"\n    },\n    \"url\": \"https://postman-echo.com/post\"\n}",
+              "language": "json",
+              "rawDataType": null,
+              "requestObject": "{\"data\":null,\"dataMode\":\"raw\",\"dataOptions\":{\"raw\":{\"language\":\"json\"}},\"headerData\":[],\"method\":\"POST\",\"pathVariableData\":[],\"queryParams\":[],\"url\":\"https://postman-echo.com/post\",\"headers\":\"\",\"pathVariables\":{},\"protocolProfileBehavior\":{\"disableBodyPruning\":true},\"rawModeData\":\"{\\n    \\\"field\\\": \\\"Value\\\"\\n}\",\"graphqlModeData\":{}}",
+              "createdAt": "2023-09-01T09:29:54.000Z",
+              "updatedAt": "2023-09-01T09:29:54.000Z"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "meta": {
+                  "model": "response",
+                  "action": "update"
+              },
+              "data": {
+                  "id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "name": "Example Response",
+                  "status": null,
+                  "responseCode": {
+                      "name": "OK",
+                      "code": 200
+                  },
+                  "time": "50",
+                  "headers": [
+                      {
+                          "value": "Fri, 01 Sep 2023 07:36:18 GMT",
+                          "key": "Date"
+                      },
+                      {
+                          "value": "application/json; charset=utf-8",
+                          "key": "Content-Type"
+                      },
+                      {
+                          "value": "607",
+                          "key": "Content-Length"
+                      },
+                      {
+                          "value": "keep-alive",
+                          "key": "Connection"
+                      }
+                  ],
+                  "cookies": null,
+                  "mime": null,
+                  "text": "{\n    \"args\": {},\n    \"data\": {\n        \"field\": \"Value\"\n    },\n    \"files\": {},\n    \"form\": {},\n    \"headers\": {\n        \"x-forwarded-proto\": \"https\",\n        \"x-forwarded-port\": \"443\",\n        \"host\": \"postman-echo.com\",\n        \"x-amzn-trace-id\": \"Root=1-64f9cd12-62f18f3a048796d345508073\",\n        \"content-length\": \"24\",\n        \"content-type\": \"application/json\",\n        \"x-api-key\": \"xxx\",\n        \"user-agent\": \"PostmanRuntime/7.32.3\",\n        \"accept\": \"*/*\",\n        \"postman-token\": \"XXX\",\n        \"accept-encoding\": \"gzip, deflate, br\"\n    },\n    \"json\": {\n        \"field\": \"Value\"\n    },\n    \"url\": \"https://postman-echo.com/post\"\n}",
+                  "language": "json",
+                  "rawDataType": null,
+                  "requestObject": "{\"data\":null,\"dataMode\":\"raw\",\"dataOptions\":{\"raw\":{\"language\":\"json\"}},\"headerData\":[],\"method\":\"POST\",\"pathVariableData\":[],\"queryParams\":[],\"url\":\"https://postman-echo.com/post\",\"headers\":\"\",\"pathVariables\":{},\"protocolProfileBehavior\":{\"disableBodyPruning\":true},\"rawModeData\":\"{\\n    \\\"field\\\": \\\"Value\\\"\\n}\",\"graphqlModeData\":{}}",
+                  "createdAt": "2023-09-01T09:29:54.000Z",
+                  "updatedAt": "2023-09-08T12:37:33.000Z",
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 32368133468,
+                  "request": "c82dd02c-4870-4907-8fcb-593a876cf05b"
+              },
+              "revision": 32473225008
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: 16473433-f4a74a54-c003-c27a-8d79-e91c6ea2c5d1
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Bad Request",
+              "responseCode": {
+                  "code": 400,
+                  "name": "Bad Request"
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the response you are looking for",
+                  "details": {
+                      "model": "response",
+                      "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                      "owner": "12345678"
+                  }
+              }
+          }
+  - name: Change Parent Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: 16473433-f4a74a54-c003-c27a-8d79-e91c6ea2c5d1
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Bad Request",
+              "responseCode": {
+                  "code": 400,
+                  "name": "Bad Request"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "changeParentError",
+                  "message": "You can't update the parent. Use transfer instead.",
+                  "details": {
+                      "server": {
+                          "model": "request",
+                          "model_id": "d35874f0-f7b3-4625-9096-2b2415444185"
+                      },
+                      "request": {
+                          "model": "request",
+                          "model_id": "e12d2aa6-85c8-4e6c-aad0-1adcfe05c958"
+                      }
+                  }
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: 16473433-f4a74a54-c003-c27a-8d79-e91c6ea2c5d1
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Bad Request",
+              "responseCode": {
+                  "code": 400,
+                  "name": "Bad Request"
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "Unauthorized",
+                  "message": "Unauthorized",
+                  "details": {
+                      "model": "response",
+                      "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                      "owner": "12345678"
+                  }
+              }
+          }
+
+docs: |-
+  Updates a response in a collection. For a complete list of properties and information, see the [Postman Collection Format documentation](https://schema.postman.com/collection/json/v2.1.0/draft-07/docs/index.html).
+
+  **Note:**
+
+  - This request uses example values in the request body for context when updating collection responses. For additional ways to create a response, see the collection's examples.
+      
+  - You must pass a collection ID (`12ece9e1-2abf-4edc-8e34-de66e74114d2`), not a collection UID (`12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2`), in this endpoint.
+      
+  - This endpoint acts like a PATCH method. It only updates the values that you pass in the request body (for example, the `name` property). The endpoint does **not** update the entire resource.

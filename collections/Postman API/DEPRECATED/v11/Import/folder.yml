@@ -1,0 +1,11 @@
+info:
+  name: Import
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
+
+docs:
+  content: "**These endpoints are deprecated.**"
+  type: text/markdown

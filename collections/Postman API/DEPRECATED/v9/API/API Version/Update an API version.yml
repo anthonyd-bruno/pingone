@@ -1,0 +1,125 @@
+info:
+  name: Update an API version
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+      	"version": {
+      		"name": "{{apiVersionName}}"
+      	}
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507
+      method: PUT
+      body:
+        type: json
+        data: |-
+          {
+              "version": {
+                  "name": "v1.0"
+              }
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "version": {
+                  "createdAt": "2022-08-02T13:28:05.000Z",
+                  "updatedAt": "2022-08-02T13:35:32.000Z",
+                  "id": "a9879d02-74bf-425a-bbec-6d27aa135507",
+                  "name": "v1.0",
+                  "summary": null,
+                  "stage": "Planning",
+                  "visibility": "public",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678",
+                  "api": "387c2863-6ee3-4a56-8210-225f774edade"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507
+      method: PUT
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "version": {
+                  "name": "v1.0"
+              }
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the API you are looking for"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507
+      method: PUT
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "version": {
+                  "name": "v1.0"
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  **This endpoint is deprecated in Postman v10 and higher.**
+
+  Updates an API version. Include the following request body properties in the `version` object:
+
+  - `name` — A **string** that contains the API version's name.

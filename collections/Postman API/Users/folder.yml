@@ -1,0 +1,11 @@
+info:
+  name: Users
+  type: folder
+  seq: 19
+
+request:
+  auth: inherit
+
+docs:
+  content: The **Users** endpoints enable you to get information about Postman users.
+  type: text/markdown

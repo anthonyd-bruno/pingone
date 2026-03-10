@@ -1,0 +1,578 @@
+info:
+  name: Update part of a collection
+  type: http
+  seq: 20
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/collections/:collectionId"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "collection": {
+              "info": {
+                  "name": "Users API",
+                  "description": "This is a test."
+              },
+              "auth": {
+                  "type": "apikey",
+                  "apikey": [
+                      {
+                          "key": "value",
+                          "value": "{{apiKey}}"
+                      },
+                      {
+                          "key": "key",
+                          "value": "api-key"
+                      },
+                      {
+                          "key": "in",
+                          "value": "header"
+                      }
+                  ]
+              },
+              "events": [
+                  {
+                      "listen": "prerequest",
+                      "script": {
+                          "id": "e74ce0d0-5acd-44b6-a3ae-95f617c1546e",
+                          "type": "text/javascript",
+                          "exec": [
+                              ""
+                          ]
+                      },
+                      "disabled": false
+                  },
+                  {
+                      "listen": "test",
+                      "script": {
+                          "id": "28dc4f71-73bd-49cb-a6bd-8b41a06a3b36",
+                          "type": "text/javascript",
+                          "exec": [
+                              ""
+                          ]
+                      },
+                      "disabled": false
+                  }
+              ],
+              "variable": [
+                  {
+                      "key": "userId",
+                      "value": 12345678,
+                      "disabled": true,
+                      "description": "The user's ID."
+                  }
+              ]
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Update Info
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "info": {
+                      "name": "Test Collection v2",
+                      "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "name": "Test Collection v2",
+                  "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+              }
+          }
+  - name: Update Variables
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "variable": [
+                      {
+                          "key": "userId",
+                          "value": 12345678,
+                          "disabled": true,
+                          "description": "The user's ID."
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "name": "Test Collection v2",
+                  "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+              }
+          }
+  - name: Update Events
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "events": [
+                      {
+                          "listen": "prerequest",
+                          "script": {
+                              "id": "e74ce0d0-5acd-44b6-a3ae-95f617c1546e",
+                              "type": "text/javascript",
+                              "exec": [
+                                  ""
+                              ]
+                          },
+                          "disabled": false
+                      },
+                      {
+                          "listen": "test",
+                          "script": {
+                              "id": "28dc4f71-73bd-49cb-a6bd-8b41a06a3b36",
+                              "type": "text/javascript",
+                              "exec": [
+                                  ""
+                              ]
+                          },
+                          "disabled": true
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "name": "Test Collection v2",
+                  "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+              }
+          }
+  - name: Update Auth
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "auth": {
+                      "type": "apikey",
+                      "apikey": [
+                          {
+                              "key": "value",
+                              "value": "{{apiKey}}"
+                          },
+                          {
+                              "key": "key",
+                              "value": "api-key"
+                          },
+                          {
+                              "key": "in",
+                              "value": "header"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "name": "Test Collection v2",
+                  "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+              }
+          }
+  - name: Invalid auth Type
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "auth": {
+                      "type": "apikey1"
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Invalid parameters: ('apikey') for key: 'collection.auth.type'"
+              }
+          }
+  - name: Invalid variable Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "variables": [
+                      {
+                          "key": "userId",
+                          "value": 12345678,
+                          "disabled": true,
+                          "description": "The user's ID.",
+                          "property": "test"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Invalid parameters: ('property') for key: 'collection.variables'"
+              }
+          }
+  - name: Invalid events Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "events": [
+                      {
+                          "listen": "prerequest",
+                          "script": {
+                              "id": "e74ce0d0-5acd-44b6-a3ae-95f617c1546e",
+                              "property": "test"
+                          },
+                          "disabled": false
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Invalid parameters: ('property') for key: 'collection.events.script'"
+              }
+          }
+  - name: Missing variable Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "variable": [
+                      {
+                          "key": "userId"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Parameters required: ('value') for key: 'collection.variables'"
+              }
+          }
+  - name: Missing info Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {}
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "paramMissingError",
+                  "message": "'info' key is mandatory when 'collection' is empty.",
+                  "details": {
+                      "param": "info"
+                  }
+              }
+          }
+  - name: Missing events Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "events": [
+                      {
+                          "listen": "prerequest",
+                          "script": {
+                              "id": "e74ce0d0-5acd-44b6-a3ae-95f617c1546e"
+                          }
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Parameters required: ('type', 'exec') for key: 'collection.events.script'"
+              }
+          }
+  - name: Missing auth Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "auth": {
+                      "type": "apikey"
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "paramMissingError",
+                  "message": "The key 'apikey' must be present in 'collection.auth' when 'type' is 'apikey'.",
+                  "details": {
+                      "param": "apikey"
+                  }
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "info": {
+                      "name": "Test Collection v2",
+                      "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+                  }
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "The specified item does not exist.",
+                  "details": {
+                      "item": "collection",
+                      "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                  }
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "info": {
+                      "name": "Test Collection v2",
+                      "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+                  }
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You do not have enough permissions to perform this action."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "info": {
+                      "name": "Test Collection v2",
+                      "description": "This is a sample collection that makes a request to the Postman Echo service. It returns a list of request headers sent by an HTTP client."
+                  }
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Updates specific collection information, such as its authentication, name, events, or variables. For a complete list of properties and information, see the [Postman Collection Format documentation](https://schema.postman.com/collection/json/v2.1.0/draft-07/docs/index.html).
+
+  **Note:**
+
+  This request uses example values in the request body for context when replacing a collection's data. For additional ways to replace collection data, see the collection's examples.

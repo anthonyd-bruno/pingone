@@ -1,0 +1,303 @@
+info:
+  name: Sync collection with schema
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+    - name: collectionUid
+      value: "{{collectionUid}}"
+      type: path
+      description: The collection's unique ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "202"
+      headers:
+        - name: Location
+          value: /apis/5360b75f-447e-467c-9299-12fd6c92450d/collections/e726de58-f1b3-4edd-a8a7-2579dc799d39
+      body:
+        type: text
+        data: |-
+          {
+              "taskId": "66ae9950-0869-4e65-96b0-1e0e47e771af"
+          }
+  - name: Invalid Parameter
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamsError",
+              "detail": "Parameter, collectionId is in an invalid format.",
+              "title": "The specified parameter is in an invalid format"
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: v9 Unsupported
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "This endpoint does not support v9 APIs.",
+              "title": "Unsupported API",
+              "type": "unsupportedEntityError"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "You do not have access to perform this operation.",
+              "title": "You are not permitted to perform the action.",
+              "type": "forbiddenError"
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Schema Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "We could not find a schema linked to this API",
+              "title": "Schema not found",
+              "type": "instanceNotFoundError"
+          }
+  - name: Collection Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "We could not find a collection you are looking for",
+              "title": "Collection not found",
+              "type": "instanceNotFoundError"
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "We could not find the API you are looking for",
+              "detail": "We could not find the API you are looking for.",
+              "type": "instanceNotFoundError"
+          }
+  - name: Unsupported Schema Type
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unsupported schema",
+              "detail": "Collection syncing is not supported for the current schema type of the API",
+              "type": "unsupportedEntityError"
+          }
+  - name: Action Not Allowed
+    request:
+      url: https://api.getpostman.com/apis/:apiId/collections/:collectionUid/sync-with-schema-tasks
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "This action is not allowed for git linked APIs",
+              "type": "actionNotAllowedError",
+              "title": "Action not allowed"
+          }
+
+docs: |-
+  Syncs a collection attached to an API with the API schema. This is an asynchronous endpoint that returns an HTTP `202 Accepted` response.
+
+  The response contains a polling link to the `/apis/{apiId}/tasks/{taskId}` endpoint in the Location header.
+
+  **Note:**
+
+  This endpoint only supports the OpenAPI 3 schema type.

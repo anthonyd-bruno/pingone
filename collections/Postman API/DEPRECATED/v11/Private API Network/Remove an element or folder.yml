@@ -1,0 +1,261 @@
+info:
+  name: Remove an element or folder
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/network/private/:elementType/:elementId"
+  params:
+    - name: elementType
+      value: "{{elementType}}"
+      type: path
+      description: "The element type: `api`, `folder`, `collection`, or `workspace`"
+    - name: elementId
+      value: "{{elementId}}"
+      type: path
+      description: The element's ID or UUID. For Postman Collections you must pass the collection's UID (`userId`-`collectionId`) value.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Remove an API
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d"
+              }
+          }
+  - name: Remove a Collection
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: collection
+          type: path
+        - name: elementId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collection": {
+                  "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+              }
+          }
+  - name: Remove a Workspace
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: workspace
+          type: path
+        - name: elementId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+  - name: Delete a Folder
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: folder
+          type: path
+        - name: elementId
+          value: "1234"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "folder": {
+                  "id": "1"
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "instanceNotFoundError",
+              "message": "Instance not found for the model NetworkEntity, id 5360b75f-447e-467c-9299-12fd6c92450d"
+          }
+  - name: Folder Not Found
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: folder
+          type: path
+        - name: elementId
+          value: "1234"
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "instanceNotFoundError",
+              "message": "Instance not found for the model Folder, id 1"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You do not have enough permissions to perform this action."
+              }
+          }
+  - name: Folder Not Empty
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: folder
+          type: path
+        - name: elementId
+          value: "1234"
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "folderNotEmptyError",
+              "message": "You need to empty this folder before deleting it."
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "AuthenticationError",
+                  "message": "Invalid API Key. Every request requires a valid API Key to be sent."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: DELETE
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "parentFolderId": 1234
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Removes an element or delete a folder from your team's [Private API Network](https://learning.postman.com/docs/collaborating-in-postman/adding-private-network/).
+
+  **Note:**
+
+  Removing an API, collection, or workspace element does not delete it. It only removes it from the Private API Network folder.

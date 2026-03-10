@@ -1,0 +1,88 @@
+info:
+  name: Get a pull request
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/pull-requests/:pullRequestId"
+  params:
+    - name: pullRequestId
+      value: "{{pullRequestId}}"
+      type: path
+      description: The pull request's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId
+      method: GET
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2024-02-20T09:55:46.000Z",
+              "updatedAt": "2024-02-20T09:58:38.000Z",
+              "id": "4e1a6609-1a29-4037-a411-89ecc14c6cd8",
+              "title": "Test PR",
+              "description": "This is a test pull request.",
+              "createdBy": "12345678",
+              "updatedBy": "12345678",
+              "comment": "Missing descriptions in requests",
+              "forkType": "collection",
+              "source": {
+                  "id": "87654321-3b79068c-dbe5-41d5-a826-51be4bf646ef",
+                  "name": "test-collection",
+                  "forkName": "Taylor Lee's fork",
+                  "exists": true
+              },
+              "destination": {
+                  "id": "123456789-24f57217-1169-4b7c-a810-0e957c04eaa5",
+                  "name": "test-collection",
+                  "exists": true
+              },
+              "status": "declined",
+              "merge": {
+                  "status": "inactive"
+              },
+              "reviewers": [
+                  {
+                      "id": "12345678",
+                      "status": "declined"
+                  }
+              ]
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId
+      method: GET
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "You do not have enough permissions to perform this action.",
+              "status": 403
+          }
+
+docs: Gets information about a pull request, such as the source and destination details, who reviewed the pull request, the merge's current status, and whether the element is accessible.

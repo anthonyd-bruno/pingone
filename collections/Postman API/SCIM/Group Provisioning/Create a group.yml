@@ -1,0 +1,343 @@
+info:
+  name: Create a group
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/scim/v2/Groups"
+  body:
+    type: json
+    data: |-
+      {
+          "schemas": ["urn:ietf:params:scim:schemas:core:2.0:Group"],
+          "displayName": "{{userGroup}}",
+          "members": []
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Group Created
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "id": "561631fq14ed41872a8eea4c8aa2b38cda9749812cc55c00",
+              "displayName": "TestAPI",
+              "members": [],
+              "externalId": "1234",
+              "meta": {
+                  "resourceType": "Group",
+                  "created": "2022-02-22T04:24:13.000Z",
+                  "lastModified": "2022-02-22T04:24:13.000Z"
+              }
+          }
+  - name: Group Created with Members
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": [
+                  {
+                      "value": "b1c794f24f4c49f4b5d503a4cb2686ea"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "id": "561631fq14ed41872a8eea4c8aa2b38cda9749812cc55c00",
+              "displayName": "TestAPI",
+              "members": [
+                  {
+                      "value": "b1c794f24f4c49f4b5d503a4cb2686ea",
+                      "display": "Taylor Lee"
+                  }
+              ],
+              "externalId": "1234",
+              "meta": {
+                  "resourceType": "Group",
+                  "created": "2022-02-22T04:24:13.000Z",
+                  "lastModified": "2022-02-22T04:24:13.000Z"
+              }
+          }
+  - name: Invalid Syntax
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "scimType": "invalidSyntax",
+              "detail": "The request body seems to be incomplete or have unsupported characters.",
+              "status": "400"
+          }
+  - name: Invalid Team
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This Postman team doesn’t exist anymore.",
+              "status": "400"
+          }
+  - name: Not Enterprise
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Only Postman teams on the Enterprise plan can use SCIM provisioning. Upgrade your plan.",
+              "status": "400"
+          }
+  - name: No Slots Available
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "No slots available on your Postman team. Purchase or free up slots to invite more members. For help, contact Team Admins or members with a Billing role.",
+              "status": "400"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to access the team. Check if you have entered a valid API key.",
+              "status": "401"
+          }
+  - name: Invalid API Key
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Your API key was generated by a Team Admin who is no longer on your team. Use an API key generated by a Team Admin.",
+              "status": "403"
+          }
+  - name: Conflict
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "409"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "scimType": "uniqueness",
+              "detail": "This person is already a member of the team.",
+              "status": "409"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "429"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "That’s 180 attempts in less than a minute. Wait for a minute and then try again.",
+              "status": 429
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/scim/v2/Groups
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:Group"
+              ],
+              "displayName": "TestAPI",
+              "members": []
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to add members to the team. Try again — it should work next time around.",
+              "status": "500"
+          }
+
+docs: |-
+  Creates a new user group in Postman and creates a new account for each group member.
+
+  Each account is added to your Postman team and authentication is activated for each user. If an existing Postman account uses an email that matches a group member's email ID, an [email invite](https://postman.postman.co/docs/administration/managing-your-team/managing-your-team/#invites) to join your Postman team is sent to that user. Once the user accepts the invite, they'll be added to your team.
+
+  By default, the system assigns new users the developer role. You can [update user roles in Postman](https://learning.postman.com/docs/administration/managing-your-team/managing-your-team/#managing-team-roles).

@@ -1,0 +1,271 @@
+info:
+  name: Get all workspaces
+  type: http
+  seq: 9
+
+http:
+  method: GET
+  url: "{{baseUrl}}/workspaces"
+  params:
+    - name: type
+      value: ""
+      type: query
+      description: |-
+        The type of workspace to filter the response by:
+
+        * `personal`
+        * `team`
+        * `private`
+        * `public`
+        * `partner`
+      disabled: true
+    - name: include
+      value: ""
+      type: query
+      description: |-
+        Include the following information in the endpoint's response:
+        - `mocks:deactivated` — Include all deactivated mock servers in the response.
+        - `scim` — Return the SCIM user IDs of the workspace creator and who last modified it.
+      disabled: true
+    - name: createdBy
+      value: ""
+      type: query
+      description: Return only workspaces created by a specific user ID. For multiple users, pass this value as a comma-separated list of user IDs. The response only returns workspaces that you have access to.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspaces": [
+                  {
+                      "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "name": "My Workspace",
+                      "type": "personal",
+                      "visibility": "personal",
+                      "createdBy": "12345678",
+                      "about": "This is a personal workspace.",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "a0f46158-1529-11ee-be56-0242ac120002",
+                      "name": "Private Workspace",
+                      "type": "team",
+                      "visibility": "private",
+                      "createdBy": "12345678",
+                      "about": "This is a private workspace.",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "f8801e9e-03a4-4c7b-b31e-5db5cd771696",
+                      "name": "Team Workspace",
+                      "type": "team",
+                      "visibility": "team",
+                      "createdBy": "12345678",
+                      "about": "This is a team workspace.",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "74dbfab8-1529-11ee-be56-0242ac120002",
+                      "name": "Public Workspace",
+                      "type": "team",
+                      "visibility": "public",
+                      "createdBy": "12345678",
+                      "about": "This is a public workspace.",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "74dbfab8-1529-11ee-be56-0242ac120002",
+                      "name": "Partner Workspace",
+                      "type": "team",
+                      "visibility": "partner",
+                      "createdBy": "12345678",
+                      "about": "This is a Partner Workspace.",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  }
+              ]
+          }
+  - name: Include SCIM IDs
+    request:
+      url: https://api.getpostman.com/workspaces?include=scim
+      method: GET
+      params:
+        - name: include
+          value: scim
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspaces": [
+                  {
+                      "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "name": "My Workspace",
+                      "type": "personal",
+                      "visibility": "personal",
+                      "createdBy": "12345678",
+                      "about": "",
+                      "scim": {
+                          "createdBy": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99"
+                      },
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  }
+              ]
+          }
+  - name: Filter by team
+    request:
+      url: https://api.getpostman.com/workspaces?type=team
+      method: GET
+      params:
+        - name: type
+          value: team
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspaces": [
+                  {
+                      "id": "f8801e9e-03a4-4c7b-b31e-5db5cd771696",
+                      "name": "Team Workspace",
+                      "type": "team",
+                      "visibility": "team",
+                      "createdBy": "12345678",
+                      "about": "This is a team workspace.",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  }
+              ]
+          }
+  - name: Filter by createdBy
+    request:
+      url: https://api.getpostman.com/workspaces?createdBy=12345678,87654321,56784321
+      method: GET
+      params:
+        - name: createdBy
+          value: 12345678,87654321,56784321
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspaces": [
+                  {
+                      "id": "a0f46158-1529-11ee-be56-0242ac120002",
+                      "name": "Test Workspace",
+                      "type": "team",
+                      "visibility": "private",
+                      "createdBy": "12345678",
+                      "about": "",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "f8801e9e-03a4-4c7b-b31e-5db5cd771696",
+                      "name": "Teamwork",
+                      "type": "team",
+                      "visibility": "team",
+                      "createdBy": "12345678",
+                      "about": "",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "74dbfab8-1529-11ee-be56-0242ac120002",
+                      "name": "Public Examples",
+                      "type": "team",
+                      "visibility": "public",
+                      "createdBy": "87654321",
+                      "about": "This workspace contains public examples of collections and APIs.",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "74dbfab8-1529-11ee-be56-0242ac120002",
+                      "name": "Partner Workspace",
+                      "type": "team",
+                      "visibility": "partner",
+                      "createdBy": "87654321",
+                      "about": "This is a Partner Workspace,",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  },
+                  {
+                      "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "name": "My Workspace",
+                      "type": "personal",
+                      "visibility": "personal",
+                      "createdBy": "56784321",
+                      "about": "",
+                      "createdAt": "2022-07-18T06:57:37.000Z",
+                      "updatedAt": "2025-05-30T08:49:54.000Z"
+                  }
+              ]
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/workspaces
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Gets all [workspaces](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/creating-workspaces/). The response includes your workspaces and any workspaces that you have access to.
+
+  **Note:**
+
+  This endpoint's response contains the `visibility` field. [Visibility](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/managing-workspaces/#changing-workspace-visibility) determines who can access the workspace:
+
+  - `personal` — Only you can access the workspace.
+      
+  - `team` — All team members can access the workspace.
+      
+  - `private` — Only invited team members can access the workspace ([<b>Team</b> and <b>Enterprise</b> plans only](https://www.postman.com/pricing)).
+      
+  - `public` — Everyone can access the workspace.
+      
+  - `partner` — Only invited team members and [partners](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/) can access the workspace ([<b>Team</b> and <b>Enterprise</b> plans only](https://www.postman.com/pricing)).

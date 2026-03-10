@@ -1,0 +1,11 @@
+info:
+  name: DEPRECATED
+  type: folder
+  seq: 23
+
+request:
+  auth: inherit
+
+docs:
+  content: "**These endpoints are deprecated.** At a future time they will no longer be available."
+  type: text/markdown

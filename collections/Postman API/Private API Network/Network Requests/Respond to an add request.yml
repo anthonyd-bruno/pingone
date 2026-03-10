@@ -1,0 +1,209 @@
+info:
+  name: Respond to an add request
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/network/private/network-entity/request/:requestId"
+  params:
+    - name: requestId
+      value: ""
+      type: path
+      description: The request's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "status": "{{responseStatus}}",
+          "response": {
+              "message": "{{responderMessage}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Request Approved
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "2"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "request": [
+                  {
+                      "id": 2,
+                      "createdAt": "2024-06-09T14:48:45.000Z",
+                      "createdBy": 87654321,
+                      "message": "Please add this to the network",
+                      "status": "approved",
+                      "element": {
+                          "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                          "name": "Billing Team Workspace",
+                          "summary": "The Billing team's workspace.",
+                          "description": null,
+                          "type": "workspace",
+                          "createdBy": 12345678,
+                          "createdAt": "2024-06-19T04:48:40.000Z"
+                      }
+                  }
+              ]
+          }
+  - name: Request Denied
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "2"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "denied",
+              "response": {
+                  "message": "Please fix the API issues first."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "request": [
+                  {
+                      "id": 2,
+                      "createdAt": "2024-06-09T14:48:45.000Z",
+                      "createdBy": 87654321,
+                      "message": "Please add this to the network",
+                      "status": "denied",
+                      "element": {
+                          "type": "workspace",
+                          "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                          "name": "Billing Team Workspace",
+                          "summary": "The Billing team's workspace.",
+                          "description": null
+                      },
+                      "response": {
+                          "createdAt": "2024-06-19T04:48:40.000Z",
+                          "createdBy": 12345678,
+                          "message": "Please fix the API issues first."
+                      }
+                  }
+              ]
+          }
+  - name: Request Not Found
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "2"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "RequestNotFound",
+              "message": "No request found for the corresponding ID"
+          }
+  - name: Invalid Request Payload
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "2"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "accepted"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "invalidParamsError",
+              "message": "Status type can only be denied or approved."
+          }
+  - name: Requested Element Already Published
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "2"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "requestEntityAlreadyPublished",
+              "message": "Billing Team Workspace has already been published to the network"
+          }
+  - name: Request Already Responded To
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "2"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "requestAlreadyResponded",
+              "message": "This request is already responded."
+          }
+
+docs: Responds to a user's request to add a workspace to your team's [Private API Network](https://learning.postman.com/docs/collaborating-in-postman/adding-private-network/). Only managers can approve or deny a request. Once approved, the workspace will appear in the team's Private API Network.

@@ -1,0 +1,381 @@
+info:
+  name: Add an element or folder
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/network/private"
+  body:
+    type: json
+    data: |-
+      {
+          "{{elementType}}": {
+              "id": "{{elementId}}",
+              "parentFolderId": {{parentFolderId}}
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Add an API
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-06-09T14:48:45.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2021-10-11T09:39:33.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T17:54:33.000Z",
+              "type": "api",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "name": "Billing API",
+              "summary": "The payments and account services API.",
+              "description": null,
+              "href": "https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d",
+              "parentFolderId": 1
+          }
+  - name: Add a Collection
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-12-07T18:22:15.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T18:22:15.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T18:22:15.000Z",
+              "type": "collection",
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "name": "Billing API Collection",
+              "summary": null,
+              "description": null,
+              "href": "https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "parentFolderId": 1
+          }
+  - name: Add a Collection with Environments
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "parentFolderId": 1,
+                  "environments": [
+                        "120403-c6cf0fe2-c637-4d30-a640-ed64ec6d0ddb",
+                        "7084-461d8126-22c8-43ed-b99d-27e8a34d8eef"
+                      ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-12-07T18:22:15.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T18:22:15.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T18:22:15.000Z",
+              "type": "collection",
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "name": "Billing API Collection",
+              "summary": null,
+              "description": null,
+              "href": "https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "parentFolderId": 1,
+              "environments": [
+                  "120403-c6cf0fe2-c637-4d30-a640-ed64ec6d0ddb",
+                  "7084-461d8126-22c8-43ed-b99d-27e8a34d8eef"
+              ]
+          }
+  - name: Add a Workspace
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-12-07T17:59:23.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T17:59:23.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T17:59:23.000Z",
+              "type": "workspace",
+              "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "name": "Billing Team Workspace",
+              "summary": "The Billing team's workspace.",
+              "description": null,
+              "href": "https://api.getpostman.com/workspaces/1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "parentFolderId": 1
+          }
+  - name: Create a Folder
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "folder": {
+                  "name": "Billing",
+                  "description": "The Billing API.",
+                  "parentFolderId": 12
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": 1,
+              "parentFolderId": 12,
+              "updatedAt": "2022-12-07T18:00:39.000Z",
+              "updatedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T18:00:39.000Z",
+              "name": "Billing",
+              "description": "The Billing API.",
+              "type": "folder"
+          }
+  - name: Create a Folder at Root
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "folder": {
+                  "name": "Billing",
+                  "description": "The Billing API."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": 1,
+              "parentFolderId": 0,
+              "updatedAt": "2022-12-07T18:00:39.000Z",
+              "updatedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T18:00:39.000Z",
+              "name": "Billing",
+              "description": "The Billing API.",
+              "type": "folder"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "instanceNotFoundError",
+              "message": "Instance not found for the model NetworkEntity, id 5360b75f-447e-467c-9299-12fd6c92450d"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You do not have enough permissions to perform this action."
+              }
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "serverError",
+                  "message": "An error has occurred on the server."
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "AuthenticationError",
+                  "message": "Invalid API Key. Every request requires a valid API Key to be sent."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Publishes a element or creates a folder in your team's [Private API Network](https://learning.postman.com/docs/collaborating-in-postman/adding-private-network/). An element is a Postman API, collection, or workspace.
+
+  In the `elementType` object, include the following values:
+
+  **For APIs and Workspaces:**
+
+  - `id` — A **string** value that contains the element's ID.
+      
+  - `parentFolderId` — An **integer** value that contains the element's parent folder ID.
+      
+
+  **For Collections:**
+
+  - `id` — A **string** value that contains the collection's UID (`userId`\-`collectionId`).
+      
+  - `parentFolderId` — An **integer** value that contains the collection's parent folder ID.
+      
+  - `environments` — An **array of strings** that contains environment UIDs (`userId`\-`environmentId`).
+      
+
+  **For Private API Network Folders:**
+
+  - `name` — A **string** value that contains the folder's name.
+      
+  - `description` — A **string** value that contains the folder's description.
+      
+  - `parentFolderId` — An **integer** value that contains the folder's parent folder ID. To create a folder at the root level, omit this property from the request body.

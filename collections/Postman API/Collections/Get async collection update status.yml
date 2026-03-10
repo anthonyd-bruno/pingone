@@ -1,0 +1,113 @@
+info:
+  name: Get async collection update status
+  type: http
+  seq: 19
+
+http:
+  method: GET
+  url: "{{baseUrl}}/collection-updates-tasks/:taskId"
+  params:
+    - name: taskId
+      value: ""
+      type: path
+      description: The task's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Success
+    request:
+      url: https://api.getpostman.com/collection-updates-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "status": "successful"
+          }
+  - name: Sync Failed
+    request:
+      url: https://api.getpostman.com/collection-updates-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "status": "failed"
+          }
+  - name: Sync In Progress
+    request:
+      url: https://api.getpostman.com/collection-updates-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "status": "in-progress"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collection-updates-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "status": 401,
+              "detail": "Unauthorized"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collection-updates-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "Forbidden"
+          }
+
+docs: Gets the status of an asynchronous collection update task.

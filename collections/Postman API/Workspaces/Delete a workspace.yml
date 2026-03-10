@@ -1,0 +1,89 @@
+info:
+  name: Delete a workspace
+  type: http
+  seq: 10
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/workspaces/:workspaceId"
+  params:
+    - name: workspaceId
+      value: ""
+      type: path
+      description: The workspace's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: DELETE
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: DELETE
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "The specified workspace does not exist."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: DELETE
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Deletes an existing workspace.

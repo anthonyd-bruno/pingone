@@ -1,0 +1,748 @@
+info:
+  name: Publish documentation
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collections/:collectionId/public-documentations"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's unique ID.
+  body:
+    type: json
+    data: |-
+      {
+          "environmentUid": "{{environmentUid}}",
+          "customColor": {
+              "highlight": "{{colorCode}}",
+              "rightSidebar": "{{colorCode}}",
+              "topBar": "{{colorCode}}"
+          },
+          "documentationLayout": "{{documentationLayout}}",
+          "customization": {
+              "metaTags": [
+                  {
+                      "name": "title",
+                      "value": "{{documentTitle}}"
+                  },
+                  {
+                      "name": "description",
+                      "value": "{{documentDescription}}"
+                  }
+              ],
+              "appearance": {
+                  "default": "dark",
+                  "themes": [
+                      {
+                          "name": "dark",
+                          "colors": {
+                              "highlight": "{{colorCode}}",
+                              "rightSidebar": "{{colorCode}}",
+                              "topBar": "{{colorCode}}"
+                          },
+                          "logo": "<s3_url>/<cloudfront_url>"
+                      },
+                      {
+                          "name": "light",
+                          "colors": {
+                              "highlight": "{{colorCode}}",
+                              "rightSidebar": "{{colorCode}}",
+                              "topBar": "{{colorCode}}"
+                          },
+                          "logo": "<s3_url>/<cloudfront_url>"
+                      }
+                  ]
+              }
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "published": true,
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  },
+                  "metaTags": [
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      },
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      }
+                  ]
+              },
+              "publishDate": "2025-03-24T17:33:10.000Z",
+              "publisherId": "12345678",
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "publicUrl": "https://documenter.getpostman-beta.com/view/12345678/6n31uVF",
+              "id": "6n31uVF",
+              "collectionId": "ea39a259-0c9b-4a5c-a2e6-bddadb8f8e6f"
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: ""
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Collection Id not present",
+              "status": 400
+          }
+  - name: Invalid customColor Value
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "4D5F75",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "734D75",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "The request contains following incorrect or missing fields: light theme and customColor",
+              "status": 400
+          }
+  - name: Missing customColor Property
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Property 'customColor' is missing from the request body",
+              "status": 400
+          }
+  - name: Missing customization Property
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Property 'customization' is missing from the request body",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "status": 404,
+              "detail": "The resource you're looking for can't be found. Please check the URL before trying again.",
+              "title": "Not Found"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/public-documentations
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environmentUid": "12345678-f84a5105-a495-49db-aa6b-db02c9ed1023",
+              "customColor": {
+                  "highlight": "EF5B25",
+                  "rightSidebar": "303030",
+                  "topBar": "FFFFFF"
+              },
+              "documentationLayout": "classic-single-column",
+              "customization": {
+                  "metaTags": [
+                      {
+                          "name": "title",
+                          "value": "Billing API"
+                      },
+                      {
+                          "name": "description",
+                          "value": "This documentation contains the endpoints for the Billing API."
+                      }
+                  ],
+                  "appearance": {
+                      "default": "dark",
+                      "themes": [
+                          {
+                              "name": "dark",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          },
+                          {
+                              "name": "light",
+                              "colors": {
+                                  "highlight": "EF5B25",
+                                  "rightSidebar": "303030",
+                                  "topBar": "FFFFFF"
+                              },
+                              "logo": "<s3_url>/<cloudfront_url>"
+                          }
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Publishes a collection's documentation. This makes it publicly available to anyone with the link to the documentation.
+
+  **Note:**
+
+  - Your [Postman plan](https://www.postman.com/pricing/) impacts your use of these endpoints:
+      
+      - For **Free** and **Solo** users, you must have permissions to edit the collection.
+          
+      - If [API Governance and Security](https://learning.postman.com/docs/api-governance/configurable-rules/configurable-rules-overview/) is enabled for your [<b>Enterprise</b>](https://www.postman.com/pricing/) team, only users with the [Community Manager role](https://learning.postman.com/docs/collaborating-in-postman/roles-and-permissions/#team-roles) can publish documentation.
+          
+  - Publishing is only supported for collections with HTTP requests.
+      
+  - You cannot publish a collection added to an API.

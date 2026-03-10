@@ -1,0 +1,154 @@
+info:
+  name: Delete an API
+  type: http
+  seq: 10
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/apis/:apiId"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Deleted
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: DELETE
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: text
+        data: ""
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "forbiddenError",
+              "title": "You are not permitted to perform the action.",
+              "detail": "You do not have access to perform this operation."
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: text
+        data: ""
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "We could not find the API you are looking for",
+              "detail": "We could not find the API you are looking for."
+          }
+  - name: v9 Unsupported
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: DELETE
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "unsupportedEntityError",
+              "title": "Unsupported API",
+              "detail": "This endpoint does not support v9 APIs."
+          }
+
+docs: Deletes an API. On success, this returns an HTTP `204 No Content` response.

@@ -1,0 +1,266 @@
+info:
+  name: Get all versions
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/apis/:apiId/versions"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results.
+      disabled: true
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response. This value defaults to `10`.
+      disabled: true
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions?limit=2
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: limit
+          value: "2"
+          type: query
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "versions": [
+                  {
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "updatedAt": "2022-06-09T19:50:49.000Z",
+                      "id": "07d940bf-40fc-4acd-a11e-be6769894af0",
+                      "name": "Release 2.0",
+                      "releaseNotes": "This is the second release of the Test API."
+                  },
+                  {
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "updatedAt": "2022-06-09T19:50:49.000Z",
+                      "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+                      "name": "Release 1.0",
+                      "releaseNotes": "This is the first release of the Test API. For more information, read the documentation."
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "VGh1IE1hciAxNiAyMDIzIDE3OjIxOjUzIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=",
+                  "limit": 2,
+                  "total": 100
+              }
+          }
+  - name: Success with Cursor Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions?limit=2
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: limit
+          value: "2"
+          type: query
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "total": 4,
+                  "limit": 2,
+                  "nextCursor": "V2VkIEZlYiAxNSAyMDIzIDEzOjUyOjAyIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk="
+              },
+              "versions": [
+                  {
+                      "createdAt": "2023-02-15T13:41:43.000Z",
+                      "name": "v1",
+                      "id": "12691e5b-4a6f-4bc7-8335-4ce9b7c5c2ae",
+                      "releaseNotes": "",
+                      "updatedAt": "2023-02-15T13:41:58.000Z"
+                  },
+                  {
+                      "createdAt": "2023-02-15T13:47:23.000Z",
+                      "name": "v2",
+                      "id": "2665bfbf-888a-48f6-98fa-24c0b7689207",
+                      "releaseNotes": "",
+                      "updatedAt": "2023-02-15T13:47:27.000Z"
+                  }
+              ]
+          }
+  - name: Response with cursor Query Parameter
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions?cursor=RnJpIEZlYiAxNyAyMDIzIDEwOjM5OjUxIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=10
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: cursor
+          value: RnJpIEZlYiAxNyAyMDIzIDEwOjM5OjUxIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "10"
+          type: query
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "total": 4,
+                  "limit": 10
+              },
+              "versions": [
+                  {
+                      "createdAt": "2023-02-17T10:39:51.000Z",
+                      "name": "v4",
+                      "id": "bc792958-ffd5-4a4c-bcf5-1c07cb8f277b",
+                      "releaseNotes": "",
+                      "updatedAt": "2023-02-17T10:39:57.000Z"
+                  }
+              ]
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "forbiddenError",
+              "title": "You are not permitted to perform the action.",
+              "detail": "You do not have access to perform this operation."
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/versions
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "We could not find the API you are looking for.",
+              "type": "instanceNotFoundError",
+              "title": "We could not find the API you are looking for"
+          }
+  - name: v9 Unsupported
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "unsupportedEntityError",
+              "title": "Unsupported API",
+              "detail": "This endpoint does not support v9 APIs."
+          }
+
+docs: Gets all the published versions of an API.

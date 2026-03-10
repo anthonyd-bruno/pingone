@@ -1,0 +1,90 @@
+info:
+  name: Delete a monitor
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/monitors/:monitorId"
+  params:
+    - name: monitorId
+      value: ""
+      type: path
+      description: The monitor's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: DELETE
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitor": {
+                  "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "uid": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1"
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: DELETE
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "Monitor 1e6b6cb7-f13d-4000-acb7-0695757174a8 does not exist."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: DELETE
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Deletes a monitor.

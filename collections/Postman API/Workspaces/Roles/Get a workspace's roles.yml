@@ -1,0 +1,293 @@
+info:
+  name: Get a workspace's roles
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/workspaces/:workspaceId/roles"
+  params:
+    - name: include
+      value: scim
+      type: query
+      description: |-
+        Include the following information in the endpoint's response:
+        - `scim` — Return IDs as SCIM user and group IDs.
+      disabled: true
+    - name: workspaceId
+      value: ""
+      type: path
+      description: The workspace's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/roles
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "roles": [
+                  {
+                      "id": "1",
+                      "displayName": "Viewer",
+                      "user": [
+                          "12345678"
+                      ]
+                  },
+                  {
+                      "id": "3",
+                      "displayName": "Admin",
+                      "group": [
+                          "56781234"
+                      ]
+                  },
+                  {
+                      "id": "5",
+                      "displayName": "Editor",
+                      "partner": [
+                          "43215678"
+                      ]
+                  }
+              ]
+          }
+  - name: Return SCIM IDs
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/roles?include=scim
+      method: GET
+      params:
+        - name: include
+          value: scim
+          type: query
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "roles": [
+                  {
+                      "id": "1",
+                      "displayName": "Viewer",
+                      "user": [
+                          "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99"
+                      ]
+                  },
+                  {
+                      "id": "3",
+                      "displayName": "Admin",
+                      "group": [
+                          "561631fq14ed41872a8eea4c8aa2b38cda9749812cc55c00"
+                      ]
+                  },
+                  {
+                      "id": "5",
+                      "displayName": "Editor",
+                      "partner": [
+                          "43215678"
+                      ]
+                  }
+              ]
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/roles
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "add",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": "12345678",
+                              "role": 1
+                          },
+                          {
+                              "id": "87654321",
+                              "role": 2
+                          }
+                      ]
+                  },
+                  {
+                      "op": "remove",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": "87612345",
+                              "role": 1
+                          }
+                      ]
+                  },
+                  {
+                      "op": "add",
+                      "path": "/usergroup",
+                      "value": [
+                          {
+                              "id": "123",
+                              "role": 2
+                          }
+                      ]
+                  },
+                  {
+                      "op": "remove",
+                      "path": "/usergroup",
+                      "value": [
+                          {
+                              "id": "312",
+                              "role": 3
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/roles
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "add",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": "12345678",
+                              "role": 1
+                          },
+                          {
+                              "id": "87654321",
+                              "role": 2
+                          }
+                      ]
+                  },
+                  {
+                      "op": "remove",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": "87612345",
+                              "role": 1
+                          }
+                      ]
+                  },
+                  {
+                      "op": "add",
+                      "path": "/usergroup",
+                      "value": [
+                          {
+                              "id": "123",
+                              "role": 2
+                          }
+                      ]
+                  },
+                  {
+                      "op": "remove",
+                      "path": "/usergroup",
+                      "value": [
+                          {
+                              "id": "312",
+                              "role": 3
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Resource cannot be accessed",
+              "detail": "Inadequate permissions. Resource access forbidden.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/roles
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "https://api.postman.com/problems/not-found",
+              "type": "Resource not found",
+              "detail": "",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/roles
+      method: GET
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Gets the roles of users, user groups, and partners in a workspace.
+
+  **Note:**
+
+  Partner roles don't support SCIM IDs.

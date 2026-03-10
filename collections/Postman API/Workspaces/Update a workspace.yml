@@ -1,0 +1,358 @@
+info:
+  name: Update a workspace
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/workspaces/:workspaceId"
+  params:
+    - name: workspaceId
+      value: ""
+      type: path
+      description: The workspace's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "workspace": {
+              "name": "{{workspaceName}}",
+              "type": "{{workspaceType}}",
+              "description": "{{workspaceDescription}}",
+              "about": "{{workspaceSummary}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "description": "This is a team workspace.",
+                  "about": "Team workspace."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                  "name": "Test Workspace"
+              }
+          }
+  - name: Cannot Convert Private to Public
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Private Workspace",
+                  "type": "public",
+                  "description": "This is a private workspace.",
+                  "about": "Private workspace."
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "cannotConvertToPublicWorkspace",
+                  "message": "Can not convert workspaces to public workspaces for team user. First convert to team."
+              }
+          }
+  - name: Cannot Convert to Personal
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Personal Workspace",
+                  "type": "personal",
+                  "description": "This is a personal workspace.",
+                  "about": "Personal workspace."
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You are not authorized to perform this action"
+              }
+          }
+  - name: Cannot Convert from Public
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Public Workspace",
+                  "type": "private",
+                  "description": "This is a public workspace.",
+                  "about": "Public workspace."
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "cannotConvertFromPublicWorkspace",
+                  "message": "Can not convert workspaces from public workspaces for team user. First convert to team."
+              }
+          }
+  - name: Workspace Missing
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Team Workspace",
+              "type": "team",
+              "description": "This is a team workspace.",
+              "about": "Team workspace."
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "malformedRequestError",
+                  "message": "'workspace' object missing in the request"
+              }
+          }
+  - name: Publish Limit Exceeded
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Public Workspace",
+                  "type": "public",
+                  "description": "This is a public workspace.",
+                  "about": "Public workspace."
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "rateLimit",
+                  "message": "team~1234"
+              }
+          }
+  - name: Not a Unique Public Workspace Name
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      headers:
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Public Workspace",
+                  "type": "public",
+                  "description": "This is a public workspace.",
+                  "about": "Public workspace."
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "workspaceSlugNotUniqueError",
+                  "message": "Workspace Slug is not unique in the account context"
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "description": "This is a team workspace.",
+                  "about": "Team workspace."
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "The specified workspace with id 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9 does not exist."
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "description": "This is a team workspace.",
+                  "about": "Team workspace."
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You do not have access to update this workspace."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId
+      method: PUT
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "name": "Team Workspace",
+                  "type": "team",
+                  "description": "This is a team workspace.",
+                  "about": "Team workspace."
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Updates a workspace.
+
+  **Note:**
+
+  - This endpoint does <u>not</u> support the following workspace visibility changes:
+      
+      - `private` to `public`, `public` to `private`, and `private` to `personal` for **Free** and **Solo** [plans](https://www.postman.com/pricing/).
+          
+      - `public` to `personal` for team users only.
+          
+  - There are rate limits when publishing public workspaces.
+      
+  - Public team workspace names must be unique.

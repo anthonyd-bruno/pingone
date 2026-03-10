@@ -1,0 +1,103 @@
+info:
+  name: Get an environment
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/environments/:environmentId"
+  params:
+    - name: environmentId
+      value: ""
+      type: path
+      description: The environment's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: GET
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test Environment",
+                  "owner": "12345678",
+                  "createdAt": "2020-11-05T13:59:22.000Z",
+                  "updatedAt": "2020-11-05T13:59:23.000Z",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "enabled": true,
+                          "type": "default",
+                          "description": "The collection's ID."
+                      }
+                  ],
+                  "isPublic": false
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: GET
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the environment you are looking for"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: GET
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Gets information about an environment.

@@ -1,0 +1,463 @@
+info:
+  name: Create a user
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/scim/v2/Users"
+  body:
+    type: json
+    data: |-
+      {
+          "schemas": [
+              "urn:ietf:params:scim:schemas:core:2.0:User"
+          ],
+          "userName": "{{userEmail}}",
+          "name": {
+              "givenName": "{{firstName}}",
+              "familyName": "{{lastName}}"
+          },
+          "externalId": "{{externalUserId}}",
+          "locale": "{{locale}}",
+          "groups": [
+              "{{groupId}}"
+          ],
+          "active": true
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Created
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "201"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "id": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Test",
+                  "familyName": "User"
+              },
+              "emails": [
+                  {
+                      "primary": true,
+                      "value": "taylor-lee@example.com",
+                      "type": "work",
+                      "display": "taylor-lee@example.com"
+                  }
+              ],
+              "externalId": "12345678",
+              "active": true,
+              "meta": {
+                  "resourceType": "User",
+                  "created": "2021-02-22T04:24:13.000Z",
+                  "lastModified": "2021-02-22T04:24:13.000Z"
+              }
+          }
+  - name: Create User In Group
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "groups": [
+                  "g3d420314611061d6461b2b27487dcf2e58e39d744c8542f"
+              ],
+              "active": true
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "id": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Test",
+                  "familyName": "User"
+              },
+              "emails": [
+                  {
+                      "primary": true,
+                      "value": "taylor-lee@example.com",
+                      "type": "work",
+                      "display": "taylor-lee@example.com"
+                  }
+              ],
+              "externalId": "12345678",
+              "active": true,
+              "meta": {
+                  "resourceType": "User",
+                  "created": "2021-02-22T04:24:13.000Z",
+                  "lastModified": "2021-02-22T04:24:13.000Z"
+              }
+          }
+  - name: Invalid Syntax
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "scimType": "invalidSyntax",
+              "detail": "The request body seems to be incomplete or have unsupported characters.",
+              "status": "400"
+          }
+  - name: Invalid Team
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This Postman team doesn’t exist anymore.",
+              "status": "400"
+          }
+  - name: Not Enterprise
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Only Postman teams on the Enterprise plan can use SCIM provisioning. Upgrade your plan.",
+              "status": "400"
+          }
+  - name: No Slots Available
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "No slots available on your Postman team. Purchase or free up slots to invite more members. For help, contact Team Admins or members with a Billing role.",
+              "status": "400"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to access the team. Check if you have entered a valid API key.",
+              "status": "401"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Your API key was generated by a Team Admin who is no longer on your team. Use an API key generated by a Team Admin.",
+              "status": "403"
+          }
+  - name: Conflict
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "409"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This person is already a member of the team.",
+              "scimType": "uniqueness",
+              "status": "409"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "429"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "That’s 180 attempts in less than a minute. Wait for a minute and then try again.",
+              "status": 429
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "displayName": "Taylor Lee",
+              "locale": "en-US",
+              "active": true
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to add members to the team. Try again — it should work next time around.",
+              "status": "500"
+          }
+
+docs: |-
+  Creates a new user account in Postman and adds the user to your organization's Postman team.
+
+  - If the account does not exist, this also activates the user so they can authenticate in to your Postman team.
+      
+  - If an account matching the email ID exists, the user receives [email invite](https://learning.postman.com/docs/administration/managing-your-team/manage-team-members/#manage-invites) to join the Postman team. The user joins the team when they accept the invite.
+      
+  - If the user's email domain matches your team's verified domains, the user is immediately added to the team.
+      
+
+  By default, the system assigns new users the developer role. You can [update user roles in Postman](https://learning.postman.com/docs/administration/managing-your-team/manage-team-members/#manage-team-roles).
+
+  **Note:**
+
+  - Users must join the team before you can assign them to any groups.
+      
+  - If the user is a member of a different team during SCIM provisioning and their email domain is **not** verified with your Postman team, then the user is **not** provisioned. The endpoint returns an HTTP `409 Conflict` response.

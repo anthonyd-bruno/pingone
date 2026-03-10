@@ -1,0 +1,122 @@
+info:
+  name: Get all environments
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{baseUrl}}/environments"
+  params:
+    - name: workspace
+      value: ""
+      type: query
+      description: Return only results found in the given workspace ID.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/environments
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environments": [
+                 {
+                      "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                      "name": "Test Environment",
+                      "createdAt": "2020-09-23T14:31:18.000Z",
+                      "updatedAt": "2020-12-04T14:13:40.000Z",
+                      "owner": "12345678",
+                      "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e",
+                      "isPublic": false
+                  },
+                  {
+                      "id": "7d786cc8-142b-4d62-b5a5-872afc37ad16",
+                      "name": "Environment Scanner",
+                      "createdAt": "2020-02-04T19:34:23.000Z",
+                      "updatedAt": "2020-08-12T13:34:06.000Z",
+                      "owner": "12345678",
+                      "uid": "12345678-7d786cc8-142b-4d62-b5a5-872afc37ad16",
+                      "isPublic": false
+                  }
+              ]
+          }
+  - name: Filter by Workspace
+    request:
+      url: https://api.getpostman.com/environments?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: GET
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environments": [
+                 {
+                      "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                      "name": "Test Environment",
+                      "createdAt": "2020-09-23T14:31:18.000Z",
+                      "updatedAt": "2020-12-04T14:13:40.000Z",
+                      "owner": "12345678",
+                      "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e",
+                      "isPublic": false
+                  }
+              ]
+          }
+  - name: Invalid Workspace
+    request:
+      url: https://api.getpostman.com/environments?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: GET
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environments": []
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/environments
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Gets information about all of your [environments](https://learning.postman.com/docs/sending-requests/managing-environments/).

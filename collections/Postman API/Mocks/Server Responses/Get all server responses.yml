@@ -1,0 +1,84 @@
+info:
+  name: Get all server responses
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/mocks/:mockId/server-responses"
+  params:
+    - name: mockId
+      value: ""
+      type: path
+      description: The mock's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/mocks/12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289/server-responses
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          [
+              {
+                  "id": "965cdd16-fe22-4d96-a161-3d05490ac421",
+                  "name": "Internal Server Error",
+                  "statusCode": 500,
+                  "createdAt": "2022-08-02T14:57:44.000Z",
+                  "updatedAt": "2022-08-02T14:57:44.000Z",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678"
+              }
+          ]
+  - name: Mock Server Not Found
+    request:
+      url: https://api.getpostman.com/mocks/12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289/server-responses
+      method: GET
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "mockNotFoundError",
+                  "header": "Unable to find mock",
+                  "message": "Please refresh and try again."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/mocks/12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289/server-responses
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Gets all of a mock server's server responses.

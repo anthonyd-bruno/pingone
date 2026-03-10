@@ -1,0 +1,11 @@
+info:
+  name: Items
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage a collection's items, such as folders and requests.
+  type: text/markdown

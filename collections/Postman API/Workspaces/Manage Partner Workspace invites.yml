@@ -1,0 +1,513 @@
+info:
+  name: Manage Partner Workspace invites
+  type: http
+  seq: 11
+
+http:
+  method: POST
+  url: "{{baseUrl}}/invitations"
+  body:
+    type: json
+    data: |-
+      {
+          "action": "invite_partner",
+          "targetEntity": "workspace",
+          "targetEntityId": "{{targetEntityId}}",
+          "roleId": "{{roleId}}",
+          "target": {
+              "emails": [
+                  "{{userEmailAddress}}"
+              ]
+          }
+      }
+
+      // For examples of removing users, reference the request's examples or the request body schema.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Invite Partners to a Partner Workspace
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "action": "invite_partner",
+              "roleDisplayName": "Viewer",
+              "results": [
+                  {
+                      "status": "PARTNER_ADDED",
+                      "userId": 56781234,
+                      "message": "Partner added to workspace",
+                      "email": "alex.cruz@example.com"
+                  },
+                  {
+                      "status": "ALREADY_INVITED",
+                      "email": "mike.brown@xample.com",
+                      "invitationLink": "https://go.getpostman.com/invite-signup?invite_code=XXX",
+                      "message": "Pending invite exists"
+                  },
+                  {
+                      "status": "EMAIL_SENT",
+                      "email": "sara.smith@example.com",
+                      "invitationLink": "https://go.getpostman.com/invite-signup?invite_code=XXX"
+                  }
+              ]
+          }
+  - name: Partial Invite Success
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "roleDisplayName": "Viewer",
+              "results": [
+                  {
+                      "status": "PARTNER_ADDED",
+                      "userId": 56781234,
+                      "message": "Partner added to workspace",
+                      "email": "alex.cruz@example.com"
+                  },
+                  {
+                      "status": "ALREADY_INVITED",
+                      "email": "mike.brown@xample.com",
+                      "invitationLink": "https://go.getpostman.com/invite-signup?invite_code=XXX",
+                      "message": "Pending invite exists"
+                  },
+                  {
+                      "email": "sara.smith@example.com",
+                      "status": "FAILED",
+                      "message": "Failed to process invitation"
+                  }
+              ]
+          }
+  - name: Remove Partner from Workspace
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "remove_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "target": {
+                  "userIds": [
+                      "56781234"
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "action": "remove_partner",
+              "results": [
+                  {
+                      "userId": "56781234",
+                      "status": "REMOVED"
+                  }
+              ]
+          }
+  - name: Remove Partner From Partnership
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "remove_partner",
+              "targetEntity": "team",
+              "targetEntityId": "123",
+              "target": {
+                  "userIds": [
+                      "56781234"
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "targetEntity": "team",
+              "targetEntityId": "123",
+              "action": "remove_partner",
+              "results": [
+                  {
+                      "userId": "56781234",
+                      "status": "REMOVED"
+                  }
+              ]
+          }
+  - name: Partial Partners Removal Success
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "remove_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "target": {
+                  "userIds": [
+                      "56781234",
+                      "12348765",
+                      "34567812"
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "action": "remove_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "results": [
+                  {
+                      "userId": "56781234",
+                      "status": "REMOVED"
+                  },
+                  {
+                      "userId": "12348765",
+                      "status": "FAILED",
+                      "message": "Failed to remove partner from all workspaces"
+                  },
+                  {
+                      "userId": "34567812",
+                      "status": "FAILED",
+                      "error": "Partner information not found"
+                  }
+              ]
+          }
+  - name: Invalid Action
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invitePartner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Invalid request body.",
+              "detail": "Invalid \"action\" property - should be one of: invite_partner, remove_partner",
+              "status": 400
+          }
+  - name: Invalid Partner Workspace
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "invalidWorkspaceType",
+              "detail": "Workspace is not a partner workspace.",
+              "status": 400
+          }
+  - name: Invalid Workspace Role
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "1",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "invalidPartnerRole",
+              "detail": "Invalid role for partner workspace. Expected one of: 4, 5, 6, 7",
+              "status": 400
+          }
+  - name: Missing Request Body Properties
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "badRequest",
+              "detail": "Missing properties in request body - should have \"action\", \"targetEntity\", \"targetEntityId\", \"roleId\", \"target\"",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "forbidden",
+              "detail": "You do not have permission to invite partners to this workspace.",
+              "status": 403
+          }
+  - name: Workspace Not Found
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "workspaceNotFound",
+              "detail": "Workspace not found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/invitations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "action": "invite_partner",
+              "targetEntity": "workspace",
+              "targetEntityId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "roleId": "4",
+              "target": {
+                  "emails": [
+                      "alex.cruz@example.com",
+                      "mike.brown@example.com",
+                      "sara.smith@example.com"
+                  ]
+              }
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Manages invitations and access to your team's [Partner Workspaces](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/partner-workspaces/manage/). You can use this endpoint to:
+
+  - Send Partner Workspace invitations to the given email addresses. Users who already exist in the partnership are added directly, while new users receive an invitation email.
+      
+  - Remove partners from a workspace.
+      
+  - Remove partners from a partnership and all of its workspaces.
+      
+
+  **Note:**
+
+  - Partner Workspaces are available on the Postman **Team** and **Enterprise** [plans](https://www.postman.com/pricing/).
+      
+  - This endpoint requires the following [roles](https://learning.postman.com/docs/administration/roles-and-permissions/), based on your plan:
+      
+      - **Team** — Requires the **Workspace Editor** role to invite or remove partners from workspaces. The **Admin** role is required for removing partners from all workspaces.
+          
+      - **Enterprise** — The **Partner Manager** role can perform all operations. The **Workspace Editor** role and **Admin** roles have the same permissions on this plan as they do on the Team plan. It's recommended to use the **Partner Manager** role if you're on an Enterprise plan.

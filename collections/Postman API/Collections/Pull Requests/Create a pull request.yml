@@ -1,0 +1,165 @@
+info:
+  name: Create a pull request
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/collections/:collectiondUid/pull-requests"
+  params:
+    - name: collectiondUid
+      value: ""
+      type: path
+      description: The collection's unique ID.
+  body:
+    type: json
+    data: |-
+      {
+          "title": "{{pullRequestTitle}}",
+          "description": "{{pullRequesetDescription}}",
+          "reviewers": [
+              "{{userId}}"
+          ],
+          "destinationId": "{{destinationCollectionId}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/pull-requests
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "title": "Test PR",
+              "description": "This is a test pull request.",
+              "reviewers": [
+                  "87654321",
+                  "56781234"
+              ],
+              "destinationId": "12345678-ec548788-unftw-rgn8-83b8-0b59798648e4"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "4e1a6609-1a29-4037-a411-89ecc14c6cd8",
+              "createdAt": "2024-02-20T09:55:46.000Z",
+              "updatedAt": "2024-02-20T09:58:57.000Z",
+              "sourceId": "87654321-3b79068c-dbe5-41d5-a826-51be4bf646ef",
+              "destinationId": "12345678-ec548788-unftw-rgn8-83b8-0b59798648e4",
+              "title": "Test PR",
+              "description": "This is a test pull request.",
+              "createdBy": "12345678",
+              "status": "open"
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/pull-requests
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "title": "Test PR",
+              "description": "This is a test pull request.",
+              "reviewers": [
+                  "87654321",
+                  "56781234"
+              ],
+              "destinationId": "12345678-ec548788-unftw-rgn8-83b8-0b59798648e4"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Duplicate pull request",
+              "detail": "A pull request for this source and destination already exists.",
+              "status": 400
+          }
+  - name: Invalid Fork Source
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/pull-requests
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "title": "Test PR",
+              "description": "This is a test pull request.",
+              "reviewers": [
+                  "87654321",
+                  "56781234"
+              ],
+              "destinationId": "12345678-ec548788-unftw-rgn8-83b8-0b59798648e4"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "Fork relation not found"
+              
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/pull-requests
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "title": "Test PR",
+              "description": "This is a test pull request.",
+              "reviewers": [
+                  "87654321",
+                  "56781234"
+              ],
+              "destinationId": "12345678-ec548788-unftw-rgn8-83b8-0b59798648e4"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "You and all reviewers need Viewer access on both source and destination collections.",
+              "status": 403
+          }
+
+docs: Creates a pull request for a forked collection into its parent collection.

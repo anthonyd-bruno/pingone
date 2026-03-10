@@ -1,0 +1,181 @@
+info:
+  name: Add a workspace
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/network/private"
+  body:
+    type: json
+    data: |-
+      {
+          "workspace": {
+              "id": "{{workspaceId}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2024-12-07T17:59:23.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2024-12-07T17:59:23.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2024-12-07T17:59:23.000Z",
+              "type": "workspace",
+              "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "name": "Billing Team Workspace",
+              "summary": "The Billing team's workspace.",
+              "description": null,
+              "href": "https://api.getpostman.com/workspaces/1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "parentFolderId": null
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "instanceNotFoundError",
+              "message": "Instance not found for the model NetworkEntity, id 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You do not have enough permissions to perform this action."
+              }
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "serverError",
+                  "message": "An error has occurred on the server."
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "AuthenticationError",
+                  "message": "Invalid API Key. Every request requires a valid API Key to be sent."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/network/private
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Publishes a workspace in your team's [Private API Network](https://learning.postman.com/docs/collaborating-in-postman/adding-private-network/).

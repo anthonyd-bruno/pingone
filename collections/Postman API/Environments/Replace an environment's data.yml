@@ -1,0 +1,269 @@
+info:
+  name: Replace an environment's data
+  type: http
+  seq: 6
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/environments/:environmentId"
+  params:
+    - name: environmentId
+      value: ""
+      type: path
+      description: The environment's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "environment": {
+              "name": "{{environmentName}}",
+              "values": [
+                  {
+                      "key": "{{environmentVariableName}}",
+                      "value": "{{environmentVariableValue}}",
+                      "enabled": true,
+                      "type": "{{environmentType}}",
+                      "description": "{{environmentVariableDescription}}"
+                  }
+              ]
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PUT
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test A Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "default",
+                          "enabled": true,
+                          "description": "The collection's ID."
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test A Environment",
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Remove Variables
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PUT
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "values": []
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test A Environment",
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Malformed Request
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PUT
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test A Environment",
+                  "values": [
+                      null,
+                      {
+                          "key": "collectionId",
+                          "value": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "default",
+                          "enabled": true,
+                          "description": "The collection's ID."
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "malformedRequestError",
+                  "message": "Invalid type: null (expected object) at environment.values.0"
+              }
+          }
+  - name: Length Required
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PUT
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test A Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "default",
+                          "enabled": true,
+                          "description": "The collection's ID."
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "411"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/length-required",
+              "title": "Length Required",
+              "detail": "A valid Content-Length header is required",
+              "status": 411,
+              "instance": "/"
+          }
+  - name: Payload Too Large
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PUT
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test A Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "default",
+                          "enabled": true,
+                          "description": "The collection's ID."
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "413"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/payload-too-large",
+              "title": "Payload Too Large",
+              "detail": "Request size limit exceeded",
+              "status": 413,
+              "instance": "/"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PUT
+      params:
+        - name: environmentId
+          value: 12345678-5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test A Environment",
+                  "values": [
+                      {
+                          "key": "collectionId",
+                          "value": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "default",
+                          "enabled": true,
+                          "description": "The collection's ID."
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Replaces all the contents of an environment with the given information.
+
+  **Note:**
+
+  - The request body size cannot exceed the maximum allowed size of 30MB.
+      
+  - If you receive an HTTP `411 Length Required` error response, manually pass the `Content-Length` header and its value in the request header.

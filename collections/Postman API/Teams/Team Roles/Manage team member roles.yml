@@ -1,0 +1,665 @@
+info:
+  name: Manage team member roles
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/teams/:teamId/bulk-members"
+  headers:
+    - name: identifierType
+      value: scim
+      description: Use SCIM user and group IDs instead of Postman user IDs.
+      disabled: true
+  params:
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "add": {
+              "users": {
+                  "{{userId}}": [
+                      "{{roleName}}"
+                  ]
+              },
+              "groups": {
+                  "{{userGroupId}}": [
+                      "{{roleName}}"
+                  ]
+              },
+              "orgs": {
+                  "{{orgId}}": [
+                      "{{roleName}}"
+                  ]
+              },
+              "teams": {
+                  "{{teamId}}": [
+                      "{{roleName}}"
+                  ]
+              }
+          },
+          "remove": {
+              "users": {
+                  "{{userId}}": [
+                      "{{roleName}}"
+                  ]
+              },
+              "groups": {
+                  "{{userGroupId}}": [
+                      "{{roleName}}"
+                  ]
+              },
+              "orgs": {
+                  "{{orgId}}": [
+                      "{{roleName}}"
+                  ]
+              },
+              "teams": {
+                  "{{teamId}}": [
+                      "{{roleName}}"
+                  ]
+              }
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Assign Team Member's Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "add": {
+                  "users": {
+                      "12345678": [
+                          "TEAM_MANAGER"
+                      ]
+                  },
+                  "groups": {
+                      "1234": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "role": "TEAM_MANAGER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": 1234,
+                      "role": "TEAM_DEVELOPER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Update Team Member's Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {  
+              "add": {
+                  "users": { 
+                      "12345678": [
+                          "TEAM_MANAGER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "role": "TEAM_MANAGER",
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Update Team Organization's Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {  
+              "add": {
+                  "orgs": { 
+                      "432": [
+                          "TEAM_GUEST_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "organization",
+                      "entityId": 345,
+                      "role": "TEAM_GUEST_DEVELOPER",
+                      "previousRole": "TEAM_GUEST_VIEWER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Update Team Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {  
+              "add": {
+                  "teams": { 
+                      "432": [
+                          "TEAM_GUEST_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "team",
+                      "entityId": 432,
+                      "role": "TEAM_GUEST_DEVELOPER",
+                      "previousRole": "TEAM_GUEST_VIEWER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Update Team Member's Role with SCIM ID
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      headers:
+        - name: identifierType
+          value: scim
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {  
+              "add": {
+                  "users": { 
+                      "f10ba7a8dac248e8fd9769163dc63aef920f3897c7ea2c86": [
+                          "TEAM_MANAGER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": "f10ba7a8dac248e8fd9769163dc63aef920f3897c7ea2c86",
+                      "role": "TEAM_MANAGER",
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Remove Team Member's Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "remove": {
+                  "users": {
+                      "12345678": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "role": null,
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Add and Remove Roles
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "add": {
+                  "users": {
+                      "12345678": [
+                          "TEAM_MANAGER"
+                      ]
+                  }
+              },
+              "remove": {
+                  "users": {
+                      "87654321": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "role": "TEAM_MANAGER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": 87654321,
+                      "role": null,
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Add and Remove Roles with Failures
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "add": {
+                  "users": {
+                      "12345678": [
+                          "TEAM_MANAGER"
+                      ]
+                  }
+              },
+              "remove": {
+                  "users": {
+                      "87654321": [
+                          "TEAM_MANAGER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": "Found invalid entities",
+                  "result": [
+                      {
+                          "entityType": "user",
+                          "entityId": 87654321,
+                          "role": null,
+                          "status": "Invalid",
+                          "reason": "Existing and new roles are empty"
+                      }
+                  ]
+              },
+              "instance": "/teams/123/members"
+          }
+  - name: Team Member Has Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {  
+              "add": {
+                  "users": { 
+                      "12345678": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "role": "TEAM_DEVELOPER",
+                      "status": "Skipped",
+                      "reason": "Entity has this role"
+                  }
+              ]
+          }
+  - name: Add and Remove Roles with SCIM IDs
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      headers:
+        - name: identifierType
+          value: scim
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "add": {
+                  "users": {
+                      "f10ba7a8dac248e8fd9769163dc63aef920f3897c7ea2c86": [
+                          "TEAM_MANAGER"
+                      ]
+                  }
+              },
+              "remove": {
+                  "groups": {
+                      "gecb77b6c45c98602d6ae4458b46d4f30e3c423719636d87": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  },
+                  "users": {
+                      "7db6e2fba7e98f9db428a1735a71bbb4e4fbbaa37db37640": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": "3c83d7cddf8470c6e5fb1cb52586a98d0d4200781107c535",
+                      "role": "TEAM_MANAGER",
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": "gecb77b6c45c98602d6ae4458b46d4f30e3c423719636d87",
+                      "role": null,
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "7db6e2fba7e98f9db428a1735a71bbb4e4fbbaa37db37640",
+                      "role": null,
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Entity Does Not Belong to Organization
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      headers:
+        - name: identifierType
+          value: scim
+          description: Use SCIM user and group IDs instead of Postman user IDs.
+          disabled: true
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+          description: The team's ID.
+      body:
+        type: json
+        data: |-
+          {
+              "add": {
+                  "users": {
+                      "12345678": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              },
+              "remove": {
+                  "users": {
+                      "56781234": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  },
+                  "groups": {
+                      "1234": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "User with ID [12345678] does not belong to organization 1."
+                  }
+              },
+              "instance": "/teams/123/members"
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+          description: The team's ID.
+      body:
+        type: json
+        data: |-
+          {
+              "add": {
+                  "users": {
+                      "123": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              },
+              "remove": {
+                  "users": {
+                      "456": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  },
+                  "groups": {
+                      "998": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+          description: The team's ID.
+      body:
+        type: json
+        data: |-
+          {
+              "add": {
+                  "users": {
+                      "123": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              },
+              "remove": {
+                  "users": {
+                      "456": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  },
+                  "groups": {
+                      "998": [
+                          "TEAM_DEVELOPER"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+
+docs: |-
+  Adds or removes roles in groups, teams, organizations, as well as individual users' roles.
+
+  **Note:**
+
+  If you remove a role from a group or team, then all members lose the that role's permissions.

@@ -1,0 +1,11 @@
+info:
+  name: Groups
+  type: folder
+  seq: 20
+
+request:
+  auth: inherit
+
+docs:
+  content: The **Groups** endpoints enable you to manage user [groups](https://learning.postman.com/docs/collaborating-in-postman/user-groups/) in Postman. With groups, you can arrange users into groups that reflect your organizational structure.
+  type: text/markdown

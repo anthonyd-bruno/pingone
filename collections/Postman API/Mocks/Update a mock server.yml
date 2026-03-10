@@ -1,0 +1,254 @@
+info:
+  name: Update a mock server
+  type: http
+  seq: 9
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/mocks/:mockId"
+  params:
+    - name: mockId
+      value: ""
+      type: path
+      description: The mock's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "mock": {
+              "name": "{{mockName}}",
+              "environment": "{{environmentUid}}",
+              "private": true,
+              "versionTag": "{{apiVersionTagId}}",
+              "collection": "{{collectionId}}",
+              "config": {
+                  "serverResponseId": "{{serverResponseId}}"
+              }
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: PUT
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "mock": {
+                  "name": "Test Mock",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "description": "This is a test mock server.",
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "private": true,
+                  "versionTag": "abf07d3d-f8ec-47d4-8015-9fe83078b4ec"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "mock": {
+                  "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                  "owner": "12345678",
+                  "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "mockUrl": "https://e3d951bf-873f-49ac-a658-b2dcb91d3289.mock.pstmn.io",
+                  "name": "Test Mock",
+                  "config": {
+                      "headers": [],
+                      "matchBody": false,
+                      "matchQueryParams": true,
+                      "matchWildcards": true
+                  },
+                  "createdAt": "2022-06-09T19:38:06.000Z",
+                  "updatedAt": "2022-06-13T18:55:25.000Z",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Activate a Server Response
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: PUT
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "mock": {
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "config": {
+                    "serverResponseId": "9a291bbe-dc0a-44ba-a3c8-6dbd06a61460"
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "mock": {
+                  "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                  "owner": "12345678",
+                  "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "mockUrl": "https://e3d951bf-873f-49ac-a658-b2dcb91d3289.mock.pstmn.io",
+                  "name": "Test Mock",
+                  "config": {
+                      "headers": [],
+                      "matchBody": false,
+                      "matchQueryParams": true,
+                      "matchWildcards": true,
+                      "delay": null,
+                      "serverResponseId": "9a291bbe-dc0a-44ba-a3c8-6dbd06a61460"
+                  },
+                  "createdAt": "2022-06-09T19:38:06.000Z",
+                  "updatedAt": "2022-06-13T18:55:25.000Z",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Deactivate a Server Response
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: PUT
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "mock": {
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "config": {
+                    "serverResponseId": null
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "mock": {
+                  "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                  "owner": "12345678",
+                  "uid": "12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "mockUrl": "https://e3d951bf-873f-49ac-a658-b2dcb91d3289.mock.pstmn.io",
+                  "name": "Test Mock",
+                  "config": {
+                      "headers": [],
+                      "matchBody": false,
+                      "matchQueryParams": true,
+                      "matchWildcards": true,
+                      "delay": null,
+                      "serverResponseId": null
+                  },
+                  "createdAt": "2022-06-09T19:38:06.000Z",
+                  "updatedAt": "2022-06-13T18:55:25.000Z",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: PUT
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "mock": {
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "config": {
+                    "serverResponseId": null
+                  }
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: PUT
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "mock": {
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "config": {
+                    "serverResponseId": null
+                  }
+              }
+          }
+    response:
+      statusText: "500"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+            "error": {
+              "type": "serverError",
+              "message": "Something went wrong with the server"
+            }
+          }
+
+docs: Updates a mock server.

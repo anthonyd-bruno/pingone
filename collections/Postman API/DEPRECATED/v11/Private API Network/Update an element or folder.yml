@@ -1,0 +1,402 @@
+info:
+  name: Update an element or folder
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/network/private/:elementType/:elementId"
+  params:
+    - name: elementType
+      value: "{{elementType}}"
+      type: path
+      description: "The element type: `api`, `folder`, `collection`, or `workspace`"
+    - name: elementId
+      value: "{{elementId}}"
+      type: path
+      description: The element's ID or UUID. For Postman Collections you must pass the collection's UID (`userId`-`collectionId`) value.
+  body:
+    type: json
+    data: |-
+      {
+          "{{elementType}}": {
+              "parentFolderId": {{parentFolderId}}
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Update an API
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-06-09T14:48:45.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2021-10-11T09:39:33.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T17:54:33.000Z",
+              "type": "api",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "name": "Billing API",
+              "summary": "The payments and account services API.",
+              "description": null,
+              "href": "https://api.getpostman.com/apis/fcf87a6d-6d10-4cfa-bed2-0c234ff99f7b",
+              "parentFolderId": 1
+          }
+  - name: Update a Collection
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: collection
+          type: path
+        - name: elementId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-12-07T18:22:15.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T18:22:15.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T18:22:15.000Z",
+              "type": "collection",
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "name": "Billing API Collection",
+              "summary": "The Billing API collection.",
+              "description": null,
+              "href": "https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "parentFolderId": 1
+          }
+  - name: Update a Collection's Environments
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: collection
+          type: path
+        - name: elementId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "collection": {
+                  "parentFolderId": 1,
+                  "environments": {
+                      "$add": [
+                          "660a6sa-c8sa37-46ca-9sa1d8-7e8c669d1",
+                          "02466-c837-46ca-9sa1d8-7e669d1"
+                      ],
+                      "$remove": [
+                          "024660a6-c837-46ca-9sa1d8-7e8dd7c669d1"
+                      ]
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-12-07T18:22:15.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T18:22:15.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T18:22:15.000Z",
+              "type": "collection",
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "name": "Billing API Collection",
+              "summary": "The Billing API collection.",
+              "description": null,
+              "href": "https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "parentFolderId": 1,
+              "environments": [
+                  "660a6sa-c8sa37-46ca-9sa1d8-7e8c669d1",
+                  "02466-c837-46ca-9sa1d8-7e669d1"
+              ]
+          }
+  - name: Update a Workspace
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: workspace
+          type: path
+        - name: elementId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": {
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "addedAt": "2022-12-07T17:59:23.000Z",
+              "addedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T17:59:23.000Z",
+              "updatedBy": 12345678,
+              "updatedAt": "2022-12-07T17:59:23.000Z",
+              "type": "workspace",
+              "id": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "name": "Billing Team Workspace",
+              "summary": "The Billing team's workspace.",
+              "description": null,
+              "href": "https://api.getpostman.com/workspaces/1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "parentFolderId": 1
+          }
+  - name: Update a Folder
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: folder
+          type: path
+        - name: elementId
+          value: "1234"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "folder": {
+                  "name": "Billing",
+                  "description": "The Billing API.",
+                  "parentFolderId": 0
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": 1,
+              "parentFolderId": 0,
+              "updatedAt": "2022-12-07T20:27:06.000Z",
+              "updatedBy": 12345678,
+              "createdBy": 12345678,
+              "createdAt": "2022-12-07T17:04:23.000Z",
+              "name": "Billing",
+              "description": "The Billing API.",
+              "type": "folder"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "instanceNotFoundError",
+              "message": "Instance not found for the model NetworkEntity, id 5360b75f-447e-467c-9299-12fd6c92450d"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "forbiddenError",
+                  "message": "You do not have enough permissions to perform this action."
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "AuthenticationError",
+                  "message": "Invalid API Key. Every request requires a valid API Key to be sent."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/network/private/:elementType/:elementId
+      method: PUT
+      params:
+        - name: elementType
+          value: api
+          type: path
+        - name: elementId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "parentFolderId": 1
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Updates an element or folder in your team's [Private API Network](https://learning.postman.com/docs/collaborating-in-postman/adding-private-network/). When you call this endpoint, the `elementType` property must be the `api`, `folder`, `collection`, or `workspace` value.
+
+  The `elementId` value is the `api`, `folder`, or `workspace` element's ID. For `collection`, this value is the collection's UID (`userId`\-`collectionId`).
+
+  Include the following in the request body object:
+
+  - `elementType` — The Private API Network element type. The object's name must be one of the following:
+      - `api`
+          
+      - `folder`
+          
+      - `collection`
+          
+      - `workspace`
+          
+
+  In the `elementType` object, include the following values:
+
+  - `parentFolderId` — A **string** value that contains the element's new Private API Network folder ID.
+      
+
+  **For Collections:**
+
+  - `summary` — A **string** value that contains the collection's new summary.
+      
+
+  **For Private API Network Folders:**
+
+  You can include the following optional properties:
+
+  - `description` — A **string** value that contains the folder's new description.
+      
+  - `name` — A **string** value that contains the folder's new name.

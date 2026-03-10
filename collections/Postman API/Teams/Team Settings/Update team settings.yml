@@ -1,0 +1,124 @@
+info:
+  name: Update team settings
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/teams/:teamId/settings"
+  params:
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "settings" : {
+              "rfa_for_add_member": "{{value}}",
+              "rfa_for_add_collaborator": "{{value}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/teams/:teamId/settings
+      method: PUT
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "settings" : {
+                  "rfa_for_add_member": "enabled",
+                  "rfa_for_add_collaborator": "enabled"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "settings": {
+                  "rfa_for_add_member": "enabled",
+                  "rfa_for_add_collaborator": "enabled"
+              }
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId/settings
+      method: PUT
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "settings" : {
+                  "rfa_for_add_member": "enabled",
+                  "rfa_for_add_collaborator": "enabled"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId/settings
+      method: PUT
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "settings" : {
+                  "rfa_for_add_member": "enabled",
+                  "rfa_for_add_collaborator": "enabled"
+              }
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+
+docs: Updates a team's settings.

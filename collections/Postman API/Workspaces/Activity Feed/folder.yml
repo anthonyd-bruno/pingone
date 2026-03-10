@@ -1,0 +1,11 @@
+info:
+  name: Activity Feed
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: The **Activity Feed** endpoints enable you to get a workspace's [activity feed](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/changelog-and-restoring-collections/#view-workspace-activity). Activity feeds return information about who added or removed collections, environments, or elements from a workspace, and users that join or leave a workspace.
+  type: text/markdown

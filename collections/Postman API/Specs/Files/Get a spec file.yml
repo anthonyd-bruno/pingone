@@ -1,0 +1,148 @@
+info:
+  name: Get a spec file
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/specs/:specId/files/:filePath"
+  params:
+    - name: specId
+      value: ""
+      type: path
+      description: The spec's ID.
+    - name: filePath
+      value: ""
+      type: path
+      description: The path to the file.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2025-07-22T18:42:18.000Z",
+              "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\",\n    \"contact\": {\n      \"name\": \"Taylor Lee\"\n    }\n  },\n  \"servers\": [\n    {\n      \"url\": \"https://example.com\"\n    }\n  ],\n  \"security\": [\n    {\n      \"ApiKey\": []\n    }\n  ],\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"$ref\": \"./components/parameters/spacecrafts.json#/SpacecraftId\"\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"description\": \"Gets information about a spacecraft.\",\n        \"operationId\": \"getSpacecraft\",\n        \"tags\": [\n          \"Spacecrafts\"\n        ],\n        \"responses\": {\n          \"200\": {\n            \"$ref\": \"./components/responses/spacecrafts.json#/SuccessfulResponse\"\n          },\n          \"404\": {\n            \"$ref\": \"./components/responses/spacecrafts.json#/NotFound\"\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"./components/schemas/spacecrafts.json#/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"tags\": [\n    {\n      \"name\": \"Spacecrafts\"\n    }\n  ],\n  \"components\": {\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  }\n}",
+              "updatedAt": "2025-07-22T18:47:32.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "3860602b-7a92-45a6-8b60-725ff7b453d5",
+              "type": "ROOT",
+              "path": "index.json",
+              "name": "index.json"
+          }
+  - name: Nested Spec File
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: components/schemas/spacecrafts.json
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2025-07-22T18:45:48.000Z",
+              "content": "{\n  \"SpacecraftId\": {\n    \"description\": \"The unique identifier of a spacecraft\",\n    \"type\": \"string\"\n  },\n  \"Spacecraft\": {\n    \"type\": \"object\",\n    \"required\": [\n      \"id\",\n      \"name\",\n      \"type\"\n    ],\n    \"properties\": {\n      \"id\": {\n        \"$ref\": \"../schemas/spacecrafts.json#/SpacecraftId\"\n      },\n      \"name\": {\n        \"type\": \"string\"\n      },\n      \"type\": {\n        \"type\": \"string\",\n        \"enum\": [\n          \"capsule\",\n          \"probe\",\n          \"satellite\",\n          \"spaceplane\",\n          \"station\"\n        ]\n      },\n      \"description\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"Error\": {\n    \"type\": \"object\",\n    \"required\": [\n      \"message\"\n    ],\n    \"properties\": {\n      \"message\": {\n        \"description\": \"A human readable error message\",\n        \"type\": \"string\"\n      }\n    }\n  }\n}",
+              "updatedAt": "2025-07-22T18:47:03.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "edc9f9f1-c0df-4a9a-9b5b-d4c7359d92ab",
+              "type": "DEFAULT",
+              "path": "components/schemas/spacecrafts.json",
+              "name": "spacecrafts.json"
+          }
+  - name: Malformed Request
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: index
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "The path parameter /filePath is invalid."
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: folder/file.yaml
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "detail": "Entity that you are trying to access does not exist.",
+              "status": 404
+          }
+
+docs: Gets the contents of an API specification's file.

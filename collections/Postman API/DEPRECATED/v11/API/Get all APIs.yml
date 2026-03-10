@@ -1,0 +1,305 @@
+info:
+  name: Get all APIs
+  type: http
+  seq: 6
+
+http:
+  method: GET
+  url: "{{baseUrl}}/apis?workspaceId={{workspaceId}}"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: workspaceId
+      value: "{{workspaceId}}"
+      type: query
+      description: (Required) The workspace ID.
+    - name: createdBy
+      value: ""
+      type: query
+      description: The user ID of the user that created the resource.
+      disabled: true
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results.
+      disabled: true
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response.
+      disabled: true
+    - name: description
+      value: ""
+      type: query
+      description: Return only APIs whose description includes the given value. Matching is not case-sensitive.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "nextCursor": "VGh1IE1hciAxNiAyMDIzIDE3OjIxOjUzIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=",
+                  "total": 4,
+                  "limit": 10
+              },
+              "apis": [
+                  {
+                      "updatedBy": "893478",
+                      "createdBy": "893478",
+                      "name": "New API",
+                      "summary": null,
+                      "description": null,
+                      "createdAt": "2023-02-15T06:27:16.000Z",
+                      "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                      "updatedAt": "2023-02-15T06:27:24.000Z"
+                  },
+                  {
+                      "updatedBy": "12345678",
+                      "createdBy": "12345678",
+                      "name": "Test API",
+                      "summary": "This is a test API.",
+                      "description": "This is an API for testing purposes.",
+                      "createdAt": "2023-02-15T13:07:08.000Z",
+                      "id": "fec65321-5f55-4feb-8525-be95bccae8dd",
+                      "updatedAt": "2023-02-15T13:07:08.000Z"
+                  },
+                  {
+                      "updatedBy": "12345678",
+                      "createdBy": "12345678",
+                      "name": "Test API",
+                      "summary": "This is a test API.",
+                      "description": "This is an API for testing purposes.",
+                      "createdAt": "2023-02-16T05:52:27.000Z",
+                      "id": "b7c54faa-d119-4572-a18d-e2f5c32348ce",
+                      "updatedAt": "2023-02-16T05:52:27.000Z"
+                  },
+                  {
+                      "updatedBy": "12345678",
+                      "createdBy": "12345678",
+                      "name": "Test API",
+                      "summary": "This is a test API.",
+                      "description": "This is an API for testing purposes.",
+                      "createdAt": "2023-02-16T07:07:16.000Z",
+                      "id": "d535a8ba-ed4b-4c6a-bf1c-13fac95485b8",
+                      "updatedAt": "2023-02-16T07:07:16.000Z"
+                  }
+              ]
+          }
+  - name: Pagination with Cursor Response
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)&cursor=V2VkIEZlYiAxNSAyMDIzIDEzOjA3OjA4IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=2
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)
+          type: query
+        - name: cursor
+          value: V2VkIEZlYiAxNSAyMDIzIDEzOjA3OjA4IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "nextCursor": "VGh1IEZlYiAxNiAyMDIzIDA3OjA3OjE2IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=",
+                  "total": 4,
+                  "limit": 2
+              },
+              "apis": [
+                  {
+                      "updatedBy": "893478",
+                      "createdBy": "893478",
+                      "name": "New API",
+                      "summary": null,
+                      "description": null,
+                      "createdAt": "2023-02-15T06:27:16.000Z",
+                      "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                      "updatedAt": "2023-02-15T06:27:24.000Z"
+                  },
+                  {
+                      "updatedBy": "12345678",
+                      "createdBy": "12345678",
+                      "name": "Test API",
+                      "summary": "This is a test API.",
+                      "description": "This is an API for testing purposes.",
+                      "createdAt": "2023-02-15T13:07:08.000Z",
+                      "id": "fec65321-5f55-4feb-8525-be95bccae8dd",
+                      "updatedAt": "2023-02-15T13:07:08.000Z"
+                  }
+              ]
+          }
+  - name: Filter by createdBy
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)&createdBy=893478
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)
+          type: query
+        - name: createdBy
+          value: "893478"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "nextCursor": "V2VkIEZlYiAxNSAyMDIzIDEzOjA3OjA4IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=",
+                  "total": 1,
+                  "limit": 10
+              },
+              "apis": [
+                  {
+                      "updatedBy": "893478",
+                      "createdBy": "893478",
+                      "name": "New API",
+                      "summary": null,
+                      "description": null,
+                      "createdAt": "2023-02-15T06:27:16.000Z",
+                      "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                      "updatedAt": "2023-02-15T06:27:24.000Z"
+                  }
+              ]
+          }
+  - name: Filter by description
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)&description=This is an API for testing purposes
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)
+          type: query
+        - name: description
+          value: This is an API for testing purposes
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "nextCursor": "V2VkIEZlYiAxNSAyMDIzIDEzOjA3OjA4IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=",
+                  "total": 1,
+                  "limit": 10
+              },
+              "apis": [
+                  {
+                      "updatedBy": "893478",
+                      "createdBy": "893478",
+                      "name": "New API",
+                      "summary": null,
+                      "description": "This is an API for testing purposes.",
+                      "createdAt": "2023-02-15T06:27:16.000Z",
+                      "id": "73e15000-bc7a-4802-b80e-05fff18fd7f8",
+                      "updatedAt": "2023-02-15T06:27:24.000Z"
+                  }
+              ]
+          }
+  - name: Missing Workspace ID
+    request:
+      url: https://api.getpostman.com/apis
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "paramMissingError",
+              "title": "Parameter is missing in the request.",
+              "detail": "Parameter, workspaceId is missing in the request."
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)
+          type: query
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Workspace Not Found
+    request:
+      url: https://api.getpostman.com/apis?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9)
+          type: query
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "We could not find the workspace you are looking for",
+              "detail": "We could not find the workspace you are looking for."
+          }
+
+docs: |-
+  Gets information about all APIs in a workspace.
+
+  **Note:**
+
+  This endpoint only returns APIs created or migrated in Postman v10 and higher.

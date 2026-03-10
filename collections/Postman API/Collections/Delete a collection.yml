@@ -1,0 +1,94 @@
+info:
+  name: Delete a collection
+  type: http
+  seq: 16
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/collections/:collectionId"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collection": {
+                  "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "The specified item does not exist.",
+                  "details": {
+                      "item": "collection",
+                      "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                  }
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/collections/:collectionId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Deletes a collection.

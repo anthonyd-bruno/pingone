@@ -1,0 +1,364 @@
+info:
+  name: Update a folder
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collections/:collectionId/folders/:folderId"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+    - name: folderId
+      value: ""
+      type: path
+      description: The folder's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "Test Folder",
+          "description": "This is a test collection folder.",
+          "auth": {
+              "type": "basic",
+              "basic": [
+                  {
+                      "key": "password",
+                      "value": "{{basicAuthPassword}}"
+                  },
+                  {
+                      "key": "username",
+                      "value": "{{basicAuthUsername}}"
+                  }
+              ]
+          },
+          "order": [],
+          "folders_order": []
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test Folder",
+              "description": "This is a test folder."
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                  "auth": null,
+                  "name": "Test Folder",
+                  "order": [],
+                  "owner": "12345678",
+                  "events": null,
+                  "folder": null,
+                  "updatedAt": "2022-08-29T16:49:19.964Z",
+                  "createdAt": "2022-08-29T16:49:19.964Z",
+                  "variables": null,
+                  "collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "description": "This is a test folder.",
+                  "lastRevision": 24977100955,
+                  "folders_order": [],
+                  "lastUpdatedBy": "12345678"
+              },
+              "meta": {
+                  "model": "folder",
+                  "action": "update"
+              },
+              "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+              "revision": 24977103385
+          }
+  - name: Sort Requests in Folder
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "order": [
+                  "66c7fe01-2c7e-4149-9de1-1143592f7bad",
+                  "3def345e-b4b3-4319-8e2c-65d2630c0345",
+                  "c089bf09-c679-4116-9654-9a561276634d",
+                  "eb82f2b7-0478-4068-8e8a-c277e25ba0d3"
+              ]
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "order": [
+                      "66c7fe01-2c7e-4149-9de1-1143592f7bad",
+                      "3def345e-b4b3-4319-8e2c-65d2630c0345",
+                      "c089bf09-c679-4116-9654-9a561276634d",
+                      "eb82f2b7-0478-4068-8e8a-c277e25ba0d3"
+                  ],
+                  "id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                  "auth": null,
+                  "name": "Test Folder",        
+                  "owner": "12345678",
+                  "events": null,
+                  "folder": null,
+                  "updatedAt": "2022-08-29T16:49:19.964Z",
+                  "createdAt": "2022-08-29T16:49:19.964Z",
+                  "variables": null,
+                  "collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "description": "This is a test folder.",
+                  "lastRevision": 24977100955,
+                  "folders_order": [],
+                  "lastUpdatedBy": "12345678"
+              },
+              "meta": {
+                  "model": "folder",
+                  "action": "update"
+              },
+              "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+              "revision": 24977103385
+          }
+  - name: Sort Folders in Folder
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "folders_order": [
+                  "b73b4c0c-881b-47e6-8887-6dabab1fd2d1",
+                  "abcc80b2-8a1c-45e5-ab1b-becc385b4dbd"
+              ]
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "folders_order": [
+                      "b73b4c0c-881b-47e6-8887-6dabab1fd2d1",
+                      "abcc80b2-8a1c-45e5-ab1b-becc385b4dbd"
+                  ],
+                  "id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                  "auth": null,
+                  "name": "Test Folder",
+                  "order": [],
+                  "owner": "12345678",
+                  "events": null,
+                  "folder": null,
+                  "updatedAt": "2022-08-29T16:49:19.964Z",
+                  "createdAt": "2022-08-29T16:49:19.964Z",
+                  "variables": null,
+                  "collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "description": "This is a test folder.",
+                  "lastRevision": 24977100955,
+                  "lastUpdatedBy": "12345678"
+              },
+              "meta": {
+                  "model": "folder",
+                  "action": "update"
+              },
+              "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+              "revision": 24977103385
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test Folder",
+              "description": "This is a test folder."
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the folder you are looking for",
+                  "details": {
+                      "model": "folder",
+                      "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                      "owner": "12345678"
+                  }
+              }
+          }
+  - name: Change Parent Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test Folder",
+              "description": "This is a test folder.",
+              "folder": "6e27010c-9db3-4037-8bb7-5f3c2e62c808"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "changeParentError",
+                  "message": "You can't update the parent. Use transfer instead.",
+                  "details": {
+                      "server": {
+                          "model": "collection",
+                          "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa"
+                      },
+                      "request": {
+                          "model": "collection",
+                          "model_id": "12345678-65a99e60-8e0a-4b6e-b79c-7d8264cc5caa"
+                      }
+                  }
+              }
+          }
+  - name: Order Update Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "order": [
+                  "12345678-66c7fe01-2c7e-4149-9de1-1143592f7bad",
+                  "12345678-3def345e-b4b3-4319-8e2c-65d2630c0345",
+                  "12345678-c089bf09-c679-4116-9654-9a561276634d",
+                  "12345678-eb82f2b7-0478-4068-8e8a-c277e25ba0d3"
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "orderUpdateError",
+                  "message": "You can only reorder the requests.",
+                  "details": {
+                      "order": [
+                          "66c7fe01-2c7e-4149-9de1-1143592f7bad",
+                          "3def345e-b4b3-4319-8e2c-65d2630c0345",
+                          "c089bf09-c679-4116-9654-9a561276634d",
+                          "eb82f2b7-0478-4068-8e8a-c277e25ba0d3"
+                      ]
+                  }
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Test Folder",
+              "description": "This is a test folder."
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "Unauthorized",
+                  "message": "Unauthorized",
+                  "details": {
+                      "model": "folder",
+                      "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                      "owner": "12345678"
+                  }
+              }
+          }
+
+docs: |-
+  Updates a folder in a collection. For a complete list of properties and information, see the [Postman Collection Format documentation](https://schema.postman.com/collection/json/v2.1.0/draft-07/docs/index.html).
+
+  **Note:**
+
+  - This request uses example values in the request body for context when updating collection folders. For additional ways to update a folder, see the collection's examples.
+      
+  - This endpoint acts like a PATCH method. It only updates the values that you pass in the request body (for example, the `name` property). The endpoint does **not** update the entire resource.

@@ -1,0 +1,299 @@
+info:
+  name: Update a monitor
+  type: http
+  seq: 7
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/monitors/:monitorId"
+  params:
+    - name: monitorId
+      value: ""
+      type: path
+      description: The monitor's ID.
+  body:
+    type: json
+    data: |-
+      {
+      	"monitor": {
+      		"name": "{{monitorName}}",
+      		"schedule": {
+      			"cron": "{{cronFrequencyPattern}}",
+                  "timezone": "{{monitorTimezone}}"
+      		},
+              "notificationLimit": 1,
+              "active": true,
+              "distribution": [
+                  {
+                      "region": "{{regionId}}"
+                  }
+              ],
+              "options": {
+                  "followRedirects": true,
+                  "requestDelay": 1,
+                  "requestTimeout": 1,
+                  "strictSSL": true
+              },
+              "notifications": {
+                  "onError": [
+                      {
+                          "email": "{{emailAddress}}"
+                      }
+                  ],
+                  "onFailure": [
+                      {
+                          "email": "{{emailAddress}}"
+                      }
+                  ]
+              },
+              "retry": {
+                  "attempts": 1
+              }
+      	}
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: PUT
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"name": "Test Monitor",
+          		"schedule": {
+          			"cron": "*/5 * * * *",
+          			"timezone": "America/Chicago"
+          		}
+          	}
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitor": {
+                  "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "name": "Test Monitor",
+                  "active": true,
+                  "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1"
+              }
+          }
+  - name: Pause Monitor
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: PUT
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"active": false
+          	}
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitor": {
+                  "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "name": "Test Monitor",
+                  "active": false,
+                  "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1"
+              }
+          }
+  - name: Resume Monitor
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: PUT
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"active": true
+          	}
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitor": {
+                  "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "name": "Test Monitor",
+                  "active": true,
+                  "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1"
+              }
+          }
+  - name: Invalid Parameters
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: PUT
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"name": "Test Monitor",
+                  "collection": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environment": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e",
+          		"schedule": {
+          			"cron": "*/5 * * * *",
+          			"timezone": "America/Chicago"
+          		}
+          	}
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "parameterNotAllowedError",
+                  "message": "The specified parameter cannot be updated.",
+                  "details": {
+                      "param": [
+                          "collection",
+                          "environment"
+                      ]
+                  }
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: PUT
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"name": "Test Monitor",
+          		"schedule": {
+          			"cron": "*/5 * * * *",
+          			"timezone": "America/Chicago"
+          		}
+          	}
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "The specified monitor does not exist."
+              }
+          }
+  - name: Invalid Cron Pattern
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: PUT
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"name": "Test Monitor",
+          		"schedule": {
+          			"cron": "* * * * *",
+          			"timezone": "America/Chicago"
+          		}
+          	}
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "cronPatternNotAllowedError",
+                  "message": "The specified cron pattern is not allowed. Please check https://monitor.getpostman.com for the allowed schedules.",
+                  "details": {
+                      "pattern": "* * * * *"
+                  }
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: PUT
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+          	"monitor": {
+          		"name": "Test Monitor",
+          		"schedule": {
+          			"cron": "*/5 * * * *",
+          			"timezone": "America/Chicago"
+          		}
+          	}
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Updates a monitor.

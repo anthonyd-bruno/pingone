@@ -1,0 +1,182 @@
+info:
+  name: Duplicate a collection
+  type: http
+  seq: 14
+
+http:
+  method: POST
+  url: "{{baseUrl}}/collections/:collectionId/duplicates"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's unique ID.
+  body:
+    type: json
+    data: |-
+      {
+          "workspace": "{{workspaceId}}",
+          "suffix": "{{suffixText}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/duplicates
+      method: POST
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "suffix": "Copy"
+          }
+    response:
+      statusText: "202"
+      body:
+        type: text
+        data: |-
+          {
+              "task": {
+                  "id": "12345678-d2584d81-3283-42d5-9d84-b897257adcf0",
+                  "status": "processing"
+              }
+          }
+  - name: Missing workspace Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/duplicates
+      method: POST
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "suffix": "Copy"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "workspace property is needed",
+              "status": 400
+          }
+  - name: Missing Request Body
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/duplicates
+      method: POST
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Request body is required",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/duplicates
+      method: POST
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "suffix": "Copy"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "status": 401,
+              "detail": "Unauthorized"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/duplicates
+      method: POST
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "suffix": "Copy"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "You do not have access to this workspace."
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/duplicates
+      method: POST
+      params:
+        - name: collectionId
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspace": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "suffix": "Copy"
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "serverError",
+                  "message": "An error has occurred on the server."
+              }
+          }
+
+docs: |-
+  Creates a duplicate of the given collection in another workspace.
+
+  Use the GET `/collection-duplicate-tasks/{taskId}` endpoint to get the duplication task's current status.

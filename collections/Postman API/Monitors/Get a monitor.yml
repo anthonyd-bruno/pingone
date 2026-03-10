@@ -1,0 +1,147 @@
+info:
+  name: Get a monitor
+  type: http
+  seq: 6
+
+http:
+  method: GET
+  url: "{{baseUrl}}/monitors/:monitorId"
+  params:
+    - name: monitorId
+      value: ""
+      type: path
+      description: The monitor's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: GET
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitor": {
+                  "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "name": "Test Monitor",
+                  "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                  "owner": 12345678,
+                  "active": true,
+                  "notificationLimit": 1,
+                  "collectionUid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "environmentUid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "options": {
+                      "strictSSL": true,
+                      "followRedirects": true,
+                      "requestTimeout": 3000,
+                      "requestDelay": 1
+                  },
+                  "notifications": {
+                      "onError": [
+                          {
+                              "email": "taylor.lee@example.com"
+                          }
+                      ],
+                      "onFailure": [
+                          {
+                              "email": "taylor.lee@example.com"
+                          }
+                      ]
+                  },
+                  "distribution": [
+                      {
+                          "region": "us-east"
+                      }
+                  ],
+                  "schedule": {
+                      "cron": "0 0 * * * *",
+                      "timezone": "America/Chicago",
+                      "nextRun": "2025-06-18T05:00:00.000Z"
+                  },
+                  "retry": {
+                      "attempts": 1
+                  },
+                  "lastRun": {
+                      "status": "success",
+                      "startedAt": "2025-06-17T18:39:52.852Z",
+                      "finishedAt": "2025-06-17T18:39:53.707Z",
+                      "jobId": "e72dc3de-e4ac-407c-b1cc-2c5b6efced68",
+                      "stats": {
+                          "assertions": {
+                              "total": 5,
+                              "failed": 0
+                          },
+                          "requests": {
+                              "total": 3
+                          },
+                          "runCount": 42,
+                          "errorCount": 0,
+                          "abortedCount": 2,
+                          "responseLatency": 850,
+                          "responseSize": 2048
+          		    }
+                  }
+          	}
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: GET
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "The specified monitor does not exist."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/monitors/:monitorId
+      method: GET
+      params:
+        - name: monitorId
+          value: 12345678-1e6b6cb7-f13d-4000-acb7-0695757174a8
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Gets information about a monitor.

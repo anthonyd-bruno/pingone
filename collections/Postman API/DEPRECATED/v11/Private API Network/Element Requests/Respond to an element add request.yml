@@ -1,0 +1,216 @@
+info:
+  name: Respond to an element add request
+  type: http
+  seq: 1
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/network/private/network-entity/request/:requestId"
+  params:
+    - name: requestId
+      value: "{{elementRequestId}}"
+      type: path
+      description: The element request's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "response": {
+              "message": "{{responderMessage}}"
+          },
+          "status": "{{responseStatus}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Request Denied
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "232"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "denied",
+              "response": {
+                  "message": "The requested collection has a lot of governance violations. Please fix them."
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "request": [
+                  {
+                      "id": 232,
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "createdBy": 12345678,
+                      "message": "Please add this to the network",
+                      "status": "denied",
+                      "element": {
+                          "type": "api",
+                          "id": "5360b75f-447e-467c-9299-12fd3c92450d",
+                          "name": "Test api",
+                          "summary": "This is a test API"
+                      },
+                      "response": {
+                          "createdAt": "2022-06-09T14:48:45.000Z",
+                          "createdBy": 2272,
+                          "message": "Please fix the API issues first"
+                      }
+                  }
+              ]
+          }
+  - name: Request Approved
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "232"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "request": [
+                  {
+                      "id": 232,
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "createdBy": 12345678,
+                      "message": "Please add this to the network",
+                      "status": "approved",
+                      "element": {
+                          "createdAt": "2022-06-09T14:48:45.000Z",
+                          "createdBy": 2272,
+                          "type": "api",
+                          "id": "5360b75f-447e-467c-9299-12fd3c92450d",
+                          "name": "Test api",
+                          "summary": "This is a test API"
+                      }
+                  }
+              ]
+          }
+  - name: Request Not Found
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "232"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "RequestNotFound",
+              "message": "No request found for the corresponding ID"
+          }
+  - name: Invalid Request Payload
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "232"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "accepted"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "invalidParamsError",
+              "message": "Status type can only be denied or approved."
+          }
+  - name: Requested Element Already Published
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "232"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "requestEntityAlreadyPublished",
+              "message": "Test api has already been published to the network"
+          }
+  - name: Request Already Responded To
+    request:
+      url: https://api.getpostman.com/network/private/network-entity/request/:requestId
+      method: PUT
+      params:
+        - name: requestId
+          value: "232"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "status": "approved"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "requestAlreadyResponded",
+              "message": "This request is already responded."
+          }
+
+docs: |-
+  Responds to a user's request to add an element to your team's [Private API Network](https://learning.postman.com/docs/collaborating-in-postman/adding-private-network/). Include the following in the request body:
+
+  - `message` — A **string** value in a `response` object that contains a message that details why the user's request was denied.
+      
+  - `status` — A **string** value that contains the request's status. One of:
+      
+      - `denied`
+          
+      - `approved`

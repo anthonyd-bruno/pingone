@@ -1,0 +1,130 @@
+info:
+  name: Create an API release
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/releases
+  body:
+    type: json
+    data: |-
+      {
+          "release": {
+              "name": "{{apiReleaseName}}",
+              "summary": "{{apiReleaseSummary}}",
+              "description": "{{apiReleaseDescription}}",
+              "visibility": "{{apiReleaseVisibility}}",
+              "gitTag": "{{apiReleaseGitTag}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "release": {
+                  "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+                  "name": "Release 1.0",
+                  "summary": "This is the first release.",
+                  "description": "This is the first release of the Test API. For more information, read the documentation.",
+                  "visibility": "public",
+                  "gitTag": "release"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "release": {
+                  "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+                  "name": "Release 1.0",
+                  "summary": "This is the first release.",
+                  "description": "This is the first release of the Test API. For more information, read the documentation.",
+                  "visibility": "public"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "release": {
+                  "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+                  "name": "Release 1.0",
+                  "summary": "This is the first release.",
+                  "description": "This is the first release of the Test API. For more information, read the documentation.",
+                  "visibility": "public",
+                  "gitTag": "release"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "apiRepositoryNotFoundError",
+                  "message": "This API version is not linked to a repository"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/releases
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "release": {
+                  "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+                  "name": "Release 1.0",
+                  "summary": "This is the first release.",
+                  "description": "This is the first release of the Test API. For more information, read the documentation.",
+                  "visibility": "public",
+                  "gitTag": "release"
+              }
+          }
+    response:
+      statusText: "429"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  **This endpoint is deprecated in Postman v10 and higher.**
+
+  Creates a new API version release. Include the following properties in the `release` object:
+
+  - `name` — A **string** value that contains the release name.
+  - `visibility` — A **string** value that contains the release's visibility. One of:
+      - `private` — The release is private.
+      - `public` — The release is public.
+
+  You can include the following optional properties:
+
+  - `summary` — A **string** value that contains the release's summary.
+  - `description` — A **string** value that contains the release's description.
+  - `gitTag` — A **string** value that contains a valid [Git tag](https://docs.github.com/en/rest/git/tags) ID. The tag must exist in the API's connected Git repository.

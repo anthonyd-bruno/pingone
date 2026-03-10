@@ -1,0 +1,214 @@
+info:
+  name: Create an API
+  type: http
+  seq: 6
+
+http:
+  method: POST
+  url: https://api.getpostman.com/apis
+  headers:
+    - name: Content-Type
+      value: application/json
+  params:
+    - name: workspaceId
+      value: "{{workspaceId}}"
+      type: query
+      description: |-
+        Optional. The workspace ID in which to create the API.
+
+        If you do not use this parameter, the system creates the API in the "My Workspace" workspace.
+      disabled: true
+  body:
+    type: json
+    data: |-
+      {
+          "api": {
+              "name": "{{apiName}}",
+              "summary": "{{apiSummary}}",
+              "description": "{{apiDescription}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+          description: |-
+            Optional. The workspace ID in which to create the API.
+
+            If you do not use this parameter, the system creates the API in the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "name": "Test API",
+                  "summary": "Test API Schema",
+                  "description": "This is a test API."
+              }
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "createdAt": "2022-06-29T20:46:58.000Z",
+                  "updatedAt": "2022-06-29T20:46:58.000Z",
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "name": "Test API",
+                  "summary": "Test API Schema",
+                  "description": "This is a test API.",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678"
+              }
+          }
+  - name: Create API in a Workspace
+    request:
+      url: https://api.getpostman.com/apis?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+          description: |-
+            Optional. The workspace ID in which to create the API.
+
+            If you do not use this parameter, the system creates the API in the "My Workspace" workspace.
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "name": "Test API",
+                  "summary": "Test API Schema",
+                  "description": "This is a test API."
+              }
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "createdAt": "2022-06-29T20:46:58.000Z",
+                  "updatedAt": "2022-06-29T20:46:58.000Z",
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "name": "Test API",
+                  "summary": "Test API Schema",
+                  "description": "This is a test API.",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+          description: |-
+            Optional. The workspace ID in which to create the API.
+
+            If you do not use this parameter, the system creates the API in the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "summary": "Test API Schema",
+                  "description": "This is a test API."
+              }
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "paramMissingError",
+                  "message": "Parameter is missing in the request."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis
+      method: POST
+      headers:
+        - name: Content-Type
+          value: application/json
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+          description: |-
+            Optional. The workspace ID in which to create the API.
+
+            If you do not use this parameter, the system creates the API in the "My Workspace" workspace.
+          disabled: true
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "summary": "Test API Schema",
+                  "description": "This is a test API."
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Creates an API. Include the following properties in the `api` object:
+
+  *   `name` — A **string** value that contains the API's name.
+      
+
+  You can include the following optional properties:
+
+  *   `summary` — A **string** value that contains a summary of the API.
+  *   `description` — A **string** value that contains the description of the API.

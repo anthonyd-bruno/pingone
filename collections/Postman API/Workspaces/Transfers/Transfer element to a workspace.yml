@@ -1,0 +1,379 @@
+info:
+  name: Transfer element to a workspace
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/workspaces/:workspaceId/element-transfers"
+  params:
+    - name: workspaceId
+      value: ""
+      type: path
+      description: The workspace's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "id": "{{elementId}}",
+          "type": "{{elementType}}",
+          "to": "{{workspaceId}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Transfer Collection
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "type": "collection",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "element-transfers": {
+                      "type": "collection",
+                      "from": "ecfa5b91-5de8-43c1-acc0-38d92243754a",
+                      "id": "12345678-04c79329-fa51-465a-9bfd-c3107d75f536",
+                      "to": "c0084e97-31be-4265-b0d8-25cb0dff5a70"
+                  }
+              }
+          }
+  - name: Transfer Environment
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+              "type": "environment",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "element-transfers": {
+                      "type": "environment",
+                      "from": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                      "to": "c0084e97-31be-4265-b0d8-25cb0dff5a70"
+                  }
+              }
+          }
+  - name: Transfer Mock
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+              "type": "mock",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "element-transfers": {
+                      "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd",
+                      "from": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "id": "e3d951bf-873f-49ac-a658-b2dcb91d3289",
+                      "type": "mock"
+                  }
+              }
+          }
+  - name: Transfer Monitor
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+              "type": "monitor",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "element-transfers": {
+                      "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd",
+                      "from": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "type": "monitor"
+                  }
+              }
+          }
+  - name: Transfer Flow
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "68640e3433ea760031f7b16c",
+              "type": "flow",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "element-transfers": {
+                      "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd",
+                      "from": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "id": "68640e3433ea760031f7b16c",
+                      "type": "flow"
+                  }
+              }
+          }
+  - name: Cannot Transfer from Team to Personal
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "type": "collection",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "Cannot move elements from team level workspace to personal"
+          }
+  - name: Invalid type Property
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "collection",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "element type is not register or is falsy"
+          }
+  - name: Missing id Property
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "collection",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "The 'id' property is required"
+          }
+  - name: Missing to Property
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "type": "collection"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "The 'to' property is required"
+          }
+  - name: Missing type Property
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "status": 400,
+              "detail": "The 'type' property is required"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "type": "collection",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "Forbidden"
+          }
+  - name: Workspace Not Found
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/element-transfers
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "type": "collection",
+              "to": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "status": 404,
+              "detail": "Workspace not found"
+          }
+
+docs: |-
+  Transfers a [Postman element](https://learning.postman.com/docs/getting-started/basics/postman-elements/) from one workspace to another workspace. Supported elements include collections, environments, mocks, monitors, and Flows modules and actions.
+
+  When copying an element between workspaces, the [activity feed](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/workspace-activity/) for both workspaces update to reflect the change.
+
+  **Note:**
+
+  This endpoint does not support transferring elements from team workspaces to personal workspaces.

@@ -1,0 +1,126 @@
+info:
+  name: Delete a spec file
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/specs/:specId/files/:filePath"
+  params:
+    - name: specId
+      value: ""
+      type: path
+      description: The spec's ID.
+    - name: filePath
+      value: ""
+      type: path
+      description: The path to the file.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Deleted
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Delete Nested Spec File
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: components/schemas/spacecrafts.json
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Malformed Request
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: index
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "The path parameter /filePath is invalid."
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/specs/:specId/files/:filePath
+      method: DELETE
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: filePath
+          value: folder/file.json
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "status": 404,
+              "detail": "Entity that you are trying to access does not exist."
+          }
+
+docs: Deletes a file in an API specification. On success, this returns an HTTP `204 No Content` response.

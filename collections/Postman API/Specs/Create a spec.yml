@@ -1,0 +1,635 @@
+info:
+  name: Create a spec
+  type: http
+  seq: 4
+
+http:
+  method: POST
+  url: "{{baseUrl}}/specs?workspaceId="
+  params:
+    - name: workspaceId
+      value: ""
+      type: query
+      description: The workspace's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{specName}}",
+          "type": "{{specType}}",
+          "files": [
+              {
+                  "path": "{{filePath}}",
+                  "content": "{{content}}"
+              }
+          ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Create JSON Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": [\n\n      ]\n    }\n  ]\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create YAML Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.yaml",
+                      "content": "openapi: \"3.0.0\"\ninfo:\n  version: \"1.0.0\"\n  title: \"Sample API\"\n  description: Buy or rent spacecrafts\n\npaths:\n  /spacecrafts/{spacecraftId}:\n    parameters:\n      - name: spacecraftId\n        description: The unique identifier of the spacecraft\n        in: path\n        required: true\n        schema:\n          $ref: \"#/components/schemas/SpacecraftId\"\n    get:\n      summary: Read a spacecraft\n      responses:\n        \"200\":\n          description: The spacecraft corresponding to the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Spacecraft\"\n        404:\n          description: No spacecraft found for the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Error\"\n        500:\n          description: Unexpected error\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Error\"\ncomponents:\n  schemas:\n    SpacecraftId:\n      description: The unique identifier of a spacecraft\n      type: string\n    Spacecraft:\n      type: object\n      required:\n        - id\n        - name\n        - type\n      properties:\n        id:\n          $ref: \"#/components/schemas/SpacecraftId\"\n        name:\n          type: string\n        type:\n          type: string\n          enum:\n            - capsule\n            - probe\n            - satellite\n            - spaceplane\n            - station\n        description:\n          type: string\n    Error:\n      type: object\n      required:\n        - message\n      properties:\n        message:\n          description: A human readable error message\n          type: string\n  securitySchemes:\n    ApiKey:\n      type: apiKey\n      in: header\n      name: X-Api-Key\nsecurity:\n  - ApiKey: []\n"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create Async JSON Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Streetlights API",
+              "type": "ASYNCAPI:2.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n    \"asyncapi\": \"2.5.0\",\n    \"info\": {\n        \"title\": \"Streetlights API\",\n        \"version\": \"1.0.0\",\n        \"description\": \"The Smartylighting Streetlights API allows you\\nto remotely manage the city lights.\\n\",\n        \"license\": {\n            \"name\": \"Apache 2.0\",\n            \"url\": \"https://www.apache.org/licenses/LICENSE-2.0\"\n        },\n        \"contact\": {\n            \"name\": \"Streetlights API Developers\",\n            \"url\": \"https://example.com/contact\",\n            \"email\": \"contact@example.com\"\n        },\n        \"termsOfService\": \"https://www.apache.org/licenses/LICENSE-2.0\"\n    },\n    \"servers\": {\n        \"mosquitto\": {\n            \"url\": \"mqtt://test.mosquitto.org\",\n            \"protocol\": \"mqtt\"\n        }\n    },\n    \"channels\": {\n        \"light/measured\": {\n            \"publish\": {\n                \"summary\": \"Inform about environmental lighting conditions for a particular streetlight\",\n                \"operationId\": \"onLightMeasured\",\n                \"message\": {\n                    \"name\": \"LightMeasured\",\n                    \"payload\": {\n                        \"$ref\": \"#/components/schemas/LightMeasuredPayloadSchema\"\n                    },\n                    \"examples\": [\n                        {\n                            \"payload\": {\n                                \"id\": 1,\n                                \"lumens\": 1,\n                                \"sentAt\": \"2023-09-01T18:00:00.000Z\"\n                            }\n                        }\n                    ]\n                }\n            }\n        }\n    },\n    \"components\": {\n        \"schemas\": {\n            \"LightMeasuredPayloadSchema\": {\n                \"type\": \"object\",\n                \"description\": \"Payload for LightMeasured API\",\n                \"required\": [\n                    \"id\",\n                    \"lumens\",\n                    \"sentAt\"\n                ],\n                \"properties\": {\n                    \"id\": {\n                        \"type\": \"integer\",\n                        \"minimum\": 0,\n                        \"description\": \"Id of the streetlight\"\n                    },\n                    \"lumens\": {\n                        \"type\": \"integer\",\n                        \"minimum\": 0,\n                        \"description\": \"Light intensity measured in lumens\"\n                    },\n                    \"sentAt\": {\n                        \"type\": \"string\",\n                        \"format\": \"date-time\",\n                        \"description\": \"Date and time when the message was sent\",\n                        \"minLength\": 20,\n                        \"maxLength\": 29\n                    }\n                }\n            }\n        }\n    }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "ASYNCAPI:2.0",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create Async YAML Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Streetlights API",
+              "type": "ASYNCAPI:2.0",
+              "files": [
+                  {
+                      "path": "index.yaml",
+                      "content": "asyncapi: '2.5.0'\ninfo:\n  title: Streetlights API\n  version: '1.0.0'\n  description: |\n    The Smartylighting Streetlights API allows you\n    to remotely manage the city lights.\n  license:\n    name: Apache 2.0\n    url: 'https://www.apache.org/licenses/LICENSE-2.0'\n  contact:\n    name: Streetlights API Developers\n    url: https://example.com/contact\n    email: contact@example.com\n  termsOfService: https://www.apache.org/licenses/LICENSE-2.0\nservers:\n  mosquitto:\n    url: mqtt://test.mosquitto.org\n    protocol: mqtt\nchannels:\n  light/measured:\n    publish:\n      summary: Inform about environmental lighting conditions for a particular streetlight\n      operationId: onLightMeasured\n      message:\n        name: LightMeasured\n        payload:\n          $ref: '#/components/schemas/LightMeasuredPayloadSchema'\n        examples:\n          - payload:\n              id: 1\n              lumens: 1\n              sentAt: 2023-09-01T18:00:00Z\ncomponents:\n  schemas:\n    LightMeasuredPayloadSchema:\n      type: object\n      description: Payload for LightMeasured API\n      required:\n        - id\n        - lumens\n        - sentAt\n      properties:\n        id:\n          type: integer\n          minimum: 0\n          description: Id of the streetlight\n        lumens:\n          type: integer\n          minimum: 0\n          description: Light intensity measured in lumens\n        sentAt:\n          type: string\n          format: date-time\n          description: Date and time when the message was sent\n          minLength: 20\n          maxLength: 29"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "ASYNCAPI:2.0",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create GraphQL Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "GRAPHQL",
+              "files": [
+                  {
+                      "path": "index.graphql",
+                      "content": "schema {\n  query: Query\n  mutation: Mutation\n}\n\ntype User {\n  id: String!\n  name: String\n}\n\ntype Query {\n  user(id: String): User\n}\n\ntype Mutation {\n  addUser(name: String!): User!\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "GRAPHQL",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create Protobuf 2 Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "PROTOBUF:2",
+              "files": [
+                  {
+                      "path": "index.proto",
+                      "content": "syntax = \"proto2\";\n\npackage com.addressBook;\n\nmessage Person {\n  required string name = 1;\n  required int32 id = 2;\n  optional string email = 3;\n}\n\nmessage AddressBook {\n  repeated Person people = 1;\n}\n\nmessage AddressBookById {\n  required int32 id = 1;\n}\n\nmessage AddressBookByName {\n  required string name = 1;\n}\n\nservice AddressBookService {\n  rpc CreateAddressBook (AddressBook) returns (AddressBook) {}\n  rpc GetAddressBook (AddressBookById) returns (AddressBook) {}\n  rpc ListAddressBook (AddressBookByName) returns (stream AddressBook) {}\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "PROTOBUF:2",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create Protobuf 3 Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "PROTOBUF:3",
+              "files": [
+                  {
+                      "path": "index.proto",
+                      "content": "syntax = \"proto3\";\n\npackage com.book;\n\nmessage Book {\n  int64 isbn = 1;\n  string title = 2;\n  string author = 3;\n}\n\nmessage GetBookRequest {\n  int64 isbn = 1;\n}\n\nmessage GetBookViaAuthor {\n  string author = 1;\n}\n\nservice BookService {\n  rpc GetBook (GetBookRequest) returns (Book) {}\n  rpc GetBooksViaAuthor (GetBookViaAuthor) returns (stream Book) {}\n  rpc GetGreatestBook (stream GetBookRequest) returns (Book) {}\n  rpc GetBooks (stream GetBookRequest) returns (stream Book) {}\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "PROTOBUF:3",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create Multi-File Spec
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "type": "ROOT",
+                      "content": "{\n    \"openapi\": \"3.0.0\",\n    \"servers\": [\n        {\n            \"url\": \"example.com\"\n        }\n    ],\n    \"info\": {\n        \"contact\": {\n            \"name\": \"Jon\"\n        },\n        \"version\": \"1.0.0\",\n        \"title\": \"Sample API\",\n        \"description\": \"Buy or rent spacecrafts\"\n    },\n    \"paths\": {\n        \"/spacecrafts/{spacecraftId}\": {\n            \"parameters\": [\n                {\n                    \"name\": \"spacecraftId\",\n                    \"description\": \"The unique identifier of the spacecraft\",\n                    \"in\": \"path\",\n                    \"required\": true,\n                    \"schema\": {\n                        \"$ref\": \"schemas.json#/SpacecraftId\"\n                    }\n                }\n            ],\n            \"get\": {\n                \"summary\": \"Read a spacecraft\",\n                \"description\": \"Get information about a spacecraft.\",\n                \"operationId\": \"getSpacecraft\",\n                \"tags\": [\n                    \"Spacecrafts\"\n                ],\n                \"responses\": {\n                    \"200\": {\n                        \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Spacecraft\"\n                                }\n                            }\n                        }\n                    },\n                    \"404\": {\n                        \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    },\n                    \"500\": {\n                        \"description\": \"Unexpected error\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    },\n    \"components\": {\n        \"securitySchemes\": {\n            \"ApiKey\": {\n                \"type\": \"apiKey\",\n                \"in\": \"header\",\n                \"name\": \"x-api-key\"\n            }\n        }\n    },\n    \"tags\": [\n        {\n            \"name\": \"Spacecrafts\"\n        }\n    ],\n    \"security\": [\n        {\n            \"ApiKey\": []\n        }\n    ]\n}"
+                  },
+                  {
+                      "path": "schemas.json",
+                      "type": "DEFAULT",
+                      "content": "{\n    \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n    },\n    \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"id\",\n            \"name\",\n            \"type\"\n        ],\n        \"properties\": {\n            \"id\": {\n                \"$ref\": \"#/SpacecraftId\"\n            },\n            \"name\": {\n                \"type\": \"string\"\n            },\n            \"type\": {\n                \"type\": \"string\",\n                \"enum\": [\n                    \"capsule\",\n                    \"probe\",\n                    \"satellite\",\n                    \"spaceplane\",\n                    \"station\"\n                ]\n            },\n            \"description\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"message\"\n        ],\n        \"properties\": {\n            \"message\": {\n                \"description\": \"A human readable error message\",\n                \"type\": \"string\"\n            }\n        }\n    }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4",
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "createdBy": 12345678,
+              "updatedBy": 12345678
+          }
+  - name: Invalid type Parameter
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "openapi3",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": [\n\n      ]\n    }\n  ]\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "InvalidParamsError",
+              "title": "Required parameter is invalid",
+              "status": 400,
+              "detail": "Required property `type` is invalid. Should be one of: OPENAPI:3.0, ASYNCAPI:2.0"
+          }
+  - name: Missing name Parameter
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n    \"openapi\": \"3.0.0\",\n    \"servers\": [\n        {\n            \"url\": \"example.com\"\n        }\n    ],\n    \"info\": {\n        \"contact\": {\n            \"name\": \"Jon\"\n        },\n        \"version\": \"1.0.0\",\n        \"title\": \"Sample API\",\n        \"description\": \"Buy or rent spacecrafts\"\n    },\n    \"paths\": {\n        \"/spacecrafts/{spacecraftId}\": {\n            \"parameters\": [\n                {\n                    \"name\": \"spacecraftId\",\n                    \"description\": \"The unique identifier of the spacecraft\",\n                    \"in\": \"path\",\n                    \"required\": true,\n                    \"schema\": {\n                        \"$ref\": \"schemas.json#/SpacecraftId\"\n                    }\n                }\n            ],\n            \"get\": {\n                \"summary\": \"Read a spacecraft\",\n                \"description\": \"Get information about a spacecraft.\",\n                \"operationId\": \"getSpacecraft\",\n                \"tags\": [\n                    \"Spacecrafts\"\n                ],\n                \"responses\": {\n                    \"200\": {\n                        \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Spacecraft\"\n                                }\n                            }\n                        }\n                    },\n                    \"404\": {\n                        \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    },\n                    \"500\": {\n                        \"description\": \"Unexpected error\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    },\n    \"components\": {\n        \"securitySchemes\": {\n            \"ApiKey\": {\n                \"type\": \"apiKey\",\n                \"in\": \"header\",\n                \"name\": \"x-api-key\"\n            }\n        }\n    },\n    \"tags\": [\n        {\n            \"name\": \"Spacecrafts\"\n        }\n    ],\n    \"security\": [\n        {\n            \"ApiKey\": []\n        }\n    ]\n}"
+                  },
+                  {
+                      "path": "schemas.json",
+                      "content": "{\n    \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n    },\n    \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"id\",\n            \"name\",\n            \"type\"\n        ],\n        \"properties\": {\n            \"id\": {\n                \"$ref\": \"#/SpacecraftId\"\n            },\n            \"name\": {\n                \"type\": \"string\"\n            },\n            \"type\": {\n                \"type\": \"string\",\n                \"enum\": [\n                    \"capsule\",\n                    \"probe\",\n                    \"satellite\",\n                    \"spaceplane\",\n                    \"station\"\n                ]\n            },\n            \"description\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"message\"\n        ],\n        \"properties\": {\n            \"message\": {\n                \"description\": \"A human readable error message\",\n                \"type\": \"string\"\n            }\n        }\n    }\n}"            
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "Required property `name` is missing from the request."
+          }
+  - name: Missing files Parameter
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "Required body parameter files is missing"
+          }
+  - name: Missing content Parameter
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamError",
+              "title": "Invalid request body",
+              "status": 400,
+              "detail": "The body parameter content is missing from the request."
+          }
+  - name: Multiple ROOT Files
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "type": "ROOT",
+                      "content": "{\n    \"openapi\": \"3.0.0\",\n    \"servers\": [\n        {\n            \"url\": \"example.com\"\n        }\n    ],\n    \"info\": {\n        \"contact\": {\n            \"name\": \"Jon\"\n        },\n        \"version\": \"1.0.0\",\n        \"title\": \"Sample API\",\n        \"description\": \"Buy or rent spacecrafts\"\n    },\n    \"paths\": {\n        \"/spacecrafts/{spacecraftId}\": {\n            \"parameters\": [\n                {\n                    \"name\": \"spacecraftId\",\n                    \"description\": \"The unique identifier of the spacecraft\",\n                    \"in\": \"path\",\n                    \"required\": true,\n                    \"schema\": {\n                        \"$ref\": \"schemas.json#/SpacecraftId\"\n                    }\n                }\n            ],\n            \"get\": {\n                \"summary\": \"Read a spacecraft\",\n                \"description\": \"Get information about a spacecraft.\",\n                \"operationId\": \"getSpacecraft\",\n                \"tags\": [\n                    \"Spacecrafts\"\n                ],\n                \"responses\": {\n                    \"200\": {\n                        \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Spacecraft\"\n                                }\n                            }\n                        }\n                    },\n                    \"404\": {\n                        \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    },\n                    \"500\": {\n                        \"description\": \"Unexpected error\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    },\n    \"components\": {\n        \"securitySchemes\": {\n            \"ApiKey\": {\n                \"type\": \"apiKey\",\n                \"in\": \"header\",\n                \"name\": \"x-api-key\"\n            }\n        }\n    },\n    \"tags\": [\n        {\n            \"name\": \"Spacecrafts\"\n        }\n    ],\n    \"security\": [\n        {\n            \"ApiKey\": []\n        }\n    ]\n}"
+                  },
+                  {
+                      "path": "schemas.json",
+                      "type": "ROOT",
+                      "content": "{\n    \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n    },\n    \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"id\",\n            \"name\",\n            \"type\"\n        ],\n        \"properties\": {\n            \"id\": {\n                \"$ref\": \"#/SpacecraftId\"\n            },\n            \"name\": {\n                \"type\": \"string\"\n            },\n            \"type\": {\n                \"type\": \"string\",\n                \"enum\": [\n                    \"capsule\",\n                    \"probe\",\n                    \"satellite\",\n                    \"spaceplane\",\n                    \"station\"\n                ]\n            },\n            \"description\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"message\"\n        ],\n        \"properties\": {\n            \"message\": {\n                \"description\": \"A human readable error message\",\n                \"type\": \"string\"\n            }\n        }\n    }\n}"            
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Malformed request",
+              "detail": "Only one file can have type ROOT"
+          }
+  - name: Missing ROOT File
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n    \"openapi\": \"3.0.0\",\n    \"servers\": [\n        {\n            \"url\": \"example.com\"\n        }\n    ],\n    \"info\": {\n        \"contact\": {\n            \"name\": \"Jon\"\n        },\n        \"version\": \"1.0.0\",\n        \"title\": \"Sample API\",\n        \"description\": \"Buy or rent spacecrafts\"\n    },\n    \"paths\": {\n        \"/spacecrafts/{spacecraftId}\": {\n            \"parameters\": [\n                {\n                    \"name\": \"spacecraftId\",\n                    \"description\": \"The unique identifier of the spacecraft\",\n                    \"in\": \"path\",\n                    \"required\": true,\n                    \"schema\": {\n                        \"$ref\": \"schemas.json#/SpacecraftId\"\n                    }\n                }\n            ],\n            \"get\": {\n                \"summary\": \"Read a spacecraft\",\n                \"description\": \"Get information about a spacecraft.\",\n                \"operationId\": \"getSpacecraft\",\n                \"tags\": [\n                    \"Spacecrafts\"\n                ],\n                \"responses\": {\n                    \"200\": {\n                        \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Spacecraft\"\n                                }\n                            }\n                        }\n                    },\n                    \"404\": {\n                        \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    },\n                    \"500\": {\n                        \"description\": \"Unexpected error\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    },\n    \"components\": {\n        \"securitySchemes\": {\n            \"ApiKey\": {\n                \"type\": \"apiKey\",\n                \"in\": \"header\",\n                \"name\": \"x-api-key\"\n            }\n        }\n    },\n    \"tags\": [\n        {\n            \"name\": \"Spacecrafts\"\n        }\n    ],\n    \"security\": [\n        {\n            \"ApiKey\": []\n        }\n    ]\n}"
+                  },
+                  {
+                      "path": "schemas.json",
+                      "content": "{\n    \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n    },\n    \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"id\",\n            \"name\",\n            \"type\"\n        ],\n        \"properties\": {\n            \"id\": {\n                \"$ref\": \"#/SpacecraftId\"\n            },\n            \"name\": {\n                \"type\": \"string\"\n            },\n            \"type\": {\n                \"type\": \"string\",\n                \"enum\": [\n                    \"capsule\",\n                    \"probe\",\n                    \"satellite\",\n                    \"spaceplane\",\n                    \"station\"\n                ]\n            },\n            \"description\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"message\"\n        ],\n        \"properties\": {\n            \"message\": {\n                \"description\": \"A human readable error message\",\n                \"type\": \"string\"\n            }\n        }\n    }\n}"            
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "status": 400,
+              "detail": "At least one file must have type ROOT",
+              "title": "Malformed request",
+              "type": "https://api.postman.com/problems/bad-request"
+          }
+  - name: File Size Exceeded
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "type": "ROOT",
+                      "content": "{\n    \"openapi\": \"3.0.0\",\n    \"servers\": [\n        {\n            \"url\": \"example.com\"\n        }\n    ],\n    \"info\": {\n        \"contact\": {\n            \"name\": \"Jon\"\n        },\n        \"version\": \"1.0.0\",\n        \"title\": \"Sample API\",\n        \"description\": \"Buy or rent spacecrafts\"\n    },\n    \"paths\": {\n        \"/spacecrafts/{spacecraftId}\": {\n            \"parameters\": [\n                {\n                    \"name\": \"spacecraftId\",\n                    \"description\": \"The unique identifier of the spacecraft\",\n                    \"in\": \"path\",\n                    \"required\": true,\n                    \"schema\": {\n                        \"$ref\": \"schemas.json#/SpacecraftId\"\n                    }\n                }\n            ],\n            \"get\": {\n                \"summary\": \"Read a spacecraft\",\n                \"description\": \"Get information about a spacecraft.\",\n                \"operationId\": \"getSpacecraft\",\n                \"tags\": [\n                    \"Spacecrafts\"\n                ],\n                \"responses\": {\n                    \"200\": {\n                        \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Spacecraft\"\n                                }\n                            }\n                        }\n                    },\n                    \"404\": {\n                        \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    },\n                    \"500\": {\n                        \"description\": \"Unexpected error\",\n                        \"content\": {\n                            \"application/json\": {\n                                \"schema\": {\n                                    \"$ref\": \"schemas.json#/Error\"\n                                }\n                            }\n                        }\n                    }\n                }\n            }\n        }\n    },\n    \"components\": {\n        \"securitySchemes\": {\n            \"ApiKey\": {\n                \"type\": \"apiKey\",\n                \"in\": \"header\",\n                \"name\": \"x-api-key\"\n            }\n        }\n    },\n    \"tags\": [\n        {\n            \"name\": \"Spacecrafts\"\n        }\n    ],\n    \"security\": [\n        {\n            \"ApiKey\": []\n        }\n    ]\n}"
+                  },
+                  {
+                      "path": "schemas.json",
+                      "type": "ROOT",
+                      "content": "{\n    \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n    },\n    \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"id\",\n            \"name\",\n            \"type\"\n        ],\n        \"properties\": {\n            \"id\": {\n                \"$ref\": \"#/SpacecraftId\"\n            },\n            \"name\": {\n                \"type\": \"string\"\n            },\n            \"type\": {\n                \"type\": \"string\",\n                \"enum\": [\n                    \"capsule\",\n                    \"probe\",\n                    \"satellite\",\n                    \"spaceplane\",\n                    \"station\"\n                ]\n            },\n            \"description\": {\n                \"type\": \"string\"\n            }\n        }\n    },\n    \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n            \"message\"\n        ],\n        \"properties\": {\n            \"message\": {\n                \"description\": \"A human readable error message\",\n                \"type\": \"string\"\n            }\n        }\n    }\n}"            
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Malformed request",
+              "detail": "File size exceeded the limit of 10 MB",
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400
+          }
+  - name: Workspace Not Found
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": [\n\n      ]\n    }\n  ]\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "We could not find the workspace you are looking for."
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs?workspaceId=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "type": "OPENAPI:3.0",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": [\n\n      ]\n    }\n  ]\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+
+docs: |-
+  Creates an API specification in Postman's [Spec Hub](https://learning.postman.com/docs/design-apis/specifications/overview/). Specifications can be single or multi-file.
+
+  **Note:**
+
+  - Postman supports OpenAPI 2.0, OpenAPI 3.0, OpenAPI 3.1, AsyncAPI 2.0, protobuf 2 and 3, and GraphQL specifications.
+      
+  - If the file path contains a `/` (forward slash) character, then a folder is created. For example, if the path is the `components/schemas.json` value, then a `components` folder is created with the `schemas.json` file inside.
+      
+  - Multi-file specifications can only have one root file.
+      
+  - Files cannot exceed a maximum of 10 MB in size.

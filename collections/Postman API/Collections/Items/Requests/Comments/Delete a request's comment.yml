@@ -1,0 +1,106 @@
+info:
+  name: Delete a request's comment
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/collections/:collectionUid/requests/:requestUid/comments/:commentId"
+  params:
+    - name: collectionUid
+      value: ""
+      type: path
+      description: The collection's unique ID.
+    - name: requestUid
+      value: ""
+      type: path
+      description: The request's unique ID.
+    - name: commentId
+      value: ""
+      type: path
+      description: The comment's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Comment Deleted
+    request:
+      url: https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2/requests/12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958/comments/46814
+      method: DELETE
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2/requests/12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958/comments/46814
+      method: DELETE
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type":   "https://api.postman.com/problems/unauthorized",
+              "title":  "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/12ece9e1-2abf-4edc-8e34-de66e74114d2/requests/e12d2aa6-85c8-4e6c-aad0-1adcfe05c958/comments/46814
+      method: DELETE
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2/requests/12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958/comments/46814
+      method: DELETE
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2/requests/12345678-e12d2aa6-85c8-4e6c-aad0-1adcfe05c958/comments/46814
+      method: DELETE
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Deletes a comment from a request. On success, this returns an HTTP `204 No Content` response.
+
+  **Note:**
+
+  Deleting the first comment of a thread deletes all the comments in the thread.

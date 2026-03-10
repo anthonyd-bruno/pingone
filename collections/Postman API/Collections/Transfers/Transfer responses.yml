@@ -1,0 +1,165 @@
+info:
+  name: Transfer responses
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/collection-responses-transfers"
+  body:
+    type: json
+    data: |-
+      {
+          "ids": [
+              "{{responseUid}}"
+          ],
+          "target": {
+              "model": "request",
+              "id": "{{modelUid}}"
+          },
+          "location": {
+              "position": "{{position}}",
+              "model": "response",
+              "id": "{{modelUid}}"
+          },
+          "mode": "{{modeType}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Copy Response to Request
+    request:
+      url: https://api.getpostman.com/collection-responses-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-4b81b7c8-62c0-4cb0-b69d-0f256f1baddc"
+              ],
+              "target": {
+                  "model": "request",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb8"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "copy"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-a9b481c1-3e78-4af7-8db0-dce3f3f3c105"
+              ]
+          }
+  - name: Move Response to Request
+    request:
+      url: https://api.getpostman.com/collection-responses-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-4b81b7c8-62c0-4cb0-b69d-0f256f1baddc"
+              ],
+              "target": {
+                  "model": "request",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb8"
+              },
+              "location": {
+                  "position": "end",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-a9b481c1-3e78-4af7-8db0-dce3f3f3c105"
+              ]
+          }
+  - name: Move Response Before Another Response
+    request:
+      url: https://api.getpostman.com/collection-responses-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-4b81b7c8-62c0-4cb0-b69d-0f256f1baddc"
+              ],
+              "target": {
+                  "model": "request",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb8"
+              },
+              "location": {
+                  "position": "before",
+                  "model": "response",
+                  "id": "12345678-80812b16-ac27-45b3-b3eb-793f78530d32"
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "ids": [
+                  "12345678-a9b481c1-3e78-4af7-8db0-dce3f3f3c105"
+              ]
+          }
+  - name: Invalid target Type
+    request:
+      url: https://api.getpostman.com/collection-responses-transfers
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "ids": [
+                  "12345678-3a2069a1-aeb6-462c-ada0-8629858199ba"
+              ],
+              "target": {
+                  "model": "folder",
+                  "id": "12345678-bcb5648b-eecb-4468-ade7-4efb38431bb9"
+              },
+              "location": {
+                  "position": "start",
+                  "model": null,
+                  "id": null
+              },
+              "mode": "move"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |
+          {
+              "type": "Error",
+              "title": "Cannot transfer response to target model type folder",
+              "detail": {}
+          }
+
+docs: Copies or moves responses into a request.

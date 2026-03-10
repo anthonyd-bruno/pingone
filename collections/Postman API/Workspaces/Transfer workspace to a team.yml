@@ -1,0 +1,195 @@
+info:
+  name: Transfer workspace to a team
+  type: http
+  seq: 12
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/workspaces/:workspaceId/transfers"
+  params:
+    - name: workspaceId
+      value: ""
+      type: path
+  body:
+    type: json
+    data: |-
+      {
+          "source": "{{sourceTeamId}}",
+          "destination": "{{destinationTeamId}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/transfers
+      method: PATCH
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "destination": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "source": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "workspace": {
+                  "transfer": {
+                      "id": "8b6ea58b-fd33-4678-bdab-67734b3ed6b0",
+                      "source": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd",
+                      "destination": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+                  }
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/transfers
+      method: PATCH
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "source": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Invalid Request Body",
+              "detail": "The 'destination' property is required",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/transfers
+      method: PATCH
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "destination": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "source": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/transfers
+      method: PATCH
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "destination": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "source": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "You do not have access to this workspace.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/transfers
+      method: PATCH
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "destination": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "source": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "The requested resource was not found.",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/transfers
+      method: PATCH
+      params:
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "destination": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+              "source": "d56bc95f-57c5-47cc-bd99-75c4ad96a6dd"
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "An error has occurred on the server.",
+              "status": 500
+          }
+
+docs: |-
+  Transfers a workspace from one team (`source`) to another team (`destination`).
+
+  **Note:**
+
+  - This endpoint is only available with [Postman Enterprise plans](https://www.postman.com/pricing/) with [Postman Organizations](https://learning.postman.com/docs/administration/onboarding-checklist) enabled.
+      
+  - Team user roles are modified when workspaces are transferred. For example, if a user has the Admin role in the `source` team but not the `destination` team, then their role is removed from the workspace after it's transferred to the `destination` team.

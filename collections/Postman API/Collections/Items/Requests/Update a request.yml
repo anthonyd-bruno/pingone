@@ -1,0 +1,610 @@
+info:
+  name: Update a request
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collections/:collectionId/requests/:requestId"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+    - name: requestId
+      value: ""
+      type: path
+      description: The request's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "POST request",
+          "auth": {
+              "type": "apikey",
+              "apikey": [
+                  {
+                      "key": "value",
+                      "value": "XXX"
+                  },
+                  {
+                      "key": "key",
+                      "value": "api-key"
+                  }
+              ]
+          },
+          "events": [
+              {
+                  "listen": "test",
+                  "script": {
+                      "exec": [
+                          "pm.test(\"Status code is 200\", function () {",
+                          "    pm.response.to.have.status(200);",
+                          "});"
+                      ],
+                      "type": "text/javascript"
+                  }
+              },
+              {
+                  "listen": "prerequest",
+                  "script": {
+                      "exec": [
+                          ""
+                      ],
+                      "type": "text/javascript"
+                  }
+              }
+          ],
+          "dataMode": "raw",
+          "dataOptions": {
+              "raw": {
+                  "language": "json"
+              }
+          },
+          "rawModeData": "{\n    \"name\": \"{{value}}\",\n    \"email\": \"{{email}}\",\n    \"username\": \"{{username}}\"\n}",
+          "description": "This is an example request.",
+          "headers": "Content-Type: application/json\n",
+          "method": "POST",
+          "url": "https://postman-echo.com/user/:id?active={{boolean}}",
+          "preRequestScript": "pm.collectionVariables.get(\"id\");",
+          "tests": "pm.test(\"Body matches string\", function () {\n    pm.expect(pm.response.text()).to.include(\"string_you_want_to_search\");\n});",
+          "queryParams": [
+              {
+                  "key": "active",
+                  "value": true,
+                  "description": "",
+                  "enabled": false
+              }
+          ],
+          "pathVariables": {
+              "id": "{{value}}"
+          },
+          "pathVariableData": [
+              {
+                  "key": "id",
+                  "value": "{{value}}",
+                  "description": "The user's ID."
+              }
+          ],
+          "protocolProfileBehavior": {
+              "disableBodyPruning": true
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/requests/:requestId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestId
+          value: e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "auth": "noauth",
+              "currentHelper": null,
+              "helperAttributes": null,
+              "owner": "12345678",
+              "lastUpdatedBy": "12345678",
+              "lastRevision": 32368133476,
+              "folder": null,
+              "collection": "c05fb60e-bb28-4e7b-9cf7-55ada6ab320c",
+              "name": "Example POST Request",
+              "dataMode": "raw",
+              "data": null,
+              "events": null,
+              "rawModeData": "{\n    \"field\": \"Value\"\n}",
+              "descriptionFormat": null,
+              "description": "This is an example POST request.",
+              "variables": null,
+              "headers": null,
+              "method": "POST",
+              "pathVariables": null,
+              "url": "https://postman-echo.com/post",
+              "preRequestScript": null,
+              "tests": null,
+              "queryParams": [],
+              "headerData": [],
+              "pathVariableData": [],
+              "protocolProfileBehavior": null,
+              "dataDisabled": false,
+              "responses_order": [],
+              "createdAt": "2023-09-01T07:59:25.000Z",
+              "updatedAt": "2023-09-01T09:29:54.000Z",
+              "dataOptions": {
+                  "raw": {
+                      "language": "json"
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "meta": {
+                  "model": "request",
+                  "action": "update"
+              },
+              "data": {
+                  "id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "name": "Example POST Request",
+                  "dataMode": "raw",
+                  "data": null,
+                  "auth": "noauth",
+                  "events": null,
+                  "rawModeData": "{\n    \"field\": \"Value\"\n}",
+                  "descriptionFormat": null,
+                  "description": "This is an example POST request.",
+                  "variables": null,
+                  "headers": null,
+                  "method": "POST",
+                  "pathVariables": null,
+                  "url": "https://postman-echo.com/post",
+                  "preRequestScript": null,
+                  "tests": null,
+                  "currentHelper": null,
+                  "helperAttributes": null,
+                  "queryParams": [],
+                  "headerData": [],
+                  "pathVariableData": [],
+                  "protocolProfileBehavior": null,
+                  "dataDisabled": false,
+                  "responses_order": [],
+                  "createdAt": "2023-09-01T07:59:25.000Z",
+                  "updatedAt": "2023-09-08T12:30:29.000Z",
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 32473087936,
+                  "folder": null,
+                  "collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "dataOptions": {
+                      "raw": {
+                          "language": "json"
+                      }
+                  }
+              },
+              "revision": 32473098909
+          }
+  - name: Update to Inherit Parent Auth
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/requests/:requestId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestId
+          value: e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "auth": null,
+              "currentHelper": null,
+              "helperAttributes": null,
+              "folder": null,
+              "collection": "c05fb60e-bb28-4e7b-9cf7-55ada6ab320c",
+              "name": "Example POST Request",
+              "dataMode": "raw",
+              "data": [
+                  {
+                      "enabled": true,
+                      "value": "3f14c9c7-e71c-4094-b90e-ac9edb232c2e",
+                      "type": "text",
+                      "key": "id"
+                  },
+                  {
+                      "enabled": true,
+                      "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                      "type": "text",
+                      "key": "collection"
+                  }
+              ],
+              "events": [
+                  {
+                      "listen": "test",
+                      "script": {
+                          "type": "text/javascript",
+                          "exec": [
+                              "var data = JSON.parse(responseBody);"
+                          ]
+                      }
+                  }
+              ],
+              "rawModeData": "{\n    \"field\": \"Value\"\n}",
+              "descriptionFormat": null,
+              "description": "This is an example POST request.",
+              "variables": null,
+              "headers": null,
+              "method": "POST",
+              "pathVariables": null,
+              "url": "https://postman-echo.com/post",
+              "preRequestScript": null,
+              "tests": "var data = JSON.parse(responseBody);",
+              "queryParams": [],
+              "headerData": [],
+              "pathVariableData": [],
+              "protocolProfileBehavior": null,
+              "dataDisabled": false,
+              "responses_order": [],
+              "dataOptions": {
+                  "raw": {
+                      "language": "json"
+                  }
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "meta": {
+                  "model": "request",
+                  "action": "update"
+              },
+              "data": {
+                  "id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "name": "Example POST Request",
+                  "dataMode": "params",
+                  "data": [
+                      {
+                          "enabled": true,
+                          "value": "3f14c9c7-e71c-4094-b90e-ac9edb232c2e",
+                          "type": "text",
+                          "key": "id"
+                      },
+                      {
+                          "enabled": true,
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "text",
+                          "key": "collection"
+                      }
+                  ],
+                  "auth": null,
+                  "events": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "type": "text/javascript",
+                              "exec": [
+                                  "var data = JSON.parse(responseBody);"
+                              ]
+                          }
+                      }
+                  ],
+                  "rawModeData": "{\n    \"field\": \"Value\"\n}",
+                  "descriptionFormat": null,
+                  "description": "This is an example POST request.",
+                  "variables": null,
+                  "headers": "",
+                  "method": "POST",
+                  "pathVariables": {},
+                  "url": "https://postman-echo.com/post",
+                  "preRequestScript": null,
+                  "tests": "var data = JSON.parse(responseBody);",
+                  "currentHelper": null,
+                  "helperAttributes": null,
+                  "queryParams": [],
+                  "headerData": [],
+                  "pathVariableData": [],
+                  "protocolProfileBehavior": null,
+                  "dataDisabled": false,
+                  "responses_order": [],
+                  "createdAt": "2022-08-29T16:49:19.964Z",
+                  "updatedAt": "2022-08-29T16:49:19.964Z",
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 24994863800,
+                  "folder": null,
+                  "collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "dataOptions": {
+                      "raw": {
+                          "language": "json"
+                      }
+                  }
+              },
+              "revision": 24994954828
+          }
+  - name: Disable Query Params
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/requests/:requestId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestId
+          value: e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "owner": "12345678",
+              "lastUpdatedBy": "12345678",
+              "lastRevision": 33437203713,
+              "folder": null,
+              "collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "id": "42d13443-2f50-47f0-b417-03081a97bf45",
+              "name": "GET Request with headers and query params",
+              "dataMode": null,
+              "data": null,
+              "auth": null,
+              "events": null,
+              "rawModeData": null,
+              "descriptionFormat": null,
+              "description": null,
+              "variables": null,
+              "headers": "// x-api-key: apikey",
+              "method": "GET",
+              "pathVariables": null,
+              "url": "https://postman-echo.com/get?param1=value1",
+              "preRequestScript": null,
+              "tests": null,
+              "currentHelper": null,
+              "helperAttributes": null,
+              "queryParams": [
+                  {
+                      "key": "param1",
+                      "value": "value1",
+                      "description": null,
+                      "enabled": true
+                  },
+                  {
+                      "key": "param2",
+                      "value": "value2",
+                      "description": null,
+                      "enabled": false
+                  }
+              ],
+              "headerData": [
+                  {
+                      "key": "x-api-key",
+                      "value": "apikey",
+                      "type": "text",
+                      "description": null,
+                      "enabled": false
+                  }
+              ],
+              "pathVariableData": [],
+              "protocolProfileBehavior": {
+                  "disableBodyPruning": true
+              },
+              "dataDisabled": false,
+              "responses_order": [],
+              "createdAt": "2023-10-27T08:48:42.000Z",
+              "updatedAt": "2023-11-02T11:05:19.000Z"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "meta": {
+                  "model": "request",
+                  "action": "update"
+              },
+              "data": {
+                  "id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "name": "Example POST Request",
+                  "dataMode": "params",
+                  "data": [
+                      {
+                          "enabled": true,
+                          "value": "3f14c9c7-e71c-4094-b90e-ac9edb232c2e",
+                          "type": "text",
+                          "key": "id"
+                      },
+                      {
+                          "enabled": true,
+                          "value": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "text",
+                          "key": "collection"
+                      }
+                  ],
+                  "auth": null,
+                  "events": [
+                      {
+                          "listen": "test",
+                          "script": {
+                              "type": "text/javascript",
+                              "exec": [
+                                  "var data = JSON.parse(responseBody);"
+                              ]
+                          }
+                      }
+                  ],
+                  "rawModeData": "{\n    \"field\": \"Value\"\n}",
+                  "descriptionFormat": null,
+                  "description": "This is an example POST request.",
+                  "variables": null,
+                  "headers": "",
+                  "method": "POST",
+                  "pathVariables": {},
+                  "url": "https://postman-echo.com/post",
+                  "preRequestScript": null,
+                  "tests": "var data = JSON.parse(responseBody);",
+                  "currentHelper": null,
+                  "helperAttributes": null,
+                  "queryParams": [],
+                  "headerData": [],
+                  "pathVariableData": [],
+                  "protocolProfileBehavior": null,
+                  "dataDisabled": false,
+                  "responses_order": [],
+                  "createdAt": "2022-08-29T16:49:19.964Z",
+                  "updatedAt": "2022-08-29T16:49:19.964Z",
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 24994863800,
+                  "folder": null,
+                  "collection": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "dataOptions": {
+                      "raw": {
+                          "language": "json"
+                      }
+                  }
+              },
+              "revision": 24994954828
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/requests/:requestId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestId
+          value: e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Example GET request",
+              "method": "GET"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the request you are looking for",
+                  "details": {
+                      "model": "request",
+                      "model_id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                      "owner": "12345678"
+                  }
+              }
+          }
+  - name: Change Parent Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/requests/:requestId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestId
+          value: e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Example GET request",
+              "method": "GET"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "changeParentError",
+                  "message": "You can't update the parent. Use transfer instead.",
+                  "details": {
+                      "server": {
+                          "model": "collection",
+                          "model_id": "12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      },
+                      "request": {
+                          "model": "collection",
+                          "model_id": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                      }
+                  }
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/requests/:requestId
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: requestId
+          value: e12d2aa6-85c8-4e6c-aad0-1adcfe05c958
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Example GET request",
+              "method": "GET"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "Unauthorized",
+                  "message": "Unauthorized",
+                  "details": {
+                      "model": "request",
+                      "model_id": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                      "owner": "12345678"
+                  }
+              }
+          }
+
+docs: |-
+  Updates a request in a collection. For a complete list of properties and information, see the [Postman Collection Format documentation](https://schema.postman.com/collection/json/v2.1.0/draft-07/docs/index.html).
+
+  **Note:**
+
+  - This request uses example values in the request body for context when updating collection requests. For additional ways to create a request, see the collection's examples.
+      
+  - You must pass a collection ID (`12ece9e1-2abf-4edc-8e34-de66e74114d2`), not a collection UID (`12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2`), in this endpoint.
+      
+  - This endpoint acts like a PATCH method. It only updates the values that you pass in the request body (for example, the `name` property). The endpoint does **not** update the entire resource.
+      
+  - This endpoint does not support changing the folder of a request.

@@ -1,0 +1,3501 @@
+info:
+  name: Get analytics data
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/analytics?resource=&metrics=&view="
+  params:
+    - name: resource
+      value: ""
+      type: query
+      description: |-
+        Returns metrics and insights for API usage, success, and workspace/team trends in Postman:
+        - `user` — Data related to individual user activities and engagement within Postman workspaces.
+        - `team` — Team-level analytics, license consumption, and organizational trends.
+        - `workspace` — Workspace-level activities, elements, and collaboration patterns.
+    - name: metrics
+      value: ""
+      type: query
+      description: |-
+        Filters the response by only the given metrics. The metric must match the given `resource` value.
+
+        For a list of metrics and their related `resource` value, call the GET `/analytics-metadata` endpoint.
+    - name: view
+      value: ""
+      type: query
+      description: |-
+        The view type for the analytics data:
+        - `detailed` — Return extensive information.
+        - `summary` — Return aggregated information.
+    - name: workspaceType
+      value: ""
+      type: query
+      description: A comma-separated list of workspace types to filter the results by. Accepts `internal`, `public`, and `partner`.
+      disabled: true
+    - name: userId
+      value: ""
+      type: query
+      description: A comma-separated list of user IDs to filter the results by. Only pass this parameter when calling the `user_requests` metric for the `workspace` resource.
+      disabled: true
+    - name: duration
+      value: ""
+      type: query
+      description: Filters the response by the given duration.
+      disabled: true
+    - name: responseStatus
+      value: ""
+      type: query
+      description: A comma-separated list of HTTP response status codes to filter the results by. Accepts values `100` through `600`. Only pass this parameter when using the `user_requests` metric.
+      disabled: true
+    - name: requestId
+      value: ""
+      type: query
+      description: A comma-separated list of unique request IDs (`userId`-`requestId`) to filter the response by. Only pass this parameter when using the `user_requests` metric.
+      disabled: true
+    - name: attentionType
+      value: ""
+      type: query
+      description: A comma-separated list of issues types to filter the results by. Attention types provide details about issues users or partners are facing. Accepts the `high_non_200OK_rate_for_partner` and `no_success_on_tried_request` values. Only pass this parameter when using the `needs_attention` metric.
+      disabled: true
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of records in the paginated response.
+      disabled: true
+    - name: offset
+      value: ""
+      type: query
+      description: The zero-based offset of the first item returned.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Users - Active Users - Top 5 Users
+    request:
+      url: https://api.getpostman.com/analytics?resource=user&metrics=active_users&view=detailed&workspaceType=public,partner,internal&limit=3&offset=0
+      method: GET
+      params:
+        - name: resource
+          value: user
+          type: query
+        - name: metrics
+          value: active_users
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+        - name: offset
+          value: "0"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "timestamp",
+                                  "type": "DATE",
+                                  "description": "Date representing the reporting timestamp."
+                              },
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier assigned to the user."
+                              },
+                              {
+                                  "name": "api_requests_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of API requests made by the user."
+                              },
+                              {
+                                  "name": "team_joining_date",
+                                  "type": "DATE",
+                                  "description": "Date when the user joined the team."
+                              },
+                              {
+                                  "name": "last_active_ts",
+                                  "type": "TIMESTAMP",
+                                  "description": "Timestamp of the user's most recent activity."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-03-01",
+                              "12345678",
+                              0,
+                              "2022-06-10",
+                              "2025-08-25T18:10:00Z"
+                          ],
+                          [
+                              "2025-04-01",
+                              "87654321",
+                              0,
+                              "2022-08-14",
+                              "2025-08-24T21:30:00Z"
+                          ],
+                          [
+                              "2025-05-01",
+                              "56781234",
+                              0,
+                              "2023-01-03",
+                              "2025-08-23T19:45:00Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 42,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Users - Active Users - Count Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=user&metrics=active_users&view=summary&workspaceType=public,partner,internal&duration=last_month
+      method: GET
+      params:
+        - name: resource
+          value: user
+          type: query
+        - name: metrics
+          value: active_users
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number for the summarized metric."
+                              },
+                              {
+                                  "name": "change",
+                                  "type": "FLOAT",
+                                  "description": "Percentage or numeric change from previous value."
+                              },
+                              {
+                                  "name": "change_type",
+                                  "type": "STRING",
+                                  "description": "Indicates whether the change is an increase or decrease."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              4231,
+                              5.51,
+                              "increase"
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace Active Users - Count - Internal Workspace
+    request:
+      url: https://api.getpostman.com/analytics?resource=user&metrics=workspace_active_users&view=summary&workspaceType=internal&duration=last_month
+      method: GET
+      params:
+        - name: resource
+          value: user
+          type: query
+        - name: metrics
+          value: workspace_active_users
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number for the summarized metric."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              4231
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Elements
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=elements_in_workspace&view=detailed&workspaceType=public,partner,internal&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: elements_in_workspace
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "timestamp",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for the aggregated metrics."
+                              },
+                              {
+                                  "name": "collections_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of collections at the given time."
+                              },
+                              {
+                                  "name": "environments_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of environments at the given time."
+                              },
+                              {
+                                  "name": "mocks_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of mock servers at the given time."
+                              },
+                              {
+                                  "name": "monitors_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of monitors at the given time."
+                              },
+                              {
+                                  "name": "flows_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of flows created at the given time."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-03-01",
+                              420,
+                              310,
+                              150,
+                              190,
+                              120
+                          ],
+                          [
+                              "2025-04-01",
+                              450,
+                              320,
+                              160,
+                              200,
+                              125
+                          ],
+                          [
+                              "2025-05-01",
+                              470,
+                              335,
+                              170,
+                              215,
+                              130
+                          ],
+                          [
+                              "2025-06-01",
+                              500,
+                              345,
+                              185,
+                              230,
+                              140
+                          ],
+                          [
+                              "2025-07-01",
+                              520,
+                              355,
+                              195,
+                              240,
+                              145
+                          ],
+                          [
+                              "2025-08-01",
+                              540,
+                              370,
+                              205,
+                              255,
+                              150
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Elements - Internal Workspaces
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=elements_in_workspace&view=detailed&workspaceType=internal&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: elements_in_workspace
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "timestamp",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for the aggregated metrics."
+                              },
+                              {
+                                  "name": "collections_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of collections at the given time."
+                              },
+                              {
+                                  "name": "environments_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of environments at the given time."
+                              },
+                              {
+                                  "name": "mocks_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of mock servers at the given time."
+                              },
+                              {
+                                  "name": "monitors_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of monitors at the given time."
+                              },
+                              {
+                                  "name": "flows_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of flows created at the given time."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-03-01",
+                              420,
+                              310,
+                              150,
+                              190,
+                              120
+                          ],
+                          [
+                              "2025-04-01",
+                              450,
+                              320,
+                              160,
+                              200,
+                              125
+                          ],
+                          [
+                              "2025-05-01",
+                              470,
+                              335,
+                              170,
+                              215,
+                              130
+                          ],
+                          [
+                              "2025-06-01",
+                              500,
+                              345,
+                              185,
+                              230,
+                              140
+                          ],
+                          [
+                              "2025-07-01",
+                              520,
+                              355,
+                              195,
+                              240,
+                              145
+                          ],
+                          [
+                              "2025-08-01",
+                              540,
+                              370,
+                              205,
+                              255,
+                              150
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Active Workspace
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=active_workspaces&view=detailed&workspaceType=public,partner,internal&duration=last_month&limit=5&offset=0
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: active_workspaces
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+        - name: limit
+          value: "5"
+          type: query
+        - name: offset
+          value: "0"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "is_hidden",
+                                  "type": "BOOLEAN",
+                                  "description": "Indicates whether the workspace is hidden."
+                              },
+                              {
+                                  "name": "workspace_name",
+                                  "type": "STRING",
+                                  "description": "Display name of the workspace."
+                              },
+                              {
+                                  "name": "workspace_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the workspace."
+                              },
+                              {
+                                  "name": "created_by",
+                                  "type": "STRING",
+                                  "description": "Name of the user who created the workspace."
+                              },
+                              {
+                                  "name": "type",
+                                  "type": "STRING",
+                                  "description": "Category of the workspace such as internal or partner."
+                              },
+                              {
+                                  "name": "contributors",
+                                  "type": "INTEGER",
+                                  "description": "Number of contributors in the workspace."
+                              },
+                              {
+                                  "name": "api_calls",
+                                  "type": "INTEGER",
+                                  "description": "Total number of API calls made within the workspace."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              false,
+                              "Engineering Hub",
+                              "61091e96-9e7b-4e21-92f9-33da145a0dfd",
+                              "12345678",
+                              "internal",
+                              15,
+                              18250
+                          ],
+                          [
+                              true,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null
+                          ],
+                          [
+                              false,
+                              "Partner API Hub",
+                              "064e9d02-1e15-44b0-be1a-e766ca20d2f5",
+                              "12345678",
+                              "partner",
+                              12,
+                              17080
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 14755,
+                          "limit": 5,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Workspace - Active Workspaces - Internal Workspaces
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=active_workspaces&view=detailed&workspaceType=internal&duration=last_month&limit=3&offset=0
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: active_workspaces
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+        - name: offset
+          value: "0"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "is_hidden",
+                                  "type": "BOOLEAN",
+                                  "description": "Indicates whether the workspace is hidden."
+                              },
+                              {
+                                  "name": "workspace_name",
+                                  "type": "STRING",
+                                  "description": "Display name of the workspace."
+                              },
+                              {
+                                  "name": "workspace_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the workspace."
+                              },
+                              {
+                                  "name": "created_by",
+                                  "type": "STRING",
+                                  "description": "Name of the user who created the workspace."
+                              },
+                              {
+                                  "name": "type",
+                                  "type": "STRING",
+                                  "description": "Category of the workspace such as internal or partner."
+                              },
+                              {
+                                  "name": "contributors",
+                                  "type": "INTEGER",
+                                  "description": "Number of contributors in the workspace."
+                              },
+                              {
+                                  "name": "api_calls",
+                                  "type": "INTEGER",
+                                  "description": "Total number of API calls made within the workspace."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              false,
+                              "Engineering Hub",
+                              "61091e96-9e7b-4e21-92f9-33da145a0dfd",
+                              "Alex Cruz",
+                              "Internal",
+                              15,
+                              18250
+                          ],
+                          [
+                              true,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null
+                          ],
+                          [
+                              false,
+                              "Partner API Hub",
+                              "064e9d02-1e15-44b0-be1a-e766ca20d2f5",
+                              "Taylor Lee",
+                              "Partner",
+                              12,
+                              17080
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 42,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Workspace - Active - Count Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=active_workspaces&view=summary&workspaceType=public,partner,internal&duration=last_month&limit=5&offset=0
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: active_workspaces
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+        - name: limit
+          value: "5"
+          type: query
+        - name: offset
+          value: "0"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number for the summarized metric."
+                              },
+                              {
+                                  "name": "change",
+                                  "type": "FLOAT",
+                                  "description": "Percentage or numeric change from the previous value."
+                              },
+                              {
+                                  "name": "change_type",
+                                  "type": "STRING",
+                                  "description": "Indicates whether the change is an increase or decrease."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              312,
+                              4.69,
+                              "increase"
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Active - Count Trend - Internal Workspace
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=active_workspaces&view=summary&workspaceType=internal&duration=last_month&limit=5&offset=0
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: active_workspaces
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+        - name: limit
+          value: "5"
+          type: query
+        - name: offset
+          value: "0"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number for the summarized metric."
+                              },
+                              {
+                                  "name": "change",
+                                  "type": "FLOAT",
+                                  "description": "Percentage or numeric change from the previous value."
+                              },
+                              {
+                                  "name": "change_type",
+                                  "type": "STRING",
+                                  "description": "Indicates whether the change is an increase or decrease."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              312,
+                              4.69,
+                              "increase"
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Active Users - Count - Internal Workspace
+    request:
+      url: https://api.getpostman.com/analytics?resource=user&metrics=workspace_active_users&view=summary&workspaceType=internal&duration=last_month
+      method: GET
+      params:
+        - name: resource
+          value: user
+          type: query
+        - name: metrics
+          value: workspace_active_users
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number for the summarized metric."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              4231
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - API Calls - Count Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=api_calls&view=summary&workspaceType=public,partner,internal&duration=last_month
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: api_calls
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number for the summarized metric."
+                              },
+                              {
+                                  "name": "change",
+                                  "type": "FLOAT",
+                                  "description": "Percentage or numeric change from the previous value."
+                              },
+                              {
+                                  "name": "change_type",
+                                  "type": "STRING",
+                                  "description": "Indicates whether the change is an increase or decrease."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              120546,
+                              3.74,
+                              "increase"
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - API Calls - Count Trend - Internal Workspace
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=api_calls&view=summary&workspaceType=internal&duration=last_month
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: api_calls
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number for the summarized metric."
+                              },
+                              {
+                                  "name": "change",
+                                  "type": "FLOAT",
+                                  "description": "Percentage or numeric change from the previous value."
+                              },
+                              {
+                                  "name": "change_type",
+                                  "type": "STRING",
+                                  "description": "Indicates whether the change is an increase or decrease."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              120546,
+                              3.74,
+                              "increase"
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Active Collections
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=active_collections&view=detailed&workspaceType=public,partner,internal&duration=last_month&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: active_collections
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "is_hidden",
+                                  "type": "BOOLEAN",
+                                  "description": "Indicates whether the collection is hidden."
+                              },
+                              {
+                                  "name": "collection_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the collection."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Display name of the collection."
+                              },
+                              {
+                                  "name": "workspace_name",
+                                  "type": "STRING",
+                                  "description": "Name of the workspace containing the collection."
+                              },
+                              {
+                                  "name": "created_by",
+                                  "type": "STRING",
+                                  "description": "Name of the user who created the collection."
+                              },
+                              {
+                                  "name": "last_edited_on",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Timestamp when the collection was last updated."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              false,
+                              "dd14b810-bb36-4549-9410-1c30728fb417",
+                              "Service Monitoring API",
+                              "Engineering Hub",
+                              "Alex Cruz",
+                              "2025-09-15T09:00:00Z"
+                          ],
+                          [
+                              true,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null
+                          ],
+                          [
+                              false,
+                              "36c18c9f-e942-4119-bef8-2cf0ebede4e9",
+                              "User Authentication API",
+                              "Partner API Hub",
+                              "Taylor Lee",
+                              "2025-09-12T14:40:00Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 38,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Workspace - Active Collections - Internal Workspaces
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=active_collections&view=detailed&workspaceType=internal&duration=last_month&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: active_collections
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_month
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "is_hidden",
+                                  "type": "BOOLEAN",
+                                  "description": "Indicates whether the collection is hidden."
+                              },
+                              {
+                                  "name": "collection_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the collection."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Display name of the collection."
+                              },
+                              {
+                                  "name": "workspace_name",
+                                  "type": "STRING",
+                                  "description": "Name of the workspace containing the collection."
+                              },
+                              {
+                                  "name": "created_by",
+                                  "type": "STRING",
+                                  "description": "Name of the user who created the collection."
+                              },
+                              {
+                                  "name": "last_edited_on",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Timestamp when the collection was last updated."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              false,
+                              "56781234-dd14b810-bb36-4549-9410-1c30728fb417",
+                              "Service Monitoring API",
+                              "Engineering Hub",
+                              "Alex Cruz",
+                              "2025-09-15T09:00:00Z"
+                          ],
+                          [
+                              true,
+                              null,
+                              null,
+                              null,
+                              null,
+                              null
+                          ],
+                          [
+                              false,
+                              "12345678-36c18c9f-e942-4119-bef8-2cf0ebede4e9",
+                              "User Authentication API",
+                              "Partner API Hub",
+                              "Taylor Lee",
+                              "2025-09-12T14:40:00Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 38,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Workspace - Response Status Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=response_status&view=summary&workspaceType=public,partner,internal&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: response_status
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: public,partner,internal
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "timestamp",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for the aggregated API metrics."
+                              },
+                              {
+                                  "name": "total_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of API requests for the given date."
+                              },
+                              {
+                                  "name": "count_2xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of successful API responses (2xx)."
+                              },
+                              {
+                                  "name": "count_3xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of redirection responses (3xx)."
+                              },
+                              {
+                                  "name": "count_4xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of client error responses (4xx)."
+                              },
+                              {
+                                  "name": "count_5xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of server error responses (5xx)."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-03-01",
+                              102340,
+                              74480,
+                              3120,
+                              23100,
+                              4760
+                          ],
+                          [
+                              "2025-04-01",
+                              110540,
+                              80210,
+                              2990,
+                              25340,
+                              4990
+                          ],
+                          [
+                              "2025-05-01",
+                              125780,
+                              92410,
+                              3200,
+                              28200,
+                              5170
+                          ],
+                          [
+                              "2025-06-01",
+                              118420,
+                              86540,
+                              3030,
+                              27050,
+                              4830
+                          ],
+                          [
+                              "2025-07-01",
+                              121360,
+                              88250,
+                              3300,
+                              28210,
+                              4900
+                          ],
+                          [
+                              "2025-08-01",
+                              130550,
+                              95400,
+                              3530,
+                              29620,
+                              5530
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Response Status Trend - Internal WS
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=response_status&view=summary&workspaceType=internal&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: response_status
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: workspaceType
+          value: internal
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "timestamp",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for the aggregated API metrics."
+                              },
+                              {
+                                  "name": "total_count",
+                                  "type": "INTEGER",
+                                  "description": "Total number of API requests for the given date."
+                              },
+                              {
+                                  "name": "count_2xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of successful API responses (2xx)."
+                              },
+                              {
+                                  "name": "count_3xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of redirection responses (3xx)."
+                              },
+                              {
+                                  "name": "count_4xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of client error responses (4xx)."
+                              },
+                              {
+                                  "name": "count_5xx",
+                                  "type": "INTEGER",
+                                  "description": "Number of server error responses (5xx)."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-03-01",
+                              102340,
+                              74480,
+                              3120,
+                              23100,
+                              4760
+                          ],
+                          [
+                              "2025-04-01",
+                              110540,
+                              80210,
+                              2990,
+                              25340,
+                              4990
+                          ],
+                          [
+                              "2025-05-01",
+                              125780,
+                              92410,
+                              3200,
+                              28200,
+                              5170
+                          ],
+                          [
+                              "2025-06-01",
+                              118420,
+                              86540,
+                              3030,
+                              27050,
+                              4830
+                          ],
+                          [
+                              "2025-07-01",
+                              121360,
+                              88250,
+                              3300,
+                              28210,
+                              4900
+                          ],
+                          [
+                              "2025-08-01",
+                              130550,
+                              95400,
+                              3530,
+                              29620,
+                              5530
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Workspace - Collection Error Rate
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=collection_error_aggregate&view=detailed&duration=last_6_months&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: collection_error_aggregate
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "is_hidden",
+                                  "type": "BOOLEAN",
+                                  "description": "Indicates whether the collection is hidden."
+                              },
+                              {
+                                  "name": "collection_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the collection."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Name of the collection."
+                              },
+                              {
+                                  "name": "workspace_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the workspace owning the collection."
+                              },
+                              {
+                                  "name": "count_4xx",
+                                  "type": "INTEGER",
+                                  "description": "Total number of 4xx responses for the collection in the selected duration."
+                              },
+                              {
+                                  "name": "count_5xx",
+                                  "type": "INTEGER",
+                                  "description": "Total number of 5xx responses for the collection in the selected duration."
+                              },
+                              {
+                                  "name": "total_api_calls",
+                                  "type": "INTEGER",
+                                  "description": "Total API calls for the collection in the selected duration."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "56781234-dd14b810-bb36-4549-9410-1c30728fb417",
+                              "Demo requests",
+                              "ca858e90-131c-44a1-a132-03903fb1ab35",
+                              0,
+                              0,
+                              1
+                          ],
+                          [
+                              "12345678-36c18c9f-e942-4119-bef8-2cf0ebede4e9",
+                              "Testing composasble",
+                              "4540d410-ef72-4977-afb8-d7f53705f379",
+                              0,
+                              0,
+                              1
+                          ],
+                          [
+                              "87654321-13f603d8-4cb2-45d1-92f8-e39891fdf387",
+                              "New Collection",
+                              "b63a8c9d-fac3-47b9-85b1-7ba9237ce62f",
+                              0,
+                              0,
+                              1
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 453,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Team - User API Journey Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=user_api_journey&view=summary&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: user_api_journey
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "timestamp",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for aggregated user activity metrics."
+                              },
+                              {
+                                  "name": "active_user",
+                                  "type": "INTEGER",
+                                  "description": "Total number of users active on the given date."
+                              },
+                              {
+                                  "name": "api_user",
+                                  "type": "INTEGER",
+                                  "description": "Number of users who made at least one API call."
+                              },
+                              {
+                                  "name": "new_api_user",
+                                  "type": "INTEGER",
+                                  "description": "Number of users making API calls for the first time."
+                              },
+                              {
+                                  "name": "successful",
+                                  "type": "INTEGER",
+                                  "description": "Number of users whose API calls were mostly successful."
+                              },
+                              {
+                                  "name": "error_only",
+                                  "type": "INTEGER",
+                                  "description": "Number of users who encountered only error responses."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-03-01",
+                              812,
+                              654,
+                              120,
+                              590,
+                              64
+                          ],
+                          [
+                              "2025-04-01",
+                              920,
+                              710,
+                              145,
+                              620,
+                              90
+                          ],
+                          [
+                              "2025-05-01",
+                              845,
+                              692,
+                              100,
+                              640,
+                              52
+                          ],
+                          [
+                              "2025-06-01",
+                              900,
+                              730,
+                              130,
+                              670,
+                              60
+                          ],
+                          [
+                              "2025-07-01",
+                              870,
+                              710,
+                              110,
+                              660,
+                              50
+                          ],
+                          [
+                              "2025-08-01",
+                              890,
+                              740,
+                              140,
+                              690,
+                              50
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Team - Workspace Distribution Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=workspace_distribution&view=summary&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: workspace_distribution
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "date",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for the aggregated workspace counts."
+                              },
+                              {
+                                  "name": "total",
+                                  "type": "INTEGER",
+                                  "description": "Total number of workspaces for the given date."
+                              },
+                              {
+                                  "name": "internal",
+                                  "type": "INTEGER",
+                                  "description": "Number of internal workspaces."
+                              },
+                              {
+                                  "name": "partner",
+                                  "type": "INTEGER",
+                                  "description": "Number of partner workspaces."
+                              },
+                              {
+                                  "name": "public",
+                                  "type": "INTEGER",
+                                  "description": "Number of public workspaces."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-02-01",
+                              1300,
+                              950,
+                              200,
+                              150
+                          ],
+                          [
+                              "2025-03-01",
+                              1350,
+                              980,
+                              210,
+                              160
+                          ],
+                          [
+                              "2025-04-01",
+                              1370,
+                              995,
+                              215,
+                              160
+                          ],
+                          [
+                              "2025-05-01",
+                              1380,
+                              1000,
+                              220,
+                              160
+                          ],
+                          [
+                              "2025-06-01",
+                              1400,
+                              1020,
+                              225,
+                              155
+                          ],
+                          [
+                              "2025-07-01",
+                              1420,
+                              1035,
+                              230,
+                              155
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Team - Internal Workspace Distribution Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=internal_workspace_distribution&view=summary&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: internal_workspace_distribution
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "date",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for internal workspace distribution."
+                              },
+                              {
+                                  "name": "internal_team_shared",
+                                  "type": "INTEGER",
+                                  "description": "Count of internal team-shared workspaces."
+                              },
+                              {
+                                  "name": "internal_private",
+                                  "type": "INTEGER",
+                                  "description": "Count of internal private workspaces."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-02-01",
+                              520,
+                              380
+                          ],
+                          [
+                              "2025-03-01",
+                              540,
+                              395
+                          ],
+                          [
+                              "2025-04-01",
+                              555,
+                              405
+                          ],
+                          [
+                              "2025-05-01",
+                              565,
+                              415
+                          ],
+                          [
+                              "2025-06-01",
+                              575,
+                              425
+                          ],
+                          [
+                              "2025-07-01",
+                              590,
+                              440
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Team - License Consumption Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=license_consumption&view=summary&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: license_consumption
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "date",
+                                  "type": "DATE",
+                                  "format": "YYYY-MM-DD",
+                                  "description": "Reporting date for team and license metrics."
+                              },
+                              {
+                                  "name": "team_members",
+                                  "type": "INTEGER",
+                                  "description": "Total number of members in the team."
+                              },
+                              {
+                                  "name": "active_postman_users",
+                                  "type": "INTEGER",
+                                  "description": "Count of team members actively using Postman."
+                              },
+                              {
+                                  "name": "partners",
+                                  "type": "INTEGER",
+                                  "description": "Number of partner users associated with the team."
+                              },
+                              {
+                                  "name": "guests",
+                                  "type": "INTEGER",
+                                  "description": "Number of guest users with limited access."
+                              },
+                              {
+                                  "name": "unused_licenses",
+                                  "type": "INTEGER",
+                                  "description": "Number of licenses assigned but not actively used."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-02-01",
+                              600,
+                              430,
+                              170,
+                              85,
+                              25
+                          ],
+                          [
+                              "2025-03-01",
+                              620,
+                              450,
+                              180,
+                              90,
+                              20
+                          ],
+                          [
+                              "2025-04-01",
+                              635,
+                              460,
+                              185,
+                              92,
+                              18
+                          ],
+                          [
+                              "2025-05-01",
+                              640,
+                              475,
+                              190,
+                              95,
+                              15
+                          ],
+                          [
+                              "2025-06-01",
+                              655,
+                              490,
+                              195,
+                              98,
+                              12
+                          ],
+                          [
+                              "2025-07-01",
+                              670,
+                              505,
+                              200,
+                              100,
+                              10
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Team - Last Autoflex Cycle - Detailed
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=last_autoflex_cycle&view=detailed&limit=5&offset=3
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: last_autoflex_cycle
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: limit
+          value: "5"
+          type: query
+        - name: offset
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "type": "STRING",
+                                  "description": "User's name.",
+                                  "name": "name"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Email ID of user.",
+                                  "name": "email"
+                              },
+                              {
+                                  "type": "DATE",
+                                  "description": "Timestamp when user was last active.",
+                                  "name": "last_active"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Email ID that invited this user.",
+                                  "name": "invited_by"
+                              },
+                              {
+                                  "type": "DATE",
+                                  "description": "Timestamp when user joined team.",
+                                  "name": "joined_date"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Concatenated list of roles that user has.",
+                                  "name": "user_role"
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "taylor-lee",
+                              "taylor.lee@example.com",
+                              "2025-05-14T00:00:00.000Z",
+                              "",
+                              "2024-12-20T08:37:08.000Z",
+                              "Developer"
+                          ],
+                          [
+                              "alex-cruz",
+                              "alex-cruz@example.com",
+                              "2025-10-30T00:00:00.000Z",
+                              "taylor.lee@example.com",
+                              "2025-05-13T08:30:45.000Z",
+                              "Developer"
+                          ]
+                      ],
+                      "pagination": {
+                          "limit": 2,
+                          "has_more": true,
+                          "total": 10,
+                          "offset": 3
+                      }
+                  }
+              }
+          }
+  - name: Team - Members - Detailed
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=members&view=detailed&limit=2&offset=3
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: members
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+        - name: offset
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "type": "STRING",
+                                  "description": "Username of the user.",
+                                  "name": "user_name"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Email ID of user.",
+                                  "name": "email"
+                              },
+                              {
+                                  "type": "DATE",
+                                  "description": "Timestamp when user was added to team.",
+                                  "name": "added_in_team"
+                              },
+                              {
+                                  "type": "DATE",
+                                  "description": "Timestamp when user was last active.",
+                                  "name": "last_active"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Concatenated list of roles that user has.",
+                                  "name": "user_role"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Email ID that invited this user.",
+                                  "name": "invited_by"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Type of invitation.",
+                                  "name": "invite_type"
+                              },
+                              {
+                                  "type": "STRING",
+                                  "description": "Describes whether the public profile of the user is enabled or not.",
+                                  "name": "public_profile_enabled"
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "taylor-lee",
+                              "taylor.lee@example.com",
+                              "2025-09-02",
+                              "2025-09-02",
+                              "Developer",
+                              "",
+                              "",
+                              "Yes"
+                          ],
+                          [
+                              "alex-cruz",
+                              "alex.cruz@example.com",
+                              "2025-09-02",
+                              "2025-09-02",
+                              "Developer",
+                              "",
+                              "",
+                              "Yes"
+                          ]
+                      ],
+                      "pagination": {
+                          "limit": 2,
+                          "has_more": true,
+                          "total": 10,
+                          "offset": 3
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - Pending Invites Count
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=pending_invites&view=summary
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: pending_invites
+          type: query
+        - name: view
+          value: summary
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Total number Pending invites."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              65
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Partner Workspace - Pending Invites
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=pending_invites&view=detailed&limit=3&offset=0
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: pending_invites
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+        - name: offset
+          value: "0"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "email_id",
+                                  "type": "STRING",
+                                  "description": "Target email of pending invite"
+                              },
+                              {
+                                  "name": "invite_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier for the invite"
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the invite was created"
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "taylor.lee@example.com",
+                              "759126",
+                              "2025-08-17T15:00:00Z"
+                          ],
+                          [
+                              "alex.cruz@example.com",
+                              "759127",
+                              "2025-08-17T12:30:00Z"
+                          ],
+                          [
+                              "ava.foster@example.com",
+                              "759128",
+                              "2025-08-16T10:45:00Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 65,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - Needs Attention - Count
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=needs_attention&view=summary&duration=last_30_days
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: needs_attention
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_30_days
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Number of partners that need attention."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              65
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Partner Workspace - Needs Attention
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=needs_attention&view=detailed&duration=last_30_days&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: needs_attention
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_30_days
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the user."
+                              },
+                              {
+                                  "name": "request_type",
+                                  "type": "STRING",
+                                  "description": "Type of issue or request pattern detected for the user."
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the request event was recorded."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Name of the collection associated with the request, if available."
+                              },
+                              {
+                                  "name": "request_name",
+                                  "type": "STRING",
+                                  "description": "Display name of the request attempted by the user."
+                              },
+                              {
+                                  "name": "request_identifier_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier for the specific request instance."
+                              },
+                              {
+                                  "name": "partner_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the partner associated with the request, if applicable."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "no_success_on_tried_request",
+                              "2025-08-20T14:32:00Z",
+                              "Payments Gateway API",
+                              "Create Payment",
+                              "12345678-850fc79d-c756-480d-83ea-b0c05683088e",
+                              null
+                          ],
+                          [
+                              "87654321",
+                              "high_non_200OK_rate_for_partner",
+                              "2025-08-20T13:50:00Z",
+                              null,
+                              null,
+                              null,
+                              "56781234"
+                          ],
+                          [
+                              "12345678",
+                              "no_success_on_tried_request",
+                              "2025-08-19T21:40:00Z",
+                              "Integration API",
+                              "Rotate Integration Key",
+                              "12345678-7ac0f3bb-025b-48c4-adfa-e73bc0c00a32",
+                              null
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 110,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - API Success Rate - Trend
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=success_rate&view=summary&duration=last_30_days
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: success_rate
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_30_days
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "success_rate",
+                                  "type": "FLOAT",
+                                  "description": "Overall percentage of successful requests."
+                              },
+                              {
+                                  "name": "change",
+                                  "type": "FLOAT",
+                                  "description": "Numeric change in success rate compared to the previous period."
+                              },
+                              {
+                                  "name": "change_type",
+                                  "type": "STRING",
+                                  "description": "Indicates whether the success rate increased or decreased."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              0.962,
+                              0.012,
+                              "increase"
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Partner Workspace - API Success Rate - Detailed
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=success_rate&view=detailed&duration=last_30_days&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: success_rate
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_30_days
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the request metrics snapshot was recorded."
+                              },
+                              {
+                                  "name": "request_identifier_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier for the specific request definition."
+                              },
+                              {
+                                  "name": "request_method",
+                                  "type": "STRING",
+                                  "description": "HTTP method used for the request."
+                              },
+                              {
+                                  "name": "request_name",
+                                  "type": "STRING",
+                                  "description": "Human-readable name of the request."
+                              },
+                              {
+                                  "name": "total_requests",
+                                  "type": "INTEGER",
+                                  "description": "Total number of request attempts."
+                              },
+                              {
+                                  "name": "success_count",
+                                  "type": "INTEGER",
+                                  "description": "Number of successful responses received."
+                              },
+                              {
+                                  "name": "failure_count",
+                                  "type": "INTEGER",
+                                  "description": "Number of failed responses received."
+                              },
+                              {
+                                  "name": "success_percent",
+                                  "type": "FLOAT",
+                                  "description": "Percentage of successful requests."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Name of the collection the request belongs to."
+                              },
+                              {
+                                  "name": "collection_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the collection the request belongs to."
+                              },
+                              {
+                                  "name": "workspace_name",
+                                  "type": "STRING",
+                                  "description": "Name of the workspace containing the collection."
+                              },
+                              {
+                                  "name": "workspace_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the workspace containing the collection."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "2025-10-10T10:10:00Z",
+                              "87654321-3346d4bb-c3f5-4f37-a80b-4e77eeb6055a",
+                              "GET",
+                              "Get User Profile",
+                              1200,
+                              1080,
+                              120,
+                              90.0,
+                              "User Management API",
+                              "87654321-ff0b2687-2617-48f9-8a50-7bc5bf8ef8b0",
+                              "Partner Portal",
+                              "13f603d8-4cb2-45d1-92f8-e39891fdf387"
+                          ],
+                          [
+                              "2025-10-10T10:10:00Z",
+                              "12345678-6f719613-acee-44d2-a9b5-e9be639add94",
+                              "POST",
+                              "Create Workspace",
+                              980,
+                              850,
+                              130,
+                              86.7,
+                              "Workspace Admin API",
+                              "12345678-c50b4c83-f39c-4812-9a3e-5e9785011e76",
+                              "Partner Portal",
+                              "50903db2-6d98-4564-8da9-631caa258c17"
+                          ],
+                          [
+                              "2025-10-10T10:10:00Z",
+                              "56781234-4cc757c2-ffba-431d-90b2-7242cedb47f3",
+                              "PATCH",
+                              "Update Member Role",
+                              760,
+                              690,
+                              70,
+                              90.8,
+                              "Team Management API",
+                              "56781234-4badbb68-830b-40c8-94b7-4c195c852995",
+                              "Partner Hub",
+                              "d100a067-b604-44c4-a1c1-bf414cc7b2c0"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 42,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - User Requests - Selected Users
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=user_requests&view=detailed&duration=last_180_days&userId=12345678&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: user_requests
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_180_days
+          type: query
+        - name: userId
+          value: "12345678"
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the user who sent the request."
+                              },
+                              {
+                                  "name": "request_name",
+                                  "type": "STRING",
+                                  "description": "Human-readable name of the request made by the user."
+                              },
+                              {
+                                  "name": "request_identifier_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier referencing the specific request definition."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Name of the collection associated with the request."
+                              },
+                              {
+                                  "name": "collection_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the collection associated with the request."
+                              },
+                              {
+                                  "name": "workspace_name",
+                                  "type": "STRING",
+                                  "description": "Name of the workspace containing the request’s collection."
+                              },
+                              {
+                                  "name": "workspace_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the workspace containing the collection."
+                              },
+                              {
+                                  "name": "response_status",
+                                  "type": "INTEGER",
+                                  "description": "HTTP status code returned for the request."
+                              },
+                              {
+                                  "name": "request_ts",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Timestamp when the request was made."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "Get Workspace Summary",
+                              "12345678-82b01bb6-062c-4bdc-9e09-710bc8f66e75",
+                              "Workspace Insights API",
+                              "12345678-57d32d78-2d30-4fd7-9e33-4ac2213b4499",
+                              "Engineering Hub",
+                              "6755660d-38f1-4366-848b-df9f2008620d",
+                              200,
+                              "2025-10-10T09:55:00Z"
+                          ],
+                          [
+                              "87654321",
+                              "Fetch Collection Details",
+                              "87654321-bcea09cd-cab7-4744-a971-45af229bc1ef",
+                              "Collection Metrics API",
+                              "87654321-43270cfc-92d2-426e-8c1b-4f85bc8dea0a",
+                              "Partner API Hub",
+                              "cc7b80be-89dd-4506-912d-c27945fea4b2",
+                              404,
+                              "2025-10-10T10:00:00Z"
+                          ],
+                          [
+                              "56781234",
+                              "Get User Profile",
+                              "56781234-2b6d42fa-6183-4747-9a5b-d685c18487a0",
+                              "User Management API",
+                              "56781234-6a07486a-2005-4ef1-a32b-15331ae2c9b0",
+                              "Internal Tools",
+                              "19efb285-462f-4e15-94ba-3322657b5c1d",
+                              202,
+                              "2025-10-10T10:10:00Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 25,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - User Requests - Selected Requests
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=user_requests&view=detailed&duration=last_180_days&requestId=12345678-ae30eef1-e330-4666-bad2-e48bb22d8790,87654321-37fc31e2-f0bb-42ee-8651-b0fd0115d68a&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: user_requests
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_180_days
+          type: query
+        - name: requestId
+          value: 12345678-ae30eef1-e330-4666-bad2-e48bb22d8790,87654321-37fc31e2-f0bb-42ee-8651-b0fd0115d68a
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the user who sent the request."
+                              },
+                              {
+                                  "name": "request_name",
+                                  "type": "STRING",
+                                  "description": "Human-readable name of the request made by the user."
+                              },
+                              {
+                                  "name": "request_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier referencing the specific request definition."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Name of the collection associated with the request."
+                              },
+                              {
+                                  "name": "collection_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the collection associated with the request."
+                              },
+                              {
+                                  "name": "workspace_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the workspace containing the collection."
+                              },
+                              {
+                                  "name": "response_status",
+                                  "type": "INTEGER",
+                                  "description": "HTTP status code returned for the request."
+                              },
+                              {
+                                  "name": "request_ts",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Timestamp when the request was made."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "87654321",
+                              "New Request",
+                              "87654321-37fc31e2-f0bb-42ee-8651-b0fd0115d68a",
+                              "New Collection",
+                              "87654321-91e11daa-8fe1-4e1a-a6da-6cca43251595",
+                              "c303c5b6-066f-4c58-a9ef-cb0c710ccf02",
+                              200,
+                              "2025-07-30T21:55:19.000Z"
+                          ],
+                          [
+                              "12345678",
+                              "Test API",
+                              "12345678-ae30eef1-e330-4666-bad2-e48bb22d8790",
+                              "Test APIs",
+                              "12345678-2f9170b4-a59f-4b44-aa93-e25cafdaa2d1",
+                              "583a1633-d0e5-4890-be85-628c52916152",
+                              200,
+                              "2026-01-13T03:57:18.000Z"
+                          ],
+                          [
+                              "12345678",
+                              "Test API",
+                              "12345678-ae30eef1-e330-4666-bad2-e48bb22d8790",
+                              "Test APIs",
+                              "12345678-2f9170b4-a59f-4b44-aa93-e25cafdaa2d1",
+                              "583a1633-d0e5-4890-be85-628c52916152",
+                              404,
+                              "2026-01-13T03:57:29.000Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 4,
+                          "limit": 100,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - User Requests - Selected Response Status
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=user_requests&view=detailed&duration=last_180_days&responseStatus=200,404&limit=3
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: user_requests
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_180_days
+          type: query
+        - name: responseStatus
+          value: 200,404
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the user who sent the request."
+                              },
+                              {
+                                  "name": "request_name",
+                                  "type": "STRING",
+                                  "description": "Human-readable name of the request made by the user."
+                              },
+                              {
+                                  "name": "request_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier referencing the specific request definition."
+                              },
+                              {
+                                  "name": "collection_name",
+                                  "type": "STRING",
+                                  "description": "Name of the collection associated with the request."
+                              },
+                              {
+                                  "name": "collection_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the collection associated with the request."
+                              },
+                              {
+                                  "name": "workspace_id",
+                                  "type": "STRING",
+                                  "description": "Identifier of the workspace containing the collection."
+                              },
+                              {
+                                  "name": "response_status",
+                                  "type": "INTEGER",
+                                  "description": "HTTP status code returned for the request."
+                              },
+                              {
+                                  "name": "request_ts",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Timestamp when the request was made."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "404 Request",
+                              "12345678-8e261547-04be-427d-b6df-db9beb7f09df",
+                              "test collection",
+                              "12345678-76e46801-4e4f-4731-9203-52e6defdd7ca",
+                              "3506c6f4-c37e-4fd5-8d3f-2e69d70e9d03",
+                              404,
+                              "2026-01-20T09:30:43.000Z"
+                          ],
+                          [
+                              "12345678",
+                              "404 Request",
+                              "12345678-8e261547-04be-427d-b6df-db9beb7f09df",
+                              "test collection",
+                              "12345678-76e46801-4e4f-4731-9203-52e6defdd7ca",
+                              "3506c6f4-c37e-4fd5-8d3f-2e69d70e9d03",
+                              404,
+                              "2026-01-20T09:32:58.000Z"
+                          ],
+                          [
+                              "12345678",
+                              "Success Request",
+                              "12345678-fbacb0ad-0838-45d9-a38a-2cd1a759aae2",
+                              "test collection",
+                              "12345678-76e46801-4e4f-4731-9203-52e6defdd7ca",
+                              "3506c6f4-c37e-4fd5-8d3f-2e69d70e9d03",
+                              200,
+                              "2026-01-19T11:07:44.000Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 3,
+                          "limit": 100,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - Needs Attention - Attention Type
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=needs_attention&view=detailed&duration=last_30_days&attentionType=high_non_200OK_rate_for_partner
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: needs_attention
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_30_days
+          type: query
+        - name: attentionType
+          value: high_non_200OK_rate_for_partner
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the user."
+                              },
+                              {
+                                  "name": "request_type",
+                                  "type": "STRING",
+                                  "description": "Type of issue or request pattern detected for the user."
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the request event was recorded."
+                              },
+                              {
+                                  "name": "request_name",
+                                  "type": "STRING",
+                                  "description": "Display name of the request. Present when request_type = no_success_on_tried_request."
+                              },
+                              {
+                                  "name": "request_identifier_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier for the request. Present when request_type = no_success_on_tried_request."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "high_non_200OK_rate_for_partner",
+                              "2026-01-21T00:00:00.000Z",
+                              "partner_id",
+                              "{\"partner_id\":\"12345678\"}"
+                          ],
+                          [
+                              "12345678",
+                              "high_non_200OK_rate_for_partner",
+                              "2026-01-23T00:00:00.000Z",
+                              "partner_id",
+                              "{\"partner_id\":\"12345678\"}"
+                          ],
+                          [
+                              "87654321",
+                              "high_non_200OK_rate_for_partner",
+                              "2026-01-21T00:00:00.000Z",
+                              "partner_id",
+                              "{\"partner_id\":\"87654321\"}"
+                          ],
+                          [
+                              "87654321",
+                              "high_non_200OK_rate_for_partner",
+                              "2026-01-23T00:00:00.000Z",
+                              "partner_id",
+                              "{\"partner_id\":\"87654321\"}"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 4,
+                          "limit": 100,
+                          "offset": 0,
+                          "has_more": false
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - Partner Engagement Funnel - Detailed
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=partner_engagement_funnel&view=detailed&duration=last_180_days&limit=3&offset=0
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: partner_engagement_funnel
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: duration
+          value: last_180_days
+          type: query
+        - name: limit
+          value: "3"
+          type: query
+        - name: offset
+          value: "0"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "all_partners": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the partner user."
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the partner activity was recorded."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "87654321",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "56781234",
+                              "2026-01-21T00:00:00.000Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 131,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  },
+                  "workspace_visited": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the partner user."
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the partner activity was recorded."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "87654321",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "56781234",
+                              "2026-01-21T00:00:00.000Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 7,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": true
+                      }
+                  },
+                  "viewed_collection": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the partner user."
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the partner activity was recorded."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "87654321",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "56781234",
+                              "2026-01-21T00:00:00.000Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 3,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": false
+                      }
+                  },
+                  "request_sent": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the partner user."
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the partner activity was recorded."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "87654321",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "56781234",
+                              "2026-01-21T00:00:00.000Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 3,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": false
+                      }
+                  },
+                  "successful_requests_200OK": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "user_id",
+                                  "type": "STRING",
+                                  "description": "Unique identifier of the partner user."
+                              },
+                              {
+                                  "name": "timestamp",
+                                  "type": "TIMESTAMP",
+                                  "format": "YYYY-MM-DDTHH:MM:SSZ",
+                                  "description": "Time when the partner activity was recorded."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "12345678",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "87654321",
+                              "2026-01-21T00:00:00.000Z"
+                          ],
+                          [
+                              "56781234",
+                              "2026-01-21T00:00:00.000Z"
+                          ]
+                      ],
+                      "pagination": {
+                          "total": 3,
+                          "limit": 3,
+                          "offset": 0,
+                          "has_more": false
+                      }
+                  }
+              }
+          }
+  - name: Partner Workspace - Partner Engagement Funnel - Summary
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&metrics=partner_engagement_funnel&view=summary&duration=last_180_days
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: metrics
+          value: partner_engagement_funnel
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_180_days
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "summary": {
+                      "schema": {
+                          "columns": [
+                              {
+                                  "name": "metric",
+                                  "type": "STRING",
+                                  "description": "Name of the partner engagement metric."
+                              },
+                              {
+                                  "name": "count",
+                                  "type": "INTEGER",
+                                  "description": "Value associated with the specific engagement metric."
+                              }
+                          ]
+                      },
+                      "rows": [
+                          [
+                              "all_partners",
+                              131
+                          ],
+                          [
+                              "workspace_visited",
+                              7
+                          ],
+                          [
+                              "viewed_collection",
+                              6
+                          ],
+                          [
+                              "request_sent",
+                              3
+                          ],
+                          [
+                              "successful_requests_200OK",
+                              3
+                          ]
+                      ]
+                  }
+              }
+          }
+  - name: Invalid Resource-Metric Pair
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=elements_in_workspace&view=detailed&workspace_type=all&duration=last_30_days
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: elements_in_workspace
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspace_type
+          value: all
+          type: query
+        - name: duration
+          value: last_30_days
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "view='detailed' is not supported for resource 'workspaces' metric 'elements_in_workspace'."
+          }
+  - name: Invalid Metric
+    request:
+      url: https://api.getpostman.com/analytics?resource=workspace&metrics=wrong_metric_name&view=detailed&workspace_type=all&duration=last_30_days
+      method: GET
+      params:
+        - name: resource
+          value: workspace
+          type: query
+        - name: metrics
+          value: wrong_metric_name
+          type: query
+        - name: view
+          value: detailed
+          type: query
+        - name: workspace_type
+          value: all
+          type: query
+        - name: duration
+          value: last_30_days
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "metric='wrong_metric_name' is not supported for resource 'workspaces'."
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&view=summary&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401,
+              "instance": "/analytics"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/analytics?resource=team&view=summary&duration=last_6_months
+      method: GET
+      params:
+        - name: resource
+          value: team
+          type: query
+        - name: view
+          value: summary
+          type: query
+        - name: duration
+          value: last_6_months
+          type: query
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "AuthenticationError",
+              "detail": "Invalid API Key. Every request requires a valid API Key to be sent.",
+              "status": 403,
+              "instance": "/analytics"
+          }
+
+docs: |-
+  Gets analytics data based on the specified resource, metrics, and given filters for team, internal, and public workspaces, as well as Partner Workspaces.
+
+  **Note:**
+
+  This endpoint only accepts the following resource:metric query parameter combinations:
+
+  - `user` — `workspace_active_users`, `active_users`
+      
+  - `workspace` — `elements_in_workspace`, `active_workspaces`, `api_calls`, `active_collections`, `response_status`, `pending_invites`, `needs_attention`, `success_rate`, `user_requests`, `collection_error_aggregate`
+      
+  - `team` — `user_api_journey`, `workspace_distribution`, `internal_workspace_distribution`, `license_consumption`, `partner_engagement_funnel`
+      
+
+  The `view` query parameter only accepts the following values when called with the following resource:metric pairs:
+
+  - `detailed` or `summary` — `user:active_users`, `workspace:active_workspaces`, `workspace:pending_invites`, `workspace:needs_attention`, `workspace:success_rate`, `team:partner_engagement_funnel`
+      
+  - `summary` only — `workspace:elements_in_workspace`, `workspace:workspace_active_users`, `workspace:api_calls`, `workspace:response_status`, `team:user_api_journey`, `team:workspace_distribution`, `team:internal_workspace_distribution`, `team:license_consumption`
+      
+  - `detailed` only — `workspace:active_collections`, `workspace:user_requests`

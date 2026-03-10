@@ -1,0 +1,118 @@
+info:
+  name: Update a spec's properties
+  type: http
+  seq: 9
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/specs/:specId"
+  params:
+    - name: specId
+      value: ""
+      type: path
+      description: The spec's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{specName}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Rename Spec
+    request:
+      url: https://api.getpostman.com/specs/:specId
+      method: PATCH
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "ae2b9ab2-28f2-401d-912f-eca09a78e98b",
+              "type": "OPENAPI:3.0",
+              "createdBy": 12345678,
+              "updatedBy": 12345678,
+              "createdAt": "2025-03-15T13:48:28.000Z",
+              "updatedAt": "2025-03-15T13:48:28.000Z",
+              "name": "Sample API"
+          }
+  - name: Missing name Property
+    request:
+      url: https://api.getpostman.com/specs/:specId
+      method: PATCH
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Malformed request",
+              "status": 400,
+              "detail": "Required property `name` is missing from the request."
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs/:specId
+      method: PATCH
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/specs/:specId
+      method: PATCH
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "status": 404,
+              "detail": "Entity that you are trying to access does not exist."
+          }
+
+docs: Updates an API specification's properties, such as its name.

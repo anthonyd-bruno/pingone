@@ -1,0 +1,11 @@
+info:
+  name: Schema
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage your API schema. These endpoints also support multi-file schema.
+  type: text/markdown

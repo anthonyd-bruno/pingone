@@ -1,0 +1,378 @@
+info:
+  name: Remove team members
+  type: http
+  seq: 7
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/teams/:teamId/bulk-members"
+  headers:
+    - name: identifierType
+      value: scim
+      description: Use SCIM user and group IDs instead of Postman user IDs.
+      disabled: true
+  params:
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "entities": [
+              {
+                  "entityType": "{{entityType}}",
+                  "entityId": "{{entityId}}"
+              }
+          ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Remove Team Members
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "56781234"
+                  }
+              ]
+          }
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Remove Organization
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "organization",
+                      "entityId": "456"
+                  }
+              ]
+          }
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Remove Team
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                   {
+                      "entityType": "team",
+                      "entityId": "432"
+                  }
+              ]
+          }
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Remove Team Member with SCIM IDs
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      headers:
+        - name: identifierType
+          value: scim
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "f10ba7a8dac248e8fd9769163dc63aef920f3897c7ea2c86"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "696e7061fe5aa0e7abb54851cdb0e3b21eed4f8daef24d13"
+                  }
+              ]
+          }
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Remove User and Group Team Members
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "12345678"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": "1234"
+                  }
+              ]
+          }
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Entities Not Part of Team
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87514321"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "41674321"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": "89654321"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "InvalidParams",
+                      "message": "Entities are not part of team : users - 87514321,41674321, groups - 89654321"
+                  }
+              },
+              "instance": "/teams/57833/members"
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87514321"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "41674321"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": "89654321"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "56781234"
+                  }
+              ]
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "56781234"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "status": 403,
+              "title": "Forbidden",
+              "detail": {
+                  "error": {
+                      "name": "NoPermission",
+                      "message": "You are not allowed to remove Team members."
+                  }
+              },
+              "instance": "/teams/123/members"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/teams/:teamId/bulk-members
+      method: DELETE
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entities": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "56781234"
+                  }
+              ]
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "status": 500,
+              "title": "Internal Server Error",
+              "detail": {
+                  "error": {
+                      "name": "UnexpectedError",
+                      "message": "There was an issue while finding Team."
+                  }
+              },
+              "instance": "/teams"
+          }
+
+docs: Removes entities, such as users or organizations, from your Postman team. On success, this returns an HTTP `204 No Content` response.

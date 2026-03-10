@@ -1,0 +1,365 @@
+info:
+  name: Update a collection's tags
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collections/:collectionUid/tags"
+  params:
+    - name: collectionUid
+      value: ""
+      type: path
+      description: The collection's unique ID.
+  body:
+    type: json
+    data: |-
+      {
+          "tags": [
+              {
+                  "slug": "{{tagName}}"
+              }
+          ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  }
+              ]
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  }
+              ]
+          }
+  - name: Tag Exceeds Max Size
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "oS1Z9gHS9lDaAhX3xu0ekJRZwt0CPIikGYApohSPJVu3n3iiHxdISMqMFVo6wPf8N"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Bad Request",
+              "detail": "body/tags/0/slug must NOT have more than 64 characters",
+              "status": 400
+          }
+  - name: Exceeds Max Number of Tags
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  },
+                  {
+                      "slug": "test-api"
+                  },
+                  {
+                      "slug": "test-collection"
+                  },
+                  {
+                      "slug": "preview"
+                  },
+                  {
+                      "slug": "pre-release"
+                  },
+                  {
+                      "slug": "api-team"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/badrequest",
+              "title": "Bad Request",
+              "detail": "body/tags must NOT have more than 5 items",
+              "status": 400
+          }
+  - name: Special Character Present
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "test-api!"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Bad Request",
+              "detail": "body/tags/0/slug must match pattern \"^[a-z][a-z0-9-]*[a-z0-9]+$\"",
+              "status": 400
+          }
+  - name: Missing tags Object
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: "{}"
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "statusCode": 400,
+              "error": "Bad Request",
+              "message": "body must have required property 'tags'"
+          }
+  - name: Tag Does Not Start with Letter
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "1test"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Bad Request",
+              "detail": "body/tags/0/slug must match pattern \"^[a-z][a-z0-9-]*[a-z0-9]+$\"",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  }
+              ]
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "status": 401
+          }
+  - name: Invalid Credentials
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  }
+              ]
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "The request lacks valid credentials.",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Access Denied",
+              "detail": "You do not have developer role. Ask your (super)admin to grant you developer role",
+              "status": 403
+          }
+  - name: Not Enterprise
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Access Denied",
+              "detail": "The tags feature is only available to enterprise teams",
+              "status": 403
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: PUT
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  }
+              ]
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Updates a collection's associated tags. This endpoint replaces all existing tags with those you pass in the request body.
+
+  **Note:**
+
+  - You can only add a maximum of five tags to a collection.
+      
+  - Tags must be between 2 and 64 characters long.
+      
+  - Tags must follow the `^[a-z][a-z0-9-]\\\\\\*[a-z0-9]+$` pattern.

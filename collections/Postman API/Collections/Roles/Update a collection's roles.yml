@@ -1,0 +1,419 @@
+info:
+  name: Update a collection's roles
+  type: http
+  seq: 2
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/collections/:collectionId/roles"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "roles": [
+              {
+                  "op": "update",
+                  "path": "{{pathValue}}",
+                  "value": [
+                      {
+                          "id": {{id}},
+                          "role": "{{collectionRoleId}}"
+                      }
+                  ]
+              }
+          ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: No Content
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "update",
+                      "path": "/group",
+                      "value": [
+                          {
+                              "id": 12345,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": 12345678,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 87654321,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/team",
+                      "value": [
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          },
+                          {
+                              "id": 543,
+                              "role": "EDITOR"
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "update",
+                      "value": [
+                          {
+                              "id": 12345,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Missing properties: 'path'",
+              "detail": "PATCH request body for '/collections/12ece9e1-2abf-4edc-8e34-de66e74114d2/roles/roles' failed to validate schema. Location: /properties/roles/items/required",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "update",
+                      "path": "/group",
+                      "value": [
+                          {
+                              "id": 12345,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": 12345678,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 87654321,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/team",
+                      "value": [
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          },
+                          {
+                              "id": 543,
+                              "role": "EDITOR"
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "An API key must be provided in the request header or query string",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "update",
+                      "path": "/group",
+                      "value": [
+                          {
+                              "id": 12345,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": 12345678,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 87654321,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/team",
+                      "value": [
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          },
+                          {
+                              "id": 543,
+                              "role": "EDITOR"
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Resource cannot be accessed",
+              "detail": "Inadequate permissions. Resource access forbidden.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "update",
+                      "path": "/group",
+                      "value": [
+                          {
+                              "id": 12345,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": 12345678,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 87654321,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/team",
+                      "value": [
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          },
+                          {
+                              "id": 543,
+                              "role": "EDITOR"
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "We could not find the collection you are looking for",
+              "type": "instanceNotFoundError"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: PATCH
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "roles": [
+                  {
+                      "op": "update",
+                      "path": "/group",
+                      "value": [
+                          {
+                              "id": 12345,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/user",
+                      "value": [
+                          {
+                              "id": 12345678,
+                              "role": "EDITOR"
+                          },
+                          {
+                              "id": 87654321,
+                              "role": "VIEWER"
+                          }
+                      ]
+                  },
+                  {
+                      "op": "update",
+                      "path": "/team",
+                      "value": [
+                          {
+                              "id": 123,
+                              "role": "VIEWER"
+                          },
+                          {
+                              "id": 543,
+                              "role": "EDITOR"
+                          }
+                      ]
+                  }
+              ]
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Updates the roles of users, groups, or teams in a collection. On success, this returns an HTTP `204 No Content` response.
+
+  **Note:**
+
+  - Only users assigned the `EDITOR` [role](https://learning.postman.com/docs/collaborating-in-postman/roles-and-permissions/#collection-roles) in the collection can use this endpoint.
+      
+  - This endpoint does not support the external [Partner or Guest roles](https://learning.postman.com/docs/collaborating-in-postman/roles-and-permissions/#team-roles).

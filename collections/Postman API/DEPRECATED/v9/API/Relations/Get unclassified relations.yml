@@ -1,0 +1,62 @@
+info:
+  name: Get unclassified relations
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/unclassified
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/unclassified
+      method: GET
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "unclassified": [
+                  {
+                      "id": "2a9b8fa8-88b7-4b86-8372-8e3f6f6e07f2",
+                      "name": "Test",
+                      "updatedAt": "2023-01-19T14:50:05.000Z",
+                      "collectionId": "7732157-a8bcd149-2b01-4b4c-8c14-c7d05be77745"
+                  }
+              ]
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/unclassified
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  **This endpoint is for Postman v10 and higher.**
+
+  Gets all of an API version's unclassified relations.
+
+  Unclassified relations are used for documentation and testing. This is the default relation type.

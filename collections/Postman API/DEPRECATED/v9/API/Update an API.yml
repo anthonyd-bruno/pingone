@@ -1,0 +1,131 @@
+info:
+  name: Update an API
+  type: http
+  seq: 8
+
+http:
+  method: PUT
+  url: https://api.getpostman.com/apis/{{apiId}}
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+      	"api": {
+      		"name": "{{apiName}}",
+              "summary": "{{apiSummary}}",
+      		"description": "{{apiDescription}}"
+      	}
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d
+      method: PUT
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "name": "Test API A",
+                  "summary": "Test API A Schema",
+                  "description": "This is Test API A."
+              }
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "createdAt": "2022-06-29T20:46:58.000Z",
+                  "updatedAt": "2022-06-29T20:46:58.000Z",
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                  "name": "Test API A",
+                  "summary": "Test API A Schema",
+                  "description": "This is Test API A.",
+                  "createdBy": "12345678",
+                  "updatedBy": "12345678"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d
+      method: PUT
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "name": "Test API A",
+                  "summary": "Test API A Schema",
+                  "description": "This is Test API A."
+              }
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the API you are looking for"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d
+      method: PUT
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "name": "Test API A",
+                  "summary": "Test API A Schema",
+                  "description": "This is Test API A."
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Updates an API. Include at least one of the following properties in the `api` object:
+
+  *   `name` — A **string** value that contains the API's name.
+  *   `summary` — A **string** value that contains a summary of the API.
+  *   `description` — A **string** value that contains the description of the API.

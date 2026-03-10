@@ -1,0 +1,91 @@
+info:
+  name: Get a team's settings
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/teams/:teamId/settings"
+  params:
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/teams/:teamId/settings
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "settings": {
+                  "rfa_for_add_member": "disabled",
+                  "rfa_for_add_collaborator": "disabled"
+              }
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId/settings
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId/settings
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+
+docs: Gets a team's settings.

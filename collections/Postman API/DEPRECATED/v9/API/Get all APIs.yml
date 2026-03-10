@@ -1,0 +1,821 @@
+info:
+  name: Get all APIs
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: https://api.getpostman.com/apis
+  params:
+    - name: workspaceId
+      value: "{{workspaceId}}"
+      type: query
+      description: Optional. Return only APIs that are inside the given workspace.
+      disabled: true
+    - name: since
+      value: "{{since}}"
+      type: query
+      description: Optional. Return only APIs updated at and after this time, in ISO 8601 UTC format.
+      disabled: true
+    - name: until
+      value: "{{until}}"
+      type: query
+      description: Optional. Return only APIs updated at and before this time, in ISO 8601 UTC format.
+      disabled: true
+    - name: createdBy
+      value: "{{createdBy}}"
+      type: query
+      description: Optional. Return only APIs created by the given user ID.
+      disabled: true
+    - name: updatedBy
+      value: "{{updatedBy}}"
+      type: query
+      description: Optional. Return only APIs updated by the given user ID.
+      disabled: true
+    - name: isPublic
+      value: "{{isPublic}}"
+      type: query
+      description: Optional. If true, return only public APIs; if false, return only private APIs.
+      disabled: true
+    - name: name
+      value: "{{name}}"
+      type: query
+      description: Optional. Return only APIs whose name includes the given value. Matching is not case-sensitive.
+      disabled: true
+    - name: summary
+      value: "{{summary}}"
+      type: query
+      description: Optional. Return only APIs whose summary includes the given value. Matching is not case-sensitive.
+      disabled: true
+    - name: description
+      value: "{{description}}"
+      type: query
+      description: Optional. Return only APIs whose description includes the given value. Matching is not case-sensitive.
+      disabled: true
+    - name: sort
+      value: "{{sort}}"
+      type: query
+      description: |-
+        Optional. Sort the results by the given value.
+
+        If you use this query parameter, you must also use the `direction` parameter.
+      disabled: true
+    - name: direction
+      value: "{{direction}}"
+      type: query
+      description: |-
+        Optional. Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+        If you use this query parameter, you must also use the "sort" parameter.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis
+      method: GET
+      params:
+        - name: workspace
+          value: "{{workspaceId}}"
+          type: query
+          description: Optional. Return only APIs that are inside the given workspace.
+          disabled: true
+        - name: since
+          value: "{{since}}"
+          type: query
+          description: Optional. Return only APIs updated at and after this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: until
+          value: "{{until}}"
+          type: query
+          description: Optional. Return only APIs updated at and before this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: createdBy
+          value: "{{createdBy}}"
+          type: query
+          description: Optional. Return only APIs created by the given user ID.
+          disabled: true
+        - name: updatedBy
+          value: "{{updatedBy}}"
+          type: query
+          description: Optional. Return only APIs updated by the given user ID.
+          disabled: true
+        - name: isPublic
+          value: "{{isPublic}}"
+          type: query
+          description: Optional. If true, return only public APIs; if false, return only private APIs.
+          disabled: true
+        - name: name
+          value: "{{name}}"
+          type: query
+          description: Optional. Return only APIs whose name includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: summary
+          value: "{{summary}}"
+          type: query
+          description: Optional. Return only APIs whose summary includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: description
+          value: "{{description}}"
+          type: query
+          description: Optional. Return only APIs whose description includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: sort
+          value: "{{sort}}"
+          type: query
+          description: |-
+            Optional. Sort the results by the given value.
+
+            If you use this query parameter, you must also use the `direction` parameter.
+          disabled: true
+        - name: direction
+          value: "{{direction}}"
+          type: query
+          description: |-
+            Optional. Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+            If you use this query parameter, you must also use the "sort" parameter.
+          disabled: true
+    response:
+      statusText: "200"
+      headers:
+        - name: Date
+          value: Tue, 12 Jul 2022 16:39:09 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Content-Length
+          value: "120"
+        - name: Connection
+          value: keep-alive
+        - name: Server
+          value: nginx
+        - name: x-frame-options
+          value: SAMEORIGIN
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: x-srv-trace
+          value: v=1;t=915b2bd230311a7e
+        - name: x-srv-span
+          value: v=1;s=108d09101d76e02a
+        - name: X-RateLimit-Limit
+          value: "400"
+        - name: X-RateLimit-Remaining
+          value: "399"
+        - name: X-RateLimit-Reset
+          value: "1657644009"
+        - name: ETag
+          value: W/"78-WpLmxRlFkKKPPDh/y4B5Gn3NuSs"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "apis": [
+                  {
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "updatedAt": "2022-06-09T19:50:49.000Z",
+                      "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                      "name": "Test API",
+                      "summary": "Test API.",
+                      "description": "This is a test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  },
+                  {
+                      "createdAt": "2022-06-22T16:51:28.000Z",
+                      "updatedAt": "2022-06-22T16:51:28.000Z",
+                      "id": "69ce25ea-2914-426e-ae34-af558b6777e6",
+                      "name": "Public API A",
+                      "summary": "Public Test A.",
+                      "description": "This is a public test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  },
+                  {
+                      "createdAt": "2022-06-30T16:51:28.000Z",
+                      "updatedAt": "2022-06-30T16:51:28.000Z",
+                      "id": "69ce25ea-2914-426e-ae34-af558b6777e6",
+                      "name": "Public Test API B",
+                      "summary": "Public Test B",
+                      "description": "This is another public test API.",
+                      "createdBy": "87654321",
+                      "updatedBy": "87654321",
+                      "isPublic": false
+                  }
+              ]
+          }
+  - name: Get Public APIs
+    request:
+      url: https://api.getpostman.com/apis?isPublic=true
+      method: GET
+      params:
+        - name: workspace
+          value: "{{workspaceId}}"
+          type: query
+          description: Optional. Return only APIs that are inside the given workspace.
+          disabled: true
+        - name: since
+          value: "{{since}}"
+          type: query
+          description: Optional. Return only APIs updated at and after this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: until
+          value: "{{until}}"
+          type: query
+          description: Optional. Return only APIs updated at and before this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: createdBy
+          value: "{{createdBy}}"
+          type: query
+          description: Optional. Return only APIs created by the given user ID.
+          disabled: true
+        - name: updatedBy
+          value: "{{updatedBy}}"
+          type: query
+          description: Optional. Return only APIs updated by the given user ID.
+          disabled: true
+        - name: isPublic
+          value: "true"
+          type: query
+          description: Optional. If true, return only public APIs; if false, return only private APIs.
+        - name: name
+          value: "{{name}}"
+          type: query
+          description: Optional. Return only APIs whose name includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: summary
+          value: "{{summary}}"
+          type: query
+          description: Optional. Return only APIs whose summary includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: description
+          value: "{{description}}"
+          type: query
+          description: Optional. Return only APIs whose description includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: sort
+          value: "{{sort}}"
+          type: query
+          description: |-
+            Optional. Sort the results by the given value.
+
+            If you use this query parameter, you must also use the `direction` parameter.
+          disabled: true
+        - name: direction
+          value: "{{direction}}"
+          type: query
+          description: |-
+            Optional. Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+            If you use this query parameter, you must also use the "sort" parameter.
+          disabled: true
+    response:
+      statusText: "200"
+      headers:
+        - name: Date
+          value: Tue, 12 Jul 2022 16:39:09 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Content-Length
+          value: "120"
+        - name: Connection
+          value: keep-alive
+        - name: Server
+          value: nginx
+        - name: x-frame-options
+          value: SAMEORIGIN
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: x-srv-trace
+          value: v=1;t=915b2bd230311a7e
+        - name: x-srv-span
+          value: v=1;s=108d09101d76e02a
+        - name: X-RateLimit-Limit
+          value: "400"
+        - name: X-RateLimit-Remaining
+          value: "399"
+        - name: X-RateLimit-Reset
+          value: "1657644009"
+        - name: ETag
+          value: W/"78-WpLmxRlFkKKPPDh/y4B5Gn3NuSs"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "apis": [
+                  {
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "updatedAt": "2022-06-09T19:50:49.000Z",
+                      "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                      "name": "Test API",
+                      "summary": "Test API.",
+                      "description": "This is a test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  },
+                  {
+                      "createdAt": "2022-06-22T16:51:28.000Z",
+                      "updatedAt": "2022-06-22T16:51:28.000Z",
+                      "id": "69ce25ea-2914-426e-ae34-af558b6777e6",
+                      "name": "Public API A",
+                      "summary": "Public Test A.",
+                      "description": "This is a public test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  }
+              ]
+          }
+  - name: Get APIs in a Date Range
+    request:
+      url: https://api.getpostman.com/apis?since=2022-06-01T00:00:00.000Z&until=2022-06-15T00:00:00.000Z
+      method: GET
+      params:
+        - name: workspace
+          value: "{{workspaceId}}"
+          type: query
+          description: Optional. Return only APIs that are inside the given workspace.
+          disabled: true
+        - name: since
+          value: 2022-06-01T00:00:00.000Z
+          type: query
+          description: Optional. Return only APIs updated at and after this time, in ISO 8601 UTC format.
+        - name: until
+          value: 2022-06-15T00:00:00.000Z
+          type: query
+          description: Optional. Return only APIs updated at and before this time, in ISO 8601 UTC format.
+        - name: createdBy
+          value: "{{createdBy}}"
+          type: query
+          description: Optional. Return only APIs created by the given user ID.
+          disabled: true
+        - name: updatedBy
+          value: "{{updatedBy}}"
+          type: query
+          description: Optional. Return only APIs updated by the given user ID.
+          disabled: true
+        - name: isPublic
+          value: "{{isPublic}}"
+          type: query
+          description: Optional. If true, return only public APIs; if false, return only private APIs.
+          disabled: true
+        - name: name
+          value: "{{name}}"
+          type: query
+          description: Optional. Return only APIs whose name includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: summary
+          value: "{{summary}}"
+          type: query
+          description: Optional. Return only APIs whose summary includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: description
+          value: "{{description}}"
+          type: query
+          description: Optional. Return only APIs whose description includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: sort
+          value: "{{sort}}"
+          type: query
+          description: |-
+            Optional. Sort the results by the given value.
+
+            If you use this query parameter, you must also use the `direction` parameter.
+          disabled: true
+        - name: direction
+          value: "{{direction}}"
+          type: query
+          description: |-
+            Optional. Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+            If you use this query parameter, you must also use the "sort" parameter.
+          disabled: true
+    response:
+      statusText: "200"
+      headers:
+        - name: Date
+          value: Tue, 12 Jul 2022 16:39:09 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Content-Length
+          value: "120"
+        - name: Connection
+          value: keep-alive
+        - name: Server
+          value: nginx
+        - name: x-frame-options
+          value: SAMEORIGIN
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: x-srv-trace
+          value: v=1;t=915b2bd230311a7e
+        - name: x-srv-span
+          value: v=1;s=108d09101d76e02a
+        - name: X-RateLimit-Limit
+          value: "400"
+        - name: X-RateLimit-Remaining
+          value: "399"
+        - name: X-RateLimit-Reset
+          value: "1657644009"
+        - name: ETag
+          value: W/"78-WpLmxRlFkKKPPDh/y4B5Gn3NuSs"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "apis": [
+                  {
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "updatedAt": "2022-06-09T19:50:49.000Z",
+                      "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                      "name": "Test API",
+                      "summary": "Test API.",
+                      "description": "This is a test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  }
+              ]
+          }
+  - name: Filter APIs by Name
+    request:
+      url: https://api.getpostman.com/apis?name=Public
+      method: GET
+      params:
+        - name: workspace
+          value: "{{workspaceId}}"
+          type: query
+          description: Optional. Return only APIs that are inside the given workspace.
+          disabled: true
+        - name: since
+          value: "{{since}}"
+          type: query
+          description: Optional. Return only APIs updated at and after this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: until
+          value: "{{until}}"
+          type: query
+          description: Optional. Return only APIs updated at and before this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: createdBy
+          value: "{{createdBy}}"
+          type: query
+          description: Optional. Return only APIs created by the given user ID.
+          disabled: true
+        - name: updatedBy
+          value: "{{updatedBy}}"
+          type: query
+          description: Optional. Return only APIs updated by the given user ID.
+          disabled: true
+        - name: isPublic
+          value: "{{isPublic}}"
+          type: query
+          description: Optional. If true, return only public APIs; if false, return only private APIs.
+          disabled: true
+        - name: name
+          value: Public
+          type: query
+          description: Optional. Return only APIs whose name includes the given value. Matching is not case-sensitive.
+        - name: summary
+          value: "{{summary}}"
+          type: query
+          description: Optional. Return only APIs whose summary includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: description
+          value: "{{description}}"
+          type: query
+          description: Optional. Return only APIs whose description includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: sort
+          value: "{{sort}}"
+          type: query
+          description: |-
+            Optional. Sort the results by the given value.
+
+            If you use this query parameter, you must also use the `direction` parameter.
+          disabled: true
+        - name: direction
+          value: "{{direction}}"
+          type: query
+          description: |-
+            Optional. Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+            If you use this query parameter, you must also use the "sort" parameter.
+          disabled: true
+    response:
+      statusText: "200"
+      headers:
+        - name: Date
+          value: Tue, 12 Jul 2022 16:39:09 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Content-Length
+          value: "120"
+        - name: Connection
+          value: keep-alive
+        - name: Server
+          value: nginx
+        - name: x-frame-options
+          value: SAMEORIGIN
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: x-srv-trace
+          value: v=1;t=915b2bd230311a7e
+        - name: x-srv-span
+          value: v=1;s=108d09101d76e02a
+        - name: X-RateLimit-Limit
+          value: "400"
+        - name: X-RateLimit-Remaining
+          value: "399"
+        - name: X-RateLimit-Reset
+          value: "1657644009"
+        - name: ETag
+          value: W/"78-WpLmxRlFkKKPPDh/y4B5Gn3NuSs"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "apis": [
+                  {
+                      "createdAt": "2022-06-22T16:51:28.000Z",
+                      "updatedAt": "2022-06-22T16:51:28.000Z",
+                      "id": "69ce25ea-2914-426e-ae34-af558b6777e6",
+                      "name": "Public API A",
+                      "summary": "Public Test A.",
+                      "description": "This is a public test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  },
+                  {
+                      "createdAt": "2022-06-30T16:51:28.000Z",
+                      "updatedAt": "2022-06-30T16:51:28.000Z",
+                      "id": "69ce25ea-2914-426e-ae34-af558b6777e6",
+                      "name": "Public Test API B",
+                      "summary": "Public Test B",
+                      "description": "This is another public test API.",
+                      "createdBy": "87654321",
+                      "updatedBy": "87654321",
+                      "isPublic": false
+                  }
+              ]
+          }
+  - name: Sort by updatedAt
+    request:
+      url: https://api.getpostman.com/apis?sort=updatedAt
+      method: GET
+      params:
+        - name: workspace
+          value: "{{workspaceId}}"
+          type: query
+          description: Optional. Return only APIs that are inside the given workspace.
+          disabled: true
+        - name: since
+          value: "{{since}}"
+          type: query
+          description: Optional. Return only APIs updated at and after this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: until
+          value: "{{until}}"
+          type: query
+          description: Optional. Return only APIs updated at and before this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: createdBy
+          value: "{{createdBy}}"
+          type: query
+          description: Optional. Return only APIs created by the given user ID.
+          disabled: true
+        - name: updatedBy
+          value: "{{updatedBy}}"
+          type: query
+          description: Optional. Return only APIs updated by the given user ID.
+          disabled: true
+        - name: isPublic
+          value: "{{isPublic}}"
+          type: query
+          description: Optional. If true, return only public APIs; if false, return only private APIs.
+          disabled: true
+        - name: name
+          value: "{{name}}"
+          type: query
+          description: Optional. Return only APIs whose name includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: summary
+          value: "{{summary}}"
+          type: query
+          description: Optional. Return only APIs whose summary includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: description
+          value: "{{description}}"
+          type: query
+          description: Optional. Return only APIs whose description includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: sort
+          value: updatedAt
+          type: query
+          description: |-
+            Optional. Sort the results by the given value.
+
+            If you use this query parameter, you must also use the `direction` parameter.
+        - name: direction
+          value: "{{direction}}"
+          type: query
+          description: |-
+            Optional. Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+            If you use this query parameter, you must also use the "sort" parameter.
+          disabled: true
+    response:
+      statusText: "200"
+      headers:
+        - name: Date
+          value: Tue, 12 Jul 2022 16:39:09 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Content-Length
+          value: "120"
+        - name: Connection
+          value: keep-alive
+        - name: Server
+          value: nginx
+        - name: x-frame-options
+          value: SAMEORIGIN
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: x-srv-trace
+          value: v=1;t=915b2bd230311a7e
+        - name: x-srv-span
+          value: v=1;s=108d09101d76e02a
+        - name: X-RateLimit-Limit
+          value: "400"
+        - name: X-RateLimit-Remaining
+          value: "399"
+        - name: X-RateLimit-Reset
+          value: "1657644009"
+        - name: ETag
+          value: W/"78-WpLmxRlFkKKPPDh/y4B5Gn3NuSs"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "apis": [
+                  {
+                      "createdAt": "2022-06-09T14:48:45.000Z",
+                      "updatedAt": "2022-06-09T19:50:49.000Z",
+                      "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+                      "name": "Test API",
+                      "summary": "Test API.",
+                      "description": "This is a test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  },
+                  {
+                      "createdAt": "2022-06-22T16:51:28.000Z",
+                      "updatedAt": "2022-06-22T16:51:28.000Z",
+                      "id": "69ce25ea-2914-426e-ae34-af558b6777e6",
+                      "name": "Public API A",
+                      "summary": "Public Test A.",
+                      "description": "This is a public test API.",
+                      "createdBy": "12345678",
+                      "updatedBy": "12345678",
+                      "isPublic": true
+                  },
+                  {
+                      "createdAt": "2022-06-30T16:51:28.000Z",
+                      "updatedAt": "2022-06-30T16:51:28.000Z",
+                      "id": "69ce25ea-2914-426e-ae34-af558b6777e6",
+                      "name": "Public Test API B",
+                      "summary": "Public Test B",
+                      "description": "This is another public test API.",
+                      "createdBy": "87654321",
+                      "updatedBy": "87654321",
+                      "isPublic": false
+                  }
+              ]
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis
+      method: GET
+      params:
+        - name: workspace
+          value: "{{workspaceId}}"
+          type: query
+          description: Optional. Return only APIs that are inside the given workspace.
+          disabled: true
+        - name: since
+          value: "{{since}}"
+          type: query
+          description: Optional. Return only APIs updated at and after this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: until
+          value: "{{until}}"
+          type: query
+          description: Optional. Return only APIs updated at and before this time, in ISO 8601 UTC format.
+          disabled: true
+        - name: createdBy
+          value: "{{createdBy}}"
+          type: query
+          description: Optional. Return only APIs created by the given user ID.
+          disabled: true
+        - name: updatedBy
+          value: "{{updatedBy}}"
+          type: query
+          description: Optional. Return only APIs updated by the given user ID.
+          disabled: true
+        - name: isPublic
+          value: "{{isPublic}}"
+          type: query
+          description: Optional. If true, return only public APIs; if false, return only private APIs.
+          disabled: true
+        - name: name
+          value: "{{name}}"
+          type: query
+          description: Optional. Return only APIs whose name includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: summary
+          value: "{{summary}}"
+          type: query
+          description: Optional. Return only APIs whose summary includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: description
+          value: "{{description}}"
+          type: query
+          description: Optional. Return only APIs whose description includes the given value. Matching is not case-sensitive.
+          disabled: true
+        - name: sort
+          value: "{{sort}}"
+          type: query
+          description: |-
+            Optional. Sort the results by the given value.
+
+            If you use this query parameter, you must also use the `direction` parameter.
+          disabled: true
+        - name: direction
+          value: "{{direction}}"
+          type: query
+          description: |-
+            Optional. Sort in ascending (`asc`) or descending (`desc`) order. Matching is not case-sensitive.
+
+            If you use this query parameter, you must also use the "sort" parameter.
+          disabled: true
+    response:
+      statusText: "429"
+      headers:
+        - name: Date
+          value: Tue, 12 Jul 2022 16:39:09 GMT
+        - name: Content-Type
+          value: application/json; charset=utf-8
+        - name: Content-Length
+          value: "120"
+        - name: Connection
+          value: keep-alive
+        - name: Server
+          value: nginx
+        - name: x-frame-options
+          value: SAMEORIGIN
+        - name: Access-Control-Allow-Origin
+          value: "*"
+        - name: x-srv-trace
+          value: v=1;t=915b2bd230311a7e
+        - name: x-srv-span
+          value: v=1;s=108d09101d76e02a
+        - name: X-RateLimit-Limit
+          value: "400"
+        - name: X-RateLimit-Remaining
+          value: "399"
+        - name: X-RateLimit-Reset
+          value: "1657644009"
+        - name: ETag
+          value: W/"78-WpLmxRlFkKKPPDh/y4B5Gn3NuSs"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Gets information about all APIs.

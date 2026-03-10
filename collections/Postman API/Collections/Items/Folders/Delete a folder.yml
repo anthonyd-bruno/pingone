@@ -1,0 +1,110 @@
+info:
+  name: Delete a folder
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/collections/:collectionId/folders/:folderId"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+    - name: folderId
+      value: ""
+      type: path
+      description: The folder's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+              "meta": {
+                  "model": "folder",
+                  "action": "destroy"
+              },
+              "data": {
+                  "id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                  "owner": "12345678"
+              },
+              "revision": 24994562696
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the folder you are looking for",
+                  "details": {
+                      "model": "folder",
+                      "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                      "owner": "12345678"
+                  }
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/folders/:folderId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: folderId
+          value: 65a99e60-8e0a-4b6e-b79c-7d8264cc5caa
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "Unauthorized",
+                  "message": "Unauthorized",
+                  "details": {
+                      "model": "folder",
+                      "model_id": "65a99e60-8e0a-4b6e-b79c-7d8264cc5caa",
+                      "owner": "12345678"
+                  }
+              }
+          }
+
+docs: Deletes a folder in a collection.

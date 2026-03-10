@@ -1,0 +1,171 @@
+info:
+  name: Generate a collection from spec
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/specs/:specId/generations/:elementType"
+  params:
+    - name: specId
+      value: ""
+      type: path
+      description: The spec's ID.
+    - name: elementType
+      value: ""
+      type: path
+      description: The `collection` element type.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{name}}",
+          "options": {
+              "requestNameSource": "Fallback",
+              "indentCharacter": "Space",
+              "folderStrategy": "Paths",
+              "includeAuthInfoInExample": true,
+              "enableOptionalParameters": true,
+              "keepImplicitHeaders": false,
+              "includeDeprecated": true,
+              "alwaysInheritAuthentication": false,
+              "nestedFolderHierarchy": false
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType
+      method: POST
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "options": {
+                  "enableOptionalParameters": true,
+                  "folderStrategy": "Tags"
+              }
+          }
+    response:
+      statusText: "202"
+      body:
+        type: text
+        data: |-
+          {
+              "taskId": "66ae9950-0869-4e65-96b0-1e0e47e771af",
+              "url": "/specs/73e15000-bc7a-4802-b80e-05fff18fd7f8/tasks/66ae9950-0869-4e65-96b0-1e0e47e771af"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType
+      method: POST
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "options": {
+                  "enableOptionalParameters": true,
+                  "folderStrategy": "Tags"
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType
+      method: POST
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "options": {
+                  "enableOptionalParameters": true,
+                  "folderStrategy": "Tags"
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "status": 404,
+              "detail": "Entity that you are trying to access does not exist."
+          }
+  - name: Generation in Progress
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType
+      method: POST
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Sample API",
+              "options": {
+                  "enableOptionalParameters": true,
+                  "folderStrategy": "Tags"
+              }
+          }
+    response:
+      statusText: "423"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "actionLockedError",
+              "title": "Collection generation in progress",
+              "status": 423,
+              "detail": "Collection generation is already in progress for the spec."
+          }
+
+docs: Creates a collection from the given OpenAPI 2.0, 3.0, or 3.1 specification. The response contains a polling link to the task status.

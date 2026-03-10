@@ -1,0 +1,124 @@
+info:
+  name: Get a team user
+  type: http
+  seq: 3
+
+http:
+  method: GET
+  url: "{{baseUrl}}/users/:userId"
+  params:
+    - name: userId
+      value: ""
+      type: path
+      description: The user's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/users/:userId
+      method: GET
+      params:
+        - name: userId
+          value: "1"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": 1,
+              "name": "Taylor Lee",
+              "username": "taylor-lee",
+              "email": "taylor.lee@example.com",
+              "roles": [
+                  "user",
+                  "admin"
+              ],
+              "joinedAt": "2022-11-23T14:38:25.000Z"
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/users/:userId
+      method: GET
+      params:
+        - name: userId
+          value: "12345678"
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Bad Request",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/users/:userId
+      method: GET
+      params:
+        - name: userId
+          value: "1"
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/users/:userId
+      method: GET
+      params:
+        - name: userId
+          value: "1"
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/users/:userId
+      method: GET
+      params:
+        - name: userId
+          value: "1"
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: Gets information about a user on the Postman team.

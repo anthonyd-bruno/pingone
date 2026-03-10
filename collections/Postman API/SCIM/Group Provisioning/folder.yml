@@ -1,0 +1,11 @@
+info:
+  name: Group Provisioning
+  type: folder
+  seq: 2
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to provision and manage your Postman groups.
+  type: text/markdown

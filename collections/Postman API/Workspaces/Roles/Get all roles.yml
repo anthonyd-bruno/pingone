@@ -1,0 +1,133 @@
+info:
+  name: Get all roles
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/workspaces-roles"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/workspaces-roles
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "roles": {
+                  "user": [
+                      {
+                          "id": "3",
+                          "displayName": "Admin",
+                          "description": "Can manage people and all resources"
+                      },
+                      {
+                          "id": "2",
+                          "displayName": "Editor",
+                          "description": "Can create and edit all resources"
+                      },
+                      {
+                          "id": "1",
+                          "displayName": "Viewer",
+                          "description": "Can view and collaborate on all resources"
+                      }
+                  ],
+                  "usergroup": [
+                      {
+                          "id": "3",
+                          "displayName": "Admin",
+                          "description": "Can manage people and all resources"
+                      },
+                      {
+                          "id": "2",
+                          "displayName": "Editor",
+                          "description": "Can create and edit all resources"
+                      },
+                      {
+                          "id": "1",
+                          "displayName": "Viewer",
+                          "description": "Can view and collaborate on all resources"
+                      }
+                  ],
+                  "partner": [
+                      {
+                          "id": "7",
+                          "displayName": "Editor and Partner Lead",
+                          "description": "Can create and edit workspace resources, and invite partners with Editor or Viewer access to the workspace"
+                      },
+                      {
+                          "id": "6",
+                          "displayName": "Viewer and Partner Lead",
+                          "description": "Can view, fork and export workspace resources, and invite partners with Viewer access to the workspace"
+                      },
+                      {
+                          "id": "5",
+                          "displayName": "Editor",
+                          "description": "Can create, edit and fork workspace resources"
+                      },
+                      {
+                          "id": "4",
+                          "displayName": "Viewer",
+                          "description": "Can send requests and view workspace resources"
+                      }
+                  ]
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/workspaces-roles
+      method: GET
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "An API key must be provided in the request header or query string",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/workspaces-roles
+      method: GET
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Resource cannot be accessed",
+              "detail": "Inadequate permissions. Resource access forbidden.",
+              "status": 403
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/workspaces-roles
+      method: GET
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: Gets information about all roles in a workspace, based on the team's [plan](https://www.postman.com/pricing/).

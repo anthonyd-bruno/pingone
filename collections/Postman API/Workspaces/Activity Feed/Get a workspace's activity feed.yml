@@ -1,0 +1,367 @@
+info:
+  name: Get a workspace's activity feed
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/workspaces/:workspaceId/activities"
+  params:
+    - name: elementType
+      value: ""
+      type: query
+      description: |-
+        A comma-separated list of elements to filter the results by:
+        - `collection`
+        - `workspace`
+        - `environment`
+        - `mock`
+        - `monitor`
+      disabled: true
+    - name: userId
+      value: ""
+      type: query
+      description: Filter results by the given user ID.
+      disabled: true
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results. To view the next response, use the `nextCursor` value for this parameter.
+      disabled: true
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response.
+      disabled: true
+    - name: workspaceId
+      value: ""
+      type: path
+      description: The workspace's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/activities?limit=8
+      method: GET
+      params:
+        - name: limit
+          value: "8"
+          type: query
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "nextCursor": "bmV4dDppZDpZWEpqYUdsMllXeEVRaXhtWldWa2MxOHlNREkxWHpFc01UTXpNelE0"
+              },
+              "data": [
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T14:33:23Z",
+                      "updatedAt": "2025-04-07T14:33:23Z",
+                      "id": 15178,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "update",
+                      "elementType": "collection",
+                      "trigger": "update",
+                      "elementId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                      "elementName": "Test API"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T14:33:23Z",
+                      "updatedAt": "2025-04-07T14:33:23Z",
+                      "id": 15177,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "update",
+                      "elementType": "collection",
+                      "trigger": "update",
+                      "elementId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                      "elementName": "New Collection"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T13:59:02Z",
+                      "updatedAt": "2025-04-07T13:59:02Z",
+                      "id": 15131,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "update",
+                      "elementType": "workspace",
+                      "trigger": "update_visibility",
+                      "elementId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "elementName": "Testing APIs"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T13:56:09Z",
+                      "updatedAt": "2025-04-07T13:56:09Z",
+                      "id": 15130,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "update",
+                      "elementType": "workspace",
+                      "trigger": "add_user_role",
+                      "elementId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "elementName": "Testing APIs"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T13:54:07Z",
+                      "updatedAt": "2025-04-07T13:54:07Z",
+                      "id": 15125,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "destroy",
+                      "elementType": "collection",
+                      "trigger": "destroy",
+                      "elementid": "12345678-ea39a259-0c9b-4a5c-a2e6-bddadb8f8e6f",
+                      "elementName": "Billing API"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T13:52:53Z",
+                      "updatedAt": "2025-04-07T13:53:34Z",
+                      "id": 15122,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "update",
+                      "elementType": "collection",
+                      "trigger": "update",
+                      "elementId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                      "elementName": "New Collection"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T13:52:43Z",
+                      "updatedAt": "2025-04-07T13:52:43Z",
+                      "id": 15117,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "create",
+                      "elementType": "collection",
+                      "trigger": "create",
+                      "elementId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                      "elementName": "New Collection"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-03-24T17:00:09Z",
+                      "updatedAt": "2025-03-24T17:00:09Z",
+                      "id": 133348,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "create",
+                      "elementType": "collection",
+                      "trigger": "create",
+                      "elementid": "12345678-e562f717-596b-4d3a-80d9-0aaa44a8f900",
+                      "elementName": "Billing API"
+                  }
+              ]
+          }
+  - name: Filter by Element Type
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/activities?elementType=workspace
+      method: GET
+      params:
+        - name: elementType
+          value: workspace
+          type: query
+        - name: workspaceId
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "meta": {
+                  "nextCursor": ""
+              },
+              "data": [
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T13:59:02Z",
+                      "updatedAt": "2025-04-07T13:59:02Z",
+                      "id": 15131,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "update",
+                      "elementType": "workspace",
+                      "trigger": "update_visibility",
+                      "elementId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "elementName": "Testing APIs"
+                  },
+                  {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "createdAt": "2025-04-07T13:56:09Z",
+                      "updatedAt": "2025-04-07T13:56:09Z",
+                      "id": 15130,
+                      "user": {
+                          "id": 12345678,
+                          "username": "research-physicist-12345678",
+                          "isPartner": false,
+                          "name": "Taylor Lee"
+                      },
+                      "action": "update",
+                      "elementType": "workspace",
+                      "trigger": "add_user_role",
+                      "elementId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9",
+                      "elementName": "Testing APIs"
+                  }
+              ]
+          }
+  - name: Invalid Parameter
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/activities?limit=aaa
+      method: GET
+      params:
+        - name: limit
+          value: aaa
+          type: query
+        - name: workspaceId
+          value: 04c93785-a16a-4907-9781-f57cd67e3760
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "querystring.limit should be integer",
+              "status": 400
+          }
+  - name: Invalid User ID
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/activities?userId="12345678"
+      method: GET
+      params:
+        - name: userId
+          value: '"12345678"'
+          type: query
+        - name: workspaceId
+          value: 04c93785-a16a-4907-9781-f57cd67e3760
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "User ID must be an integer.",
+              "status": 400
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/activities
+      method: GET
+      params:
+        - name: workspaceId
+          value: 04c93785-a16a-4907-9781-f57cd67e3760
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/activities
+      method: GET
+      params:
+        - name: workspaceId
+          value: 04c93785-a16a-4907-9781-f57cd67e3760
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/workspaces/:workspaceId/activities
+      method: GET
+      params:
+        - name: workspaceId
+          value: 04c93785-a16a-4907-9781-f57cd67e3760
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Workspace not found",
+              "status": 404
+          }
+
+docs: Gets a workspace's [activity feed](https://learning.postman.com/docs/collaborating-in-postman/using-workspaces/changelog-and-restoring-collections/#view-workspace-activity). Activity feeds return information about who added or removed collections, environments, or elements from a workspace, and users that join or leave a workspace.

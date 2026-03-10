@@ -1,0 +1,85 @@
+info:
+  name: Pull source changes
+  type: http
+  seq: 4
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/collections/:collectionId/pulls"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The forked collection's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/pulls
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collection": {
+                  "destinationId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                  "sourceId": "12345678-45499451-e894-41b8-8c66-8191ab64932a"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/pulls
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "The collection is not a forked collection."
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/pulls
+      method: PUT
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "notFoundError",
+                  "message": "Fork not found."
+              }
+          }
+
+docs: |-
+  Pulls the changes from a parent (source) collection into the forked collection. In the endpoint's response:
+
+  - The `destinationId` is the ID of the forked collection.
+  - The `sourceId` is the ID of the source collection.

@@ -1,0 +1,11 @@
+info:
+  name: Collections
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage your collections linked to an API.
+  type: text/markdown

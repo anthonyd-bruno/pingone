@@ -1,0 +1,110 @@
+info:
+  name: Delete a response
+  type: http
+  seq: 5
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/collections/:collectionId/responses/:responseId"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+    - name: responseId
+      value: ""
+      type: path
+      description: The response's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+              "meta": {
+                  "model": "response",
+                  "action": "destroy"
+              },
+              "data": {
+                  "id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                  "owner": "12345678"
+              },
+              "revision": 24997417224
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the response you are looking for",
+                  "details": {
+                      "model": "response",
+                      "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                      "owner": "12345678"
+                  }
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: DELETE
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "Unauthorized",
+                  "message": "Unauthorized",
+                  "details": {
+                      "model": "response",
+                      "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                      "owner": "12345678"
+                  }
+              }
+          }
+
+docs: Deletes a response in a collection. On success, this returns an HTTP `204 No Content` response.

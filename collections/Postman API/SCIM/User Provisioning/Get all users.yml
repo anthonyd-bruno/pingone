@@ -1,0 +1,363 @@
+info:
+  name: Get all users
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{baseUrl}}/scim/v2/Users"
+  params:
+    - name: startIndex
+      value: "1"
+      type: query
+      description: The index entry by which to begin the list of returned results. Must be a value of `1` or greater.
+      disabled: true
+    - name: filter
+      value: ""
+      type: query
+      description: |-
+        Filter results by a specific word or phrase. This query parameter accepts the following:
+        - `userName` — Filter values are case-sensitive, and special characters and spaces must be URL encoded.
+        - `active` — Return only users who are active (`true`) or inactive (`false`).
+      disabled: true
+    - name: count
+      value: ""
+      type: query
+      description: Limit the number of results returned in a single response. By default, the system returns a list of 100 users.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/scim/v2/Users?startIndex=1&count=50
+      method: GET
+      params:
+        - name: startIndex
+          value: "1"
+          type: query
+        - name: count
+          value: "50"
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+              ],
+              "totalResults": 2,
+              "startIndex": 1,
+              "itemsPerPage": 2,
+              "Resources": [
+                  {
+                      "schemas": [
+                          "urn:ietf:params:scim:schemas:core:2.0:User"
+                      ],
+                      "id": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+                      "userName": "taylor-lee@example.com",
+                      "name": {
+                          "givenName": "Taylor",
+                          "familyName": "Lee"
+                      },
+                      "externalId": "12345678",
+                      "active": true,
+                      "meta": {
+                          "resourceType": "User",
+                          "created": "2021-02-22T04:24:13.000Z",
+                          "lastModified": "2021-02-22T04:24:13.000Z"
+                      }
+                  },
+                  {
+                      "schemas": [
+                          "urn:ietf:params:scim:schemas:core:2.0:User"
+                      ],
+                      "id": "123775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+                      "userName": "alex.cruz@example.com",
+                      "name": {
+                          "givenName": "Alex",
+                          "familyName": "Cruz"
+                      },
+                      "externalId": "87654321",
+                      "active": false,
+                      "meta": {
+                          "resourceType": "User",
+                          "created": "2021-02-22T04:24:13.000Z",
+                          "lastModified": "2021-02-22T04:24:13.000Z"
+                      }
+                  }
+              ]
+          }
+  - name: No Results Found
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: GET
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+              ],
+              "totalResults": 0,
+              "startIndex": 1,
+              "itemsPerPage": 0,
+              "Resources": []
+          }
+  - name: Filter Results
+    request:
+      url: https://api.getpostman.com/scim/v2/Users?filter=userName eq "taylor%2Dlee@example.com"
+      method: GET
+      params:
+        - name: filter
+          value: userName eq "taylor%2Dlee@example.com"
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+              ],
+              "totalResults": 1,
+              "startIndex": 1,
+              "itemsPerPage": 1,
+              "Resources": [
+                  {
+                      "schemas": [
+                          "urn:ietf:params:scim:schemas:core:2.0:User"
+                      ],
+                      "id": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+                      "userName": "taylor-lee@example.com",
+                      "name": {
+                          "givenName": "Taylor",
+                          "familyName": "Lee"
+                      },
+                      "externalId": "12345678",
+                      "active": true,
+                      "meta": {
+                          "resourceType": "User",
+                          "created": "2021-02-22T04:24:13.000Z",
+                          "lastModified": "2021-02-22T04:24:13.000Z"
+                      }
+                  }
+              ]
+          }
+  - name: Filter Inactive Users
+    request:
+      url: https://api.getpostman.com/scim/v2/Users?filter=active eq "false"
+      method: GET
+      params:
+        - name: filter
+          value: active eq "false"
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+              ],
+              "totalResults": 1,
+              "startIndex": 1,
+              "itemsPerPage": 1,
+              "Resources": [
+                  {
+                      "schemas": [
+                          "urn:ietf:params:scim:schemas:core:2.0:User"
+                      ],
+                      "id": "123775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+                      "userName": "alex.cruz@example.com",
+                      "name": {
+                          "givenName": "Alex",
+                          "familyName": "Cruz"
+                      },
+                      "externalId": "87654321",
+                      "active": false,
+                      "meta": {
+                          "resourceType": "User",
+                          "created": "2021-02-22T04:24:13.000Z",
+                          "lastModified": "2021-02-22T04:24:13.000Z"
+                      }
+                  }
+              ]
+          }
+  - name: No Filter Results Found
+    request:
+      url: https://api.getpostman.com/scim/v2/Users?filter=userName eq "taylor%2Dlee@example.com"
+      method: GET
+      params:
+        - name: filter
+          value: userName eq "taylor%2Dlee@example.com"
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:ListResponse"
+              ],
+              "totalResults": 0,
+              "startIndex": 1,
+              "itemsPerPage": 0,
+              "Resources": []
+          }
+  - name: Invalid Filter
+    request:
+      url: https://api.getpostman.com/scim/v2/Users?filter=userName ne "taylor%2Dlee@example.com"
+      method: GET
+      params:
+        - name: filter
+          value: userName ne "taylor%2Dlee@example.com"
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "You’ve used filter(s) that Postman doesn’t support.",
+              "status": "400"
+          }
+  - name: Invalid Team
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: GET
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This Postman team doesn’t exist anymore.",
+              "status": "400"
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/scim/v2/Users?startIndex=1&count=50
+      method: GET
+      params:
+        - name: startIndex
+          value: "1"
+          type: query
+        - name: count
+          value: "50"
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This Postman team doesn’t exist anymore.",
+              "status": "400"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: GET
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to access the team. Check if you have entered a valid API key.",
+              "status": "401"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: GET
+    response:
+      statusText: "403"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Your API key was generated by a Team Admin who is no longer on your team. Use an API key generated by a Team Admin.",
+              "status": "403"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: GET
+    response:
+      statusText: "429"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "That’s 300 attempts in less than a minute. Wait for a minute and then try again.",
+              "status": 429
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/scim/v2/Users
+      method: GET
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Couldn’t fetch members of the team.",
+              "status": "500"
+          }
+
+docs: Gets information about all Postman team members.

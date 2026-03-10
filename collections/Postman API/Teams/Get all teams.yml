@@ -1,0 +1,293 @@
+info:
+  name: Get all teams
+  type: http
+  seq: 6
+
+http:
+  method: GET
+  url: "{{baseUrl}}/teams"
+  headers:
+    - name: identifierType
+      value: scim
+      description: Use SCIM user and group IDs instead of Postman user IDs.
+      disabled: true
+  params:
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results. To view the next response, use the `nextCursor` value for this parameter.
+      disabled: true
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response.
+      disabled: true
+    - name: settings
+      value: ""
+      type: query
+      description: If true, returns team settings in the response.
+      disabled: true
+    - name: userRoles
+      value: ""
+      type: query
+      description: If true, returns the team's assigned user roles in the response.
+      disabled: true
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/teams?cursor=RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=2
+      method: GET
+      params:
+        - name: cursor
+          value: RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": [
+                  {
+                      "createdAt": "2025-01-27T10:36:02.000Z",
+                      "updatedAt": "2025-02-26T08:17:42.000Z",
+                      "id": 123,
+                      "name": "Testing Team",
+                      "handle": "testing-team",
+                      "description": "API testing team.",
+                      "organizationId": 1,
+                      "createdBy": 12345678,
+                      "enabled": true,
+                      "memberCount": 6
+                  },
+                  {
+                      "createdAt": "2025-01-27T10:36:02.000Z",
+                      "updatedAt": "2025-02-26T08:17:42.000Z",
+                      "id": 231,
+                      "name": "Billing Team",
+                      "handle": "billing-team",
+                      "description": "The Billing team.",
+                      "organizationId": 2,
+                      "createdBy": 12345678,
+                      "enabled": true,
+                      "memberCount": 2
+                  }
+              ],
+              "metadata": {
+                  "nextCursor": "NTczNDg="
+              }
+          }
+  - name: Response with SCIM IDs
+    request:
+      url: https://api.getpostman.com/teams?cursor=RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=2
+      method: GET
+      headers:
+        - name: identifierType
+          value: scim
+      params:
+        - name: cursor
+          value: RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": [
+                  {
+                      "createdAt": "2025-01-27T10:36:02.000Z",
+                      "updatedAt": "2025-02-26T08:17:42.000Z",
+                      "id": 123,
+                      "name": "Testing Team",
+                      "handle": "testing-team",
+                      "description": "API testing team.",
+                      "organizationId": 1,
+                      "createdBy": "33d8e85cc5ec04715bb0c18b42312d80413bad8a96622eb7",
+                      "enabled": true,
+                      "memberCount": 6
+                  },
+                  {
+                      "createdAt": "2025-01-27T10:36:02.000Z",
+                      "updatedAt": "2025-02-26T08:17:42.000Z",
+                      "id": 231,
+                      "name": "Billing Team",
+                      "handle": "billing-team",
+                      "description": "The Billing team.",
+                      "organizationId": 2,
+                      "createdBy": "33d8e85cc5ec04715bb0c18b42312d80413bad8a96622eb7",
+                      "enabled": true,
+                      "memberCount": 2
+                  }
+              ],
+              "metadata": {
+                  "nextCursor": "NTczNDg="
+              }
+          }
+  - name: Response with Settings and Roles
+    request:
+      url: https://api.getpostman.com/teams?cursor=RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=2
+      method: GET
+      params:
+        - name: cursor
+          value: RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": [
+                  {
+                      "createdAt": "2025-02-26T08:17:42.000Z",
+                      "updatedAt": "2025-02-26T08:17:42.000Z",
+                      "id": 123,
+                      "name": "Testing Team",
+                      "handle": "testing-team",
+                      "description": "API testing team.",
+                      "organizationId": 1,
+                      "createdBy": 12345678,
+                      "enabled": true,
+                      "memberCount": 6,
+                      "roles": [
+                          "TEAM_GUEST_VIEWER",
+                          "TEAM_GUEST_DEVELOPER",
+                          "TEAM_DEVELOPER",
+                          "TEAM_PARTNER_MANAGER",
+                          "TEAM_MANAGER"
+                      ],
+                      "settings": {
+                          "rfa_for_add_member": "disabled",
+                          "rfa_for_add_collaborator": "disabled"
+                      }
+                  },
+                  {
+                      "createdAt": "2025-02-26T08:17:42.000Z",
+                      "updatedAt": "2025-02-26T08:17:42.000Z",
+                      "id": 231,
+                      "name": "Billing Team",
+                      "handle": "billing-team",
+                      "description": "The Billing team.",
+                      "organizationId": 2,
+                      "createdBy": 12345678,
+                      "enabled": true,
+                      "memberCount": 2,
+                      "roles": [
+                          "TEAM_GUEST_VIEWER",
+                          "TEAM_GUEST_DEVELOPER",
+                          "TEAM_DEVELOPER",
+                          "TEAM_PARTNER_MANAGER",
+                          "TEAM_MANAGER"
+                      ],
+                      "settings": {
+                          "rfa_for_add_member": "enabled",
+                          "rfa_for_add_collaborator": "enabled"
+                      }
+                  }
+              ],
+              "metadata": {
+                  "nextCursor": "NTczNDg="
+              }
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams?cursor=RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=2
+      method: GET
+      params:
+        - name: cursor
+          value: RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams?cursor=RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=2
+      method: GET
+      params:
+        - name: cursor
+          value: RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/teams?cursor=RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=&limit=2
+      method: GET
+      params:
+        - name: cursor
+          value: RnJpIEZlYiAyNCAyMDIzIDEzOjI0OjA5IEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: limit
+          value: "2"
+          type: query
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "status": 500,
+              "title": "Internal Server Error",
+              "detail": {
+                  "error": {
+                      "name": "UnexpectedError",
+                      "message": "There was an issue while finding Team."
+                  }
+              },
+              "instance": "/teams"
+          }
+
+docs: Gets all Postman teams in your organization.

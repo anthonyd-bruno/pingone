@@ -1,0 +1,256 @@
+info:
+  name: Get all runner instances
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/runners/:runnerId/instances"
+  params:
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response, up to a maximum value of 25. Any value greater than 25 returns a 400 Bad Request response.
+      disabled: true
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results. To view the next response, use the `nextCursor` value for this parameter.
+      disabled: true
+    - name: runnerId
+      value: ""
+      type: path
+      description: The runner's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/instances
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "meta": {
+                  "model": "runnerInstance",
+                  "action": "find",
+                  "url": "https://testing.example.com/runners/1f08d6ba-c377-4ca0-be80-af81daf8fef9/instances"
+              },
+              "data": [
+                  {
+                      "id": "Rtesting-78b4f9c59c-5c7mx|b5862804ba|1.23.0|Linux",
+                      "hostname": "testing-78b4f9c59c-5c7mx",
+                      "uniqueId": "b5862804ba",
+                      "cliVersion": "1.23.0",
+                      "osType": "Linux",
+                      "runnerId": "1f08d6ba-c377-4ca0-be80-af81daf8fef9",
+                      "lastPingedAt": "2025-11-06T14:59:53.000Z"
+                  },
+                  {
+                      "id": "Rtesting-78b4f9c59c-bdjdr|f1b9f8f94a|1.23.0|Linux",
+                      "hostname": "testing-78b4f9c59c-bdjdr",
+                      "uniqueId": "f1b9f8f94a",
+                      "cliVersion": "1.23.0",
+                      "osType": "Linux",
+                      "runnerId": "1f08d6ba-c377-4ca0-be80-af81daf8fef9",
+                      "lastPingedAt": "2025-11-06T15:30:51.000Z"
+                  },
+                  {
+                      "id": "Rtesting-78b4f9c59c-g85wn|b35d23de98|1.23.0|Linux",
+                      "hostname": "testing-78b4f9c59c-g85wn",
+                      "uniqueId": "b35d23de98",
+                      "cliVersion": "1.23.0",
+                      "osType": "Linux",
+                      "runnerId": "1f08d6ba-c377-4ca0-be80-af81daf8fef9",
+                      "lastPingedAt": "2025-11-06T15:33:35.000Z"
+                  },
+                  {
+                      "id": "Rtesting-78b4f9c59c-shf48|cd40b93f88|1.23.0|Linux",
+                      "hostname": "testing-78b4f9c59c-shf48",
+                      "uniqueId": "cd40b93f88",
+                      "cliVersion": "1.23.0",
+                      "osType": "Linux",
+                      "runnerId": "1f08d6ba-c377-4ca0-be80-af81daf8fef9",
+                      "lastPingedAt": "2025-11-06T15:33:35.000Z"
+                  }
+              ]
+          }
+  - name: Response with Limit and Cursor
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/instances?limit=1&cursor=2NMbfiEAxQcpbmTFnmfQw7jV83WCRxjFxCwipofDVfn83ac16idLnRngzvpj4VNR5GsufwXVFrWX59iLNdV7CEriGGCutycbRD1smGoWV9F5GMLGs59mGQX5hnmnhsvxDLYt1kaJgkZYk6fs9oxoaqLvLbRSQb4LyBn4vkTh1T6Xvt1c8Pe9SPR2xJ5y3fPe6judViwg1CPLJbDdRNFZ6GJ8qDp26hJE8ZPTwoYrj
+      method: GET
+      params:
+        - name: limit
+          value: "1"
+          type: query
+        - name: cursor
+          value: 2NMbfiEAxQcpbmTFnmfQw7jV83WCRxjFxCwipofDVfn83ac16idLnRngzvpj4VNR5GsufwXVFrWX59iLNdV7CEriGGCutycbRD1smGoWV9F5GMLGs59mGQX5hnmnhsvxDLYt1kaJgkZYk6fs9oxoaqLvLbRSQb4LyBn4vkTh1T6Xvt1c8Pe9SPR2xJ5y3fPe6judViwg1CPLJbDdRNFZ6GJ8qDp26hJE8ZPTwoYrj
+          type: query
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "meta": {
+                  "nextCursor": "2NMbfiEAxQcpbmTFnmfQw7jV83WCRxjFxCwipofDVfn83ac16idLnRngzvpj4VNR5GsufwXVFrWX59iLNdV7CEriGGCutycbRD1smGoWV9F5GMLGs59mGQX5hnmnhsvxDLYt1kaJgkZYk6fs9oxoaqLvLbRSQb4LyBn4vkTh1T6Xvt1c8Pe9SPR2xJ5y3fPe6judViwg1CPLJbDdRNFZ6GJ8qDp26hJE8ZPTwoYrj",
+                  "model": "runnerInstance",
+                  "action": "find",
+                  "url": "https://testing.example.com/runners/1f08d6ba-c377-4ca0-be80-af81daf8fef9/instances?limit=1"
+              },
+              "data": [
+                  {
+                      "id": "Rtesting-78b4f9c59c-5c7mx|b5862804ba|1.23.0|Linux",
+                      "hostname": "testing-78b4f9c59c-5c7mx",
+                      "uniqueId": "b5862804ba",
+                      "cliVersion": "1.23.0",
+                      "osType": "Linux",
+                      "runnerId": "1f08d6ba-c377-4ca0-be80-af81daf8fef9",
+                      "lastPingedAt": "2025-11-06T14:59:53.000Z"
+                  }
+              ]
+          }
+  - name: No Runner Data
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/instances
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "meta": {
+                  "model": "runnerInstance",
+                  "action": "find",
+                  "url": "https://testing.example.com/runners/1f08d6ba-c377-4ca0-be80-af81daf8fef9/instances"
+              },
+              "data": []
+          }
+  - name: Invalid Pagination Limit
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/instances?limit=50
+      method: GET
+      params:
+        - name: limit
+          value: "50"
+          type: query
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "type": "urn:error:monitor:badRequest",
+              "title": "The request is invalid or improperly formatted.",
+              "detail": "Query param limit cannot exceed 25.",
+              "createdAt": "2025-11-06T08:55:38.790Z"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/instances
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "401"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/instances
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "403"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/instances
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "404"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "type": "urn:error:monitor:instanceNotFoundError",
+              "title": "Instance not found in the database.",
+              "detail": "Runner not found.",
+              "createdAt": "2025-11-06T14:14:45.934Z"
+          }
+
+docs: |-
+  Gets all instances of the runner polling Postman for upcoming monitor runs. Instances are runner executions that share the same runner ID and key.
+
+  **Note:**
+
+  You can get a runner's ID in the Postman UI if you have an Admin or Super Admin role. To do this, click **Team > Team Settings** in Postman, then click **Runners**. Click the runner you want to get the ID of, then copy its ID from the URL.

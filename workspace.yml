@@ -1,9 +1,11 @@
 opencollection: 1.0.0
 info:
-  name: "pingone"
+  name: "postman"
   type: workspace
 
 collections:
+  - name: "Postman API"
+    path: "collections/Postman API"
 
 specs:
 

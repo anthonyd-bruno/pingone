@@ -1,0 +1,279 @@
+info:
+  name: API definition security validation
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/security/api-validation"
+  body:
+    type: json
+    data: |-
+      {
+          "schema": {
+              "type": "{{schemaType}}",
+              "language": "{{schemaLanguage}}",
+              "schema": "{{schemaBody}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: No Warnings Found
+    request:
+      url: https://api.getpostman.com/security/api-validation
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schema": {
+                  "type": "openapi3",
+                  "language": "json",
+                  "schema": "{\n  \"openapi\": \"3.0.0\",\n  \"servers\": [\n    {\n      \"url\": \"example.com\"\n    }\n  ],\n  \"info\": {\n    \"contact\": {\n      \"name\": \"Jon\"\n    },\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": []\n    }\n  ]\n}"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "warnings": []
+          }
+  - name: Successful Response with Governance Warnings
+    request:
+      url: https://api.getpostman.com/security/api-validation
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schema": {
+                  "type": "openapi3",
+                  "language": "json",
+                  "schema": "{\n  \"openapi\": \"3.0.0\",\n  \"servers\": [\n    {\n      \"url\": \"example.com\"\n    }\n  ],\n  \"info\": {\n    \"contact\": {\n      \"name\": \"Jon\"\n    },\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": []\n    }\n  ]\n}"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "warnings": [
+                  {
+                      "slug": "OPENAPI_SPECTRAL_6_RULE_1016",
+                      "checksum": "5c17d7472a8b6a22e99524fb80a4a24128bebfb9970aefa16eb496792dbc7195",
+                      "dataPath": [
+                          "paths",
+                          "/spacecrafts/{spacecraftId}",
+                          "get"
+                      ],
+                      "possibleFixUrl": "https://go.pstmn.io/openapi3-security-warnings#all-operations-should-have-summaries",
+                      "type": "governance",
+                      "severity": "ERROR",
+                      "vulnerability": {
+                          "name": "All of your operations need summaries.",
+                          "slug": "OPENAPI_SPECTRAL_6_operations_summary"
+                      },
+                      "location": {
+                          "start": {
+                              "column": 8,
+                              "line": 19
+                          },
+                          "end": {
+                              "column": 50,
+                              "line": 38
+                          }
+                      },
+                      "category": {
+                          "name": "governance",
+                          "slug": "governance"
+                      },
+                      "message": "All of your operations need summaries."
+                  }
+              ]
+          }
+  - name: Successful Response with Security Warnings
+    request:
+      url: https://api.getpostman.com/security/api-validation
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schema": {
+                  "type": "openapi3",
+                  "language": "json",
+                  "schema": "{\n  \"openapi\": \"3.0.0\",\n  \"servers\": [\n    {\n      \"url\": \"example.com\"\n    }\n  ],\n  \"info\": {\n    \"contact\": {\n      \"name\": \"Jon\"\n    },\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  }\n}"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "warnings": [
+                  {
+                      "dataPath": [],
+                      "possibleFixUrl": "https://go.pstmn.io/openapi3-security-warnings#security-field-is-not-defined",
+                      "type": "security",
+                      "vulnerability": {
+                          "slug": "OPENAPI_VUL_0003",
+                          "name": "Security field is not defined"
+                      },
+                      "severity": "ERROR",
+                      "category": {
+                          "slug": "security",
+                          "name": "security"
+                      },
+                      "checksum": "db2c5b351010e803bb3cebf21c48275909bd89715660fa1865e8c55595d4928d",
+                      "slug": "OPENAPI_SCHEMA_RULE_0005",
+                      "message": "Security field is not defined",
+                      "location": {
+                          "end": {
+                              "line": 78,
+                              "column": 21
+                          },
+                          "start": {
+                              "line": 1,
+                              "column": 0
+                          }
+                      }
+                  },
+                  {
+                      "dataPath": [
+                          "paths",
+                          "/spacecrafts/{spacecraftId}",
+                          "get"
+                      ],
+                      "possibleFixUrl": "https://go.pstmn.io/openapi3-security-warnings#operation-does-not-enforce-any-security-scheme",
+                      "type": "security",
+                      "vulnerability": {
+                          "slug": "OPENAPI_VUL_0012",
+                          "name": "Operation does not enforce any security scheme"
+                      },
+                      "severity": "WARN",
+                      "category": {
+                          "slug": "security",
+                          "name": "security"
+                      },
+                      "checksum": "44dd11f850da75d478d246361a95435c7dd8da799ce689a8648449af7b3c7b43",
+                      "slug": "OPENAPI_SCHEMA_RULE_0017",
+                      "message": "Operation does not enforce any security scheme.",
+                      "location": {
+                          "end": {
+                              "line": 39,
+                              "column": 50
+                          },
+                          "start": {
+                              "line": 19,
+                              "column": 8
+                          }
+                      }
+                  }
+              ]
+          }
+  - name: Invalid Schema
+    request:
+      url: https://api.getpostman.com/security/api-validation
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schema": {
+                  "type": "openapi1",
+                  "language": "json",
+                  "schema": "{}"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": {
+                      "name": "Invalid schema",
+                      "reason": "Provided schema type is not supported."
+                  }
+              }
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/security/api-validation
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schema": {
+                  "type": "openapi3",
+                  "language": "yaml",
+                  "schema": "openapi: '\"3.1.0'\"\ninfo:\n  version: '\"1.0.0'\"\n  title: '\"Sample API'\"\n  description: Buy or rent spacecrafts\n\npaths:\n  /spacecrafts/{spacecraftId}:\n    parameters:\n      - name: spacecraftId\n        description: The unique identifier of the spacecraft\n        in: path\n        required: true\n        schema:\n          $ref: '\"#/components/schemas/SpacecraftId'\"\n    get:\n      summary: Read a spacecraft\n      responses:\n        '\"200'\":\n          description: The spacecraft corresponding to the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: '\"#/components/schemas/Spacecraft'\"\n        404:\n          description: No spacecraft found for the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: '\"#/components/schemas/Error'\"\n        500:\n          description: Unexpected error\n          content:\n            application/json:\n              schema:\n                $ref: '\"#/components/schemas/Error'\"\ncomponents:\n  schemas:\n    SpacecraftId:\n      description: The unique identifier of a spacecraft\n      type: string\n    Spacecraft:\n      type: object\n      required:\n        - id\n        - name\n        - type\n      properties:\n        id:\n          $ref: '\"#/components/schemas/SpacecraftId'\"\n        name:\n          type: string\n        type:\n          type: string\n          enum:\n            - capsule\n            - probe\n            - satellite\n            - spaceplane\n            - station\n        description:\n          type: string\n    Error:\n      type: object\n      required:\n        - message\n      properties:\n        message:\n          description: A human readable error message\n          type: string\n  securitySchemes:\n    ApiKey:\n      type: apiKey\n      in: header\n      name: X-Api-Key"
+              }
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "This feature isn't available in your region."
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/security/api-validation
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "schema": {
+                  "type": "openapi1",
+                  "language": "json",
+                  "schema": "{}"
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Performs an analysis on the given definition and returns any issues based on your [predefined rulesets](https://learning.postman.com/docs/api-governance/configurable-rules/configurable-rules-overview/). This endpoint can help you understand the violations' impact and offers solutions to help you resolve any errors. You can include this endpoint to your CI/CD process to automate schema validation.
+
+  **Note:**
+
+  - The maximum allowed size of the definition is 10 MB.
+      
+  - You must [import and enable](https://learning.postman.com/docs/api-governance/configurable-rules/configuring-api-security-rules/) Postman's [OWASP security rules](https://postman.postman.co/api-governance/libraries/postman_owasp/view) for this endpoint to return any security rule violations.

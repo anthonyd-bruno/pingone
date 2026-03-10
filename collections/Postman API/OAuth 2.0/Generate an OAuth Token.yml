@@ -1,0 +1,172 @@
+info:
+  name: Generate an OAuth Token
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/oauth2/token"
+  body:
+    type: json
+    data: |-
+      {
+          "installationAuthId": "{{installationAuthId}}",
+          "grant_type": "client_credentials",
+          "jwt": "{{jwtToken}}"
+      }
+  auth:
+    type: basic
+    username: "{{clientId}}"
+    password: "{{clientSecret}}"
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/oauth2/token
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "installationAuthId": "e868878e40f646ce8b5620736995dc89",
+              "grant_type": "client_credentials",
+              "jwt": "XXX"
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Date
+          value: Fri, 10 Oct 2025 06:10:44 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "133"
+        - name: Connection
+          value: keep-alive
+        - name: ETag
+          value: W/"85-i2BBrr2EZl4vj2vEWK+4odf/tXg"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "access_token": "PMAK-XXX",
+              "expires_in": 3600,
+              "token_type": "Bearer"
+          }
+  - name: Unsupported Grant Type
+    request:
+      url: https://api.getpostman.com/oauth2/token
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "installationAuthId": "e868878e40f646ce8b5620736995dc89",
+              "grant_type": "client_credential",
+              "jwt": "eyJhXXX"
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Date
+          value: Thu, 09 Oct 2025 23:06:35 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "86"
+        - name: Connection
+          value: keep-alive
+        - name: ETag
+          value: W/"56-B6d4NPqVllReaDUW2DtY9JhTO+A"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "error": "invalid_request",
+              "error_description": "Unsupported grant type"
+          }
+  - name: OAuth Client Installation Not Found
+    request:
+      url: https://api.getpostman.com/oauth2/token
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "installationAuthId": "e868878e40f646ce8b5620736995dc89",
+              "grant_type": "client_credentials",
+              "jwt": "eyJhXXX"
+          }
+    response:
+      statusText: "404"
+      headers:
+        - name: Date
+          value: Thu, 09 Oct 2025 23:06:13 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "100"
+        - name: Connection
+          value: keep-alive
+        - name: ETag
+          value: W/"64-7HX1UJIlK3t9hKD+c4qhLDcbqqU"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "error": "invalid_client",
+              "error_description": "OAuth client installation not found"
+          }
+  - name: OAuth Client Not Found
+    request:
+      url: https://api.getpostman.com/oauth2/token
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "installationAuthId": "e868878e40f646ce8b5620736995dc89",
+              "grant_type": "client_credentials",
+              "jwt": "eyJhXXX"
+          }
+    response:
+      statusText: "404"
+      headers:
+        - name: Date
+          value: Wed, 08 Oct 2025 12:22:32 GMT
+        - name: Content-Type
+          value: application/json
+        - name: Content-Length
+          value: "87"
+        - name: Connection
+          value: keep-alive
+        - name: ETag
+          value: W/"57-fib+iC80vXiuF+2j+c5x7dZ/dJk"
+        - name: Vary
+          value: Accept-Encoding
+      body:
+        type: json
+        data: |-
+          {
+              "error": "invalid_client",
+              "error_description": "OAuth client not found"
+          }
+
+docs: |-
+  Generates an OAuth 2.0 access token for a client application using the `client_credentials` grant type. Use this endpoint with backend services or bots to authenticate and authorize API requests without user interaction.
+
+  **Note:**
+
+  This endpoint uses Basic Auth. You must pass a valid client ID and client secret for the username and password, respectively.

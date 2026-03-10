@@ -1,0 +1,104 @@
+info:
+  name: Get runner metrics
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/runners/:runnerId/metrics"
+  params:
+    - name: runnerId
+      value: ""
+      type: path
+      description: The runner's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/metrics
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "lastPingAt": "2025-09-21T12:11:19.000Z",
+              "queueDepth": 9,
+              "oldestQueuedRunAgeSeconds": 10213
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/metrics
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/metrics
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/runners/:runnerId/metrics
+      method: GET
+      params:
+        - name: runnerId
+          value: 1f08d6ba-c377-4ca0-be80-af81daf8fef9
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "urn:error:monitor:instanceNotFoundError",
+              "title": "Instance not found in the database.",
+              "detail": "Runner not found.",
+              "createdAt": "2025-11-06T14:14:45.934Z"
+          }
+
+docs: |-
+  Gets the Postman server-side metrics for a runner instance. Metrics include information such as monitor run queues and last polling date.
+
+  **Note:**
+
+  You can get a runner's ID in the Postman UI if you have a Team Admin or Super Admin role. To do this, click **Team > Team Settings** in Postman, then click **Runners**. Click the runner you want to get the ID of, then copy its ID from the URL.

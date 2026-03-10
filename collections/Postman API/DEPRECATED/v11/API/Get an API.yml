@@ -1,0 +1,332 @@
+info:
+  name: Get an API
+  type: http
+  seq: 7
+
+http:
+  method: GET
+  url: "{{baseUrl}}/apis/:apiId"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: include
+      value: ""
+      type: query
+      description: "A comma-separated list of one or more of the following additional resources to include in the response. Use this parameter to query for element links to the API, such as collections and schemas:
+
+        - `collections` — Query for linked Postman collections.
+
+        - `versions` — Query for linked versions.
+
+        - `schemas` — Query for linked schemas.
+
+        - `gitInfo` — Query for information about the API’s git-linked repository. This query only returns the linked repository  and folder locations of the files. It does **not** return `collections` or `schemas` information.
+
+
+        **Note:**
+
+        API viewers can only use the `versions` option.
+
+        \        "
+      disabled: true
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "description": "This is a test API.",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "updatedBy": "12345678",
+              "createdBy": "12345678",
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "name": "Test API",
+              "summary": "Test API.",
+              "updatedAt": "2022-06-09T19:50:49.000Z"
+          }
+  - name: With include Parameter
+    request:
+      url: https://api.getpostman.com/apis/:apiId?include=schemas,collections,versions,gitInfo
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: include
+          value: schemas,collections,versions,gitInfo
+          type: query
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdBy": "12345678",
+              "name": "Test API",
+              "updatedBy": "12345678",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "description": "This is a test API.",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "collections": [
+                  {
+                      "id": "16bb367e-fafb-4ef3-933b-ee3d971866fb"
+                  }
+              ],
+              "gitInfo": {},
+              "schemas": [
+                  {
+                      "id": "ae2b9ab2-28f2-401d-912f-eca09a78e98b"
+                  }
+              ],
+              "versions": [
+                  {
+                      "id": "18ccb2dc-1746-4945-ba76-8152b37cr123",
+                      "name": "v1.0.0"
+                  }
+              ],
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "summary": "Test API."
+          }
+  - name: Git-Linked API with root File
+    request:
+      url: https://api.getpostman.com/apis/:apiId?include=schemas,collections,versions,gitInfo
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: include
+          value: schemas,collections,versions,gitInfo
+          type: query
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdBy": "12345678",
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "updatedBy": "12345678",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "description": "This is a test API.",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "name": "Test API",
+              "summary": "Test API.",
+              "versions": [
+                  {
+                      "id": "18ccb2dc-1746-4945-ba76-8152b37cr123",
+                      "name": "v1.0.0"
+                  }
+              ],
+              "gitInfo": {
+                  "schemaFolder": "",
+                  "domain": "https://example.com",
+                  "repository": "repo-name",
+                  "organization": "org-name",
+                  "collectionFolder": "collection-folder"
+              }
+          }
+  - name: Git-Linked API with a Schema Folder
+    request:
+      url: https://api.getpostman.com/apis/:apiId?include=schemas,collections,versions,gitInfo
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: include
+          value: schemas,collections,versions,gitInfo
+          type: query
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdBy": "12345678",
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "updatedBy": "12345678",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "description": "This is a test API.",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "name": "Test API",
+              "summary": "Test API.",
+              "versions": [
+                  {
+                      "id": "18ccb2dc-1746-4945-ba76-8152b37cr123",
+                      "name": "v1.0.0"
+                  }
+              ],
+              "gitInfo": {
+                  "schemaFolder": "schema-folder",
+                  "domain": "https://example.com",
+                  "repository": "repo-name",
+                  "organization": "org-name",
+                  "collectionFolder": "collection-folder"
+              }
+          }
+  - name: Response for API Viewers
+    request:
+      url: https://api.getpostman.com/apis/:apiId?include=versions
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: include
+          value: versions
+          type: query
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "id": "5360b75f-447e-467c-9299-12fd6c92450d",
+              "name": "Test API",
+              "summary": "Test API.",
+              "description": "This is a test API.",
+              "createdBy": "12345678",
+              "updatedBy": "12345678",
+              "versions": [
+                  {
+                      "id": "18ccb2dc-1746-4945-ba76-8152b37cr123",
+                      "name": "v1.0.0"
+                  },
+                  {
+                      "id": "5260b75f-447e-467c-9299-12f16c924503",
+                      "name": "v1.0.1"
+                  }
+              ]
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: GET
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "We could not find the API you are looking for",
+              "detail": "We could not find the API you are looking for."
+          }
+  - name: v9 Unsupported
+    request:
+      url: https://api.getpostman.com/apis/:apiId
+      method: GET
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "unsupportedEntityError",
+              "title": "Unsupported API",
+              "detail": "This endpoint does not support v9 APIs."
+          }
+
+docs: |-
+  Gets information about an API.
+
+  **Note:**
+
+  - Git-connected APIs will **only** return the `versions` and `gitInfo` query responses. This is because schema and collection information is stored in the connected Git repository. The `gitInfo` object only lists the repository and folder locations of the files.
+  - API viewers can only use the `versions` option in the `include` query parameter.

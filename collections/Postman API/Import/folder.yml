@@ -1,0 +1,11 @@
+info:
+  name: Import
+  type: folder
+  seq: 8
+
+request:
+  auth: inherit
+
+docs:
+  content: The **Import** endpoints enable you to manage [importing and exporting](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/) Postman data.
+  type: text/markdown

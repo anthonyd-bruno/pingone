@@ -1,0 +1,626 @@
+info:
+  name: Get team audit logs
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/audit/logs"
+  params:
+    - name: userId
+      value: ""
+      type: query
+      description: Return only results that match the given user ID.
+      disabled: true
+    - name: action
+      value: ""
+      type: query
+      description: Filter results by an audit log action.
+      disabled: true
+    - name: since
+      value: ""
+      type: query
+      description: Return logs created after the given time, in YYYY-MM-DD format.
+      disabled: true
+    - name: until
+      value: ""
+      type: query
+      description: Return logs created before the given time, in YYYY-MM-DD format.
+      disabled: true
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of audit events to return at once. The maximum value is 300.
+      disabled: true
+    - name: cursor
+      value: ""
+      type: query
+      description: The cursor to get the next set of results.
+      disabled: true
+    - name: orderBy
+      value: ""
+      type: query
+      description: Return the records in ascending (`asc`) or descending (`desc`) order. This value defaults to `desc` order.
+      disabled: true
+    - name: order_by
+      value: ""
+      type: query
+      description: Return the records in ascending (`asc`) or descending (`desc`) order. This value defaults to `desc` order.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/audit/logs
+      method: GET
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "trails": [
+                  {
+                      "id": 12,
+                      "ip": "192.0.2.0",
+                      "userAgent": "PostmanRuntime/7.29.0 Postman/5.5.4 ChromeApp",
+                      "action": "user.login_password_success",
+                      "timestamp": "2022-11-10T18:31:32.000Z",
+                      "message": "taylor-lee successfully logged in using the Postman password.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678
+                          },
+                          "team": {
+                              "name": "Postman-Testing",
+                              "id": 125648
+                          }
+                      }
+                  },
+                  {
+                      "id": 13,
+                      "ip": "192.0.2.0",
+                      "userAgent": null,
+                      "action": "team.scim_add_member",
+                      "timestamp": "2022-11-10T17:19:03.000Z",
+                      "message": "Taylor Lee provisioned user Alex Cruz",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Alex Cruz",
+                              "username": "alex.cruz",
+                              "email": "alex.cruz@example.com",
+                              "id": 87654321
+                          },
+                          "team": {
+                              "name": "Test-API",
+                              "id": 1234
+                          }
+                      }
+                  },
+                  {
+                      "id": 14,
+                      "ip": null,
+                      "userAgent": null,
+                      "action": "user.authaccount.linked",
+                      "timestamp": "2022-11-10T17:19:02.000Z",
+                      "message": "Taylor Lee created account linkage for user.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Alex Cruz",
+                              "username": "alex.cruz",
+                              "email": "alex.cruz@example.com",
+                              "id": 87654321
+                          },
+                          "team": {
+                              "name": "Test-API",
+                              "id": 1234
+                          },
+                          "variables": {
+                              "auth_type": "okta",
+                              "auth_uid": "8f868a0353fd46cbadfe8a6ab3853b94",
+                              "authaccount_uid": "f97535389e8447ae8006b2795a2059e1"
+                          }
+                      }
+                  },
+                  {
+                      "id": 15,
+                      "ip": "192.0.2.0",
+                      "userAgent": null,
+                      "action": "team.create_group",
+                      "timestamp": "2022-11-10T15:54:47.000Z",
+                      "message": "Taylor Lee created group Test-API.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678
+                          },
+                          "team": {
+                              "name": "API-Testing",
+                              "id": 11
+                          },
+                          "variables": {
+                              "groupId": "1234",
+                              "groupName": "Test-API",
+                              "groupVisibility": "team"
+                          }
+                      }
+                  }
+              ],
+              "nextCursor": 95427049
+          }
+  - name: Filter Response by User ID
+    request:
+      url: https://api.getpostman.com/audit/logs?userId=12345678
+      method: GET
+      params:
+        - name: userId
+          value: "12345678"
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "trails": [
+                  {
+                      "id": 12,
+                      "ip": "192.0.2.0",
+                      "userAgent": "PostmanRuntime/7.29.0 Postman/5.5.4 ChromeApp",
+                      "action": "user.login_password_success",
+                      "timestamp": "2022-11-10T18:31:32.000Z",
+                      "message": "taylor-lee successfully logged in using the Postman password.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678
+                          },
+                          "team": {
+                              "name": "Postman-Testing",
+                              "id": 125648
+                          }
+                      }
+                  },
+                  {
+                      "id": 13,
+                      "ip": "192.0.2.0",
+                      "userAgent": null,
+                      "action": "team.scim_add_member",
+                      "timestamp": "2022-11-10T17:19:03.000Z",
+                      "message": "Taylor Lee provisioned user Alex Cruz",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Alex Cruz",
+                              "username": "alex.cruz",
+                              "email": "alex.cruz@example.com",
+                              "id": 87654321
+                          },
+                          "team": {
+                              "name": "Test-API",
+                              "id": 1234
+                          }
+                      }
+                  },
+                  {
+                      "id": 14,
+                      "ip": null,
+                      "userAgent": null,
+                      "action": "user.authaccount.linked",
+                      "timestamp": "2022-11-10T17:19:02.000Z",
+                      "message": "Taylor Lee created account linkage for user.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Alex Cruz",
+                              "username": "alex.cruz",
+                              "email": "alex.cruz@example.com",
+                              "id": 87654321
+                          },
+                          "team": {
+                              "name": "Test-API",
+                              "id": 1234
+                          },
+                          "variables": {
+                              "auth_type": "okta",
+                              "auth_uid": "8f868a0353fd46cbadfe8a6ab3853b94",
+                              "authaccount_uid": "f97535389e8447ae8006b2795a2059e1"
+                          }
+                      }
+                  },
+                  {
+                      "id": 15,
+                      "ip": "192.0.2.0",
+                      "userAgent": null,
+                      "action": "team.create_group",
+                      "timestamp": "2022-11-10T15:54:47.000Z",
+                      "message": "Taylor Lee created group Test-API.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678
+                          },
+                          "team": {
+                              "name": "API-Testing",
+                              "id": 11
+                          },
+                          "variables": {
+                              "groupId": "1234",
+                              "groupName": "Test-API",
+                              "groupVisibility": "team"
+                          }
+                      }
+                  }
+              ],
+              "nextCursor": 95427049
+          }
+  - name: Filter Response by Audit Action
+    request:
+      url: https://api.getpostman.com/audit/logs?action=team.scim_add_member
+      method: GET
+      params:
+        - name: action
+          value: team.scim_add_member
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "trails": [
+                  {
+                      "id": 13,
+                      "ip": "192.0.2.0",
+                      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36",
+                      "action": "user.apikey_create",
+                      "timestamp": "2025-12-22T05:14:47.000Z",
+                      "message": "Taylor Lee created an API key with identifier: 6948d*****.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678
+                          },
+                          "team": {
+                              "name": "Billing API Team",
+                              "id": 123
+                          },
+                          "variables": {
+                              "apiKey": "6948d*****"
+                          }
+                      }
+                  },
+                  {
+                      "id": 14,
+                      "ip": "192.0.2.0",
+                      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36",
+                      "action": "user.apikey_create",
+                      "timestamp": "2025-11-17T11:03:45.000Z",
+                      "message": "Alex Cruz created an API key with identifier: 691b0*****.",
+                      "data": {
+                          "actor": {
+                              "name": "Alex Cruz",
+                              "username": "supply-technologist-87654321",
+                              "email": "alex.cruz@example.com",
+                              "id": 1068007,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Alex Cruz",
+                              "username": "supply-technologist-87654321",
+                              "email": "alex.cruz@example.com",
+                              "id": 1068007
+                          },
+                          "team": {
+                              "name": "Billing API Team",
+                              "id": 123
+                          },
+                          "variables": {
+                              "apiKey": "691b0*****"
+                          }
+                      }
+                  }
+              ]
+          }
+  - name: Filter Response by Order
+    request:
+      url: https://api.getpostman.com/audit/logs?orderBy=asc
+      method: GET
+      params:
+        - name: orderBy
+          value: asc
+          type: query
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "trails": [
+                  {
+                      "id": 12,
+                      "ip": "192.0.2.0",
+                      "userAgent": "PostmanRuntime/7.29.0 Postman/5.5.4 ChromeApp",
+                      "action": "user.login_password_success",
+                      "timestamp": "2022-11-10T18:31:32.000Z",
+                      "message": "taylor-lee successfully logged in using the Postman password.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678
+                          },
+                          "team": {
+                              "name": "Postman-Testing",
+                              "id": 125648
+                          }
+                      }
+                  },
+                  {
+                      "id": 13,
+                      "ip": "192.0.2.0",
+                      "userAgent": null,
+                      "action": "team.scim_add_member",
+                      "timestamp": "2022-11-10T17:19:03.000Z",
+                      "message": "Taylor Lee provisioned user Alex Cruz",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Alex Cruz",
+                              "username": "alex.cruz",
+                              "email": "alex.cruz@example.com",
+                              "id": 87654321
+                          },
+                          "team": {
+                              "name": "Test-API",
+                              "id": 1234
+                          }
+                      }
+                  },
+                  {
+                      "id": 14,
+                      "ip": null,
+                      "userAgent": null,
+                      "action": "user.authaccount.linked",
+                      "timestamp": "2022-11-10T17:19:02.000Z",
+                      "message": "Taylor Lee created account linkage for user.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Alex Cruz",
+                              "username": "alex.cruz",
+                              "email": "alex.cruz@example.com",
+                              "id": 87654321
+                          },
+                          "team": {
+                              "name": "Test-API",
+                              "id": 1234
+                          },
+                          "variables": {
+                              "auth_type": "okta",
+                              "auth_uid": "8f868a0353fd46cbadfe8a6ab3853b94",
+                              "authaccount_uid": "f97535389e8447ae8006b2795a2059e1"
+                          }
+                      }
+                  },
+                  {
+                      "id": 15,
+                      "ip": "192.0.2.0",
+                      "userAgent": null,
+                      "action": "team.create_group",
+                      "timestamp": "2022-11-10T15:54:47.000Z",
+                      "message": "Taylor Lee created group Test-API.",
+                      "data": {
+                          "actor": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678,
+                              "active": true
+                          },
+                          "user": {
+                              "name": "Taylor Lee",
+                              "username": "taylor.lee",
+                              "email": "taylor.lee@example.com",
+                              "id": 12345678
+                          },
+                          "team": {
+                              "name": "API-Testing",
+                              "id": 11
+                          },
+                          "variables": {
+                              "groupId": "1234",
+                              "groupName": "Test-API",
+                              "groupVisibility": "team"
+                          }
+                      }
+                  }
+              ],
+              "nextCursor": 95427049
+          }
+  - name: Invalid Audit Action
+    request:
+      url: https://api.getpostman.com/audit/logs?action=Created API Key
+      method: GET
+      params:
+        - name: action
+          value: Created API Key
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "InvalidAuditAction",
+                  "message": "Invalid audit action format. Expected format: prefix.action_name (e.g., user.login)."
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/audit/logs
+      method: GET
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "AuthenticationError",
+                  "message": "Invalid API Key. Every request requires a valid API Key to be sent."
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/audit/logs
+      method: GET
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "ForbiddenRequest",
+                  "message": "You do not have permissions to view team Audit logs"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/audit/logs
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Gets a list of your team's generated audit events. For a complete list of all audit events, see [Audit logs](https://learning.postman.com/docs/administration/audit-logs/).

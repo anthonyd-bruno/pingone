@@ -1,0 +1,377 @@
+info:
+  name: Get a response
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/collections/:collectionId/responses/:responseId"
+  params:
+    - name: ids
+      value: "true"
+      type: query
+      description: If true, returns only the response properties that contain ID values.
+      disabled: true
+    - name: uid
+      value: "true"
+      type: query
+      description: If true, returns all IDs in UID format (`userId`-`id`).
+      disabled: true
+    - name: populate
+      value: "true"
+      type: query
+      description: If true, returns all of a response's contents.
+      disabled: true
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+    - name: responseId
+      value: ""
+      type: path
+      description: The response's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: GET Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+              "meta": {
+                  "model": "response",
+                  "populate": false,
+                  "changeset": false,
+                  "action": "find"
+              },
+              "data": {
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 32528384460,
+                  "request": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                  "name": "Not Found",
+                  "status": null,
+                  "responseCode": {
+                      "code": 404,
+                      "name": "Not Found"
+                  },
+                  "time": null,
+                  "headers": [
+                      {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "value": "application/json",
+                          "description": "",
+                          "type": "text"
+                      }
+                  ],
+                  "cookies": null,
+                  "mime": null,
+                  "text": "{\n    \"title\": \"Not Found\",\n    \"detail\": \"Requested API does not exist\",\n    \"type\": \"about:blank\"\n}",
+                  "language": "json",
+                  "rawDataType": null,
+                  "requestObject": "{\"data\":null,\"dataMode\":\"raw\",\"dataOptions\":{\"raw\":{\"language\":\"json\"}},\"headerData\":[{\"key\":\"Accept\",\"value\":\"application/vnd.example.v1+json\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}],\"method\":\"GET\",\"pathVariableData\":[],\"queryParams\":[{\"key\":\"id\",\"value\":\"test-api\",\"equals\":true,\"description\":null,\"enabled\":true}],\"url\":\"http://api.getpostman.com/v1/request?id=test-api\",\"headers\":\"Accept: application/vnd.example.v1+json\\n\",\"pathVariables\":{},\"protocolProfileBehavior\":{\"disableBodyPruning\":true},\"rawModeData\":\"\",\"graphqlModeData\":{}}",
+                  "createdAt": "2023-08-22T12:53:12.000Z",
+                  "updatedAt": "2023-09-12T18:23:42.000Z"
+              }
+          }
+  - name: POST Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+              "meta": {
+                  "model": "response",
+                  "populate": false,
+                  "changeset": false,
+                  "action": "find"
+              },
+              "data": {
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 32366010334,
+                  "request": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                  "name": "Example POST response",
+                  "status": null,
+                  "responseCode": {
+                      "code": 200,
+                      "name": "OK"
+                  },
+                  "time": null,
+                  "headers": [
+                      {
+                          "key": "Date",
+                          "value": "Fri, 01 Sep 2023 07:36:18 GMT"
+                      },
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json; charset=utf-8"
+                      },
+                      {
+                          "key": "Content-Length",
+                          "value": "607"
+                      },
+                      {
+                          "key": "Connection",
+                          "value": "keep-alive"
+                      },
+                      {
+                          "key": "ETag",
+                          "value": "W/\"25f-fXeI1ntSNPOD7sOol6cMrRL0DYk\""
+                      },
+                      {
+                          "key": "set-cookie",
+                          "value": "sails.sid=s%3A4o6OiKlJvAK5dTEKRnH-ZMOU7jHTwNB-.owD6JTABpH6H6rH8gY09Z7ATvkr2elxL4iGyWnJkBPg; Path=/; HttpOnly"
+                      }
+                  ],
+                  "cookies": null,
+                  "mime": null,
+                  "text": "{\n    \"args\": {},\n    \"data\": {\n        \"field\": \"Value\"\n    },\n    \"files\": {},\n    \"form\": {},\n    \"headers\": {\n        \"x-forwarded-proto\": \"https\",\n        \"x-forwarded-port\": \"123\",\n        \"host\": \"postman-echo.com\",\n        \"x-amzn-trace-id\": \"Root=1-71bdd0e4-2ad8-45ab-be3c-3dde999711a6\",\n        \"content-length\": \"24\",\n        \"content-type\": \"application/json\",\n        \"x-api-key\": \"xxx\",\n        \"user-agent\": \"PostmanRuntime/7.32.3\",\n        \"accept\": \"*/*\",\n        \"postman-token\": \"XXXX\",\n        \"accept-encoding\": \"gzip, deflate, br\"\n    },\n    \"json\": {\n        \"field\": \"Value\"\n    },\n    \"url\": \"https://postman-echo.com/post\"\n}",
+                  "language": "json",
+                  "rawDataType": null,
+                  "requestObject": "{\"data\":null,\"dataMode\":\"raw\",\"dataOptions\":{\"raw\":{\"language\":\"json\"}},\"headerData\":[],\"method\":\"POST\",\"pathVariableData\":[],\"queryParams\":[],\"url\":\"https://postman-echo.com/post\",\"headers\":\"\",\"pathVariables\":{},\"protocolProfileBehavior\":{\"disableBodyPruning\":true},\"rawModeData\":\"{\\n    \\\"field\\\": \\\"Value\\\"\\n}\",\"graphqlModeData\":{}}",
+                  "createdAt": "2023-09-12T15:21:55.000Z",
+                  "updatedAt": "2023-09-12T18:27:57.000Z"
+              }
+          }
+  - name: Response with populate Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId?populate=true
+      method: GET
+      params:
+        - name: populate
+          value: "true"
+          type: query
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+              "meta": {
+                  "model": "response",
+                  "populate": false,
+                  "changeset": false,
+                  "action": "find"
+              },
+              "data": {
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 32528384460,
+                  "request": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                  "name": "Not Found",
+                  "status": null,
+                  "responseCode": {
+                      "code": 404,
+                      "name": "Not Found"
+                  },
+                  "time": null,
+                  "headers": [
+                      {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "value": "application/json",
+                          "description": "",
+                          "type": "text"
+                      }
+                  ],
+                  "cookies": null,
+                  "mime": null,
+                  "text": "{\n    \"title\": \"Not Found\",\n    \"detail\": \"Requested API does not exist\",\n    \"type\": \"about:blank\"\n}",
+                  "language": "json",
+                  "rawDataType": null,
+                  "requestObject": "{\"data\":null,\"dataMode\":\"raw\",\"dataOptions\":{\"raw\":{\"language\":\"json\"}},\"headerData\":[{\"key\":\"Accept\",\"value\":\"application/vnd.example.v1+json\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}],\"method\":\"GET\",\"pathVariableData\":[],\"queryParams\":[{\"key\":\"id\",\"value\":\"test-api\",\"equals\":true,\"description\":null,\"enabled\":true}],\"url\":\"https://postman-echo.com/v1/request?id=test-api\",\"headers\":\"Accept: application/vnd.example.v1+json\\n\",\"pathVariables\":{},\"protocolProfileBehavior\":{\"disableBodyPruning\":true},\"rawModeData\":\"\",\"graphqlModeData\":{}}",
+                  "createdAt": "2023-08-22T12:53:12.000Z",
+                  "updatedAt": "2023-09-12T18:23:42.000Z"
+              }
+          }
+  - name: Response with ids Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId?ids=true
+      method: GET
+      params:
+        - name: ids
+          value: "true"
+          type: query
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+              "meta": {
+                  "model": "response",
+                  "populate": false,
+                  "changeset": false,
+                  "action": "find"
+              },
+              "data": {
+                  "owner": "12345678",
+                  "request": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "id": "cc364734-7dfd-4bfc-897d-be763dcdbb07"
+              }
+          }
+  - name: Response with uid Parameter
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId?uid=true
+      method: GET
+      params:
+        - name: uid
+          value: "true"
+          type: query
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+              "meta": {
+                  "model": "response",
+                  "populate": false,
+                  "changeset": false,
+                  "action": "find"
+              },
+              "data": {
+                  "owner": "12345678",
+                  "lastUpdatedBy": "12345678",
+                  "lastRevision": 32528384460,
+                  "request": "12345678-c82dd02c-4870-4907-8fcb-593a876cf05b",
+                  "id": "12345678-cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                  "name": "Not Found",
+                  "status": null,
+                  "responseCode": {
+                      "code": 404,
+                      "name": "Not Found"
+                  },
+                  "time": null,
+                  "headers": [
+                      {
+                          "key": "Content-Type",
+                          "name": "Content-Type",
+                          "value": "application/json",
+                          "description": "",
+                          "type": "text"
+                      }
+                  ],
+                  "cookies": null,
+                  "mime": null,
+                  "text": "{\n    \"title\": \"Not Found\",\n    \"detail\": \"Requested API does not exist\",\n    \"type\": \"about:blank\"\n}",
+                  "language": "json",
+                  "rawDataType": null,
+                  "requestObject": "{\"data\":null,\"dataMode\":\"raw\",\"dataOptions\":{\"raw\":{\"language\":\"json\"}},\"headerData\":[{\"key\":\"Accept\",\"value\":\"application/vnd.example.v1+json\",\"description\":\"\",\"type\":\"text\",\"enabled\":true}],\"method\":\"GET\",\"pathVariableData\":[],\"queryParams\":[{\"key\":\"id\",\"value\":\"test-api\",\"equals\":true,\"description\":null,\"enabled\":true}],\"url\":\"https://postman-echo.com/v1/request?id=test-api\",\"headers\":\"Accept: application/vnd.example.v1+json\\n\",\"pathVariables\":{},\"protocolProfileBehavior\":{\"disableBodyPruning\":true},\"rawModeData\":\"\",\"graphqlModeData\":{}}",
+                  "createdAt": "2023-08-22T12:53:12.000Z",
+                  "updatedAt": "2023-09-12T18:23:42.000Z"
+              }
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the response you are looking for",
+                  "details": {
+                      "model": "response",
+                      "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                      "owner": "12345678"
+                  }
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/responses/:responseId
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+        - name: responseId
+          value: cc364734-7dfd-4bfc-897d-be763dcdbb07
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "Unauthorized",
+                  "message": "Unauthorized",
+                  "details": {
+                      "model": "response",
+                      "model_id": "cc364734-7dfd-4bfc-897d-be763dcdbb07",
+                      "owner": "12345678"
+                  }
+              }
+          }
+
+docs: Gets information about a response in a collection.

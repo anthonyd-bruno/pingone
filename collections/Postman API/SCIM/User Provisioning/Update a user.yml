@@ -1,0 +1,570 @@
+info:
+  name: Update a user
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/scim/v2/Users/:userId"
+  params:
+    - name: userId
+      value: ""
+      type: path
+      description: The user's SCIM ID.
+  body:
+    type: json
+    data: |-
+      {
+          "schemas": [
+              "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+          "userName": "{{userEmail}}",
+          "name": {
+              "givenName": "{{firstName}}",
+              "familyName": "{{lastName}}"
+          },
+          "active": true
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              }
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "id": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "active": true,
+              "meta": {
+                  "resourceType": "User",
+                  "created": "2021-02-22T04:24:13.000Z",
+                  "lastModified": "2021-02-22T04:24:13.000Z"
+              }
+          }
+  - name: Update User Email
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor.lee@example.com",
+              "active": true
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "id": "405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99",
+              "userName": "taylor.lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "active": true,
+              "meta": {
+                  "resourceType": "User",
+                  "created": "2021-02-22T04:24:13.000Z",
+                  "lastModified": "2021-02-22T04:24:13.000Z"
+              }
+          }
+  - name: Unverified Domain
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor.lee@example.com",
+              "active": true
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to update the username for this user. - Domain is not verified",
+              "status": "400"
+          }
+  - name: Invalid User Email Address
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+              ],
+              "userName": "taylor.lee@example.com",
+              "active": true
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to update the username for this user. - Please provide a valid email",
+              "status": "400"
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Couldn’t update this team member’s username. Try again — it should work next time around.",
+              "status": "400"
+          }
+  - name: Invalid Team
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This Postman team doesn’t exist anymore.",
+              "status": "400"
+          }
+  - name: Invalid Syntax
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "scimType": "invalidSyntax",
+              "detail": "The request body seems to be incomplete or have unsupported characters.",
+              "status": "400"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Unable to access the team. Check if you have entered a valid API key.",
+              "status": "401"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Your API key was generated by a Team Admin who is no longer on your team. Use an API key generated by a Team Admin.",
+              "status": "403"
+          }
+  - name: Admin Action Not Allowed
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "The admin is not allowed to perform this action.",
+              "status": "403"
+          }
+  - name: User Not in Team
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This person isn’t a member of the team.",
+              "status": "403"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "This person isn’t a member of the team.",
+              "status": "404"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "429"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "That’s 300 attempts in less than a minute. Wait for a minute and then try again.",
+              "status": 429
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/scim/v2/Users/:userId
+      method: PUT
+      params:
+        - name: userId
+          value: 405775fe15ed41872a8eea4c8aa2b38cda9749812cc55c99
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:User"
+                  ],
+              "userName": "taylor-lee@example.com",
+              "name": {
+                  "givenName": "Taylor",
+                  "familyName": "Lee"
+              },
+              "externalId": "12345678",
+              "locale": "en-US",
+              "groups": [],
+              "active": true
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:api:messages:2.0:Error"
+              ],
+              "detail": "Couldn’t update this team member’s information. Try again — it should work next time around.",
+              "status": "500"
+          }
+
+docs: |-
+  Updates a user in Postman.
+
+  ### Reactivating users
+
+  By setting the `active` property from `false` to `true`, this reactivates an account. This allows the account to authenticate in to Postman and adds the account back on to your Postman team.

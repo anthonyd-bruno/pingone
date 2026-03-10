@@ -1,0 +1,161 @@
+info:
+  name: Get a spec's generated collections
+  type: http
+  seq: 2
+
+http:
+  method: GET
+  url: "{{baseUrl}}/specs/:specId/generations/:elementType"
+  params:
+    - name: limit
+      value: ""
+      type: query
+      description: The maximum number of rows to return in the response. This value defaults to `10`.
+      disabled: true
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results. To view the next response, use the `nextCursor` value for this parameter.
+      disabled: true
+    - name: specId
+      value: ""
+      type: path
+      description: The spec's ID.
+    - name: elementType
+      value: collection
+      type: path
+      description: The `collection` element type.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collections": [
+                  {
+                      "id": "e8a015e0-f472-4bb3-a523-57ce7c4583ed",
+                      "name": "Sample API",
+                      "state": "in-sync",
+                      "createdAt": "2025-03-17T11:03:15Z",
+                      "updatedAt": "2025-03-17T12:03:15Z",
+                      "createdBy": 12345678,
+                      "updatedBy": 12345678
+                  },
+                  {
+                      "id": "876211d4-fff8-439c-bb3f-ffb3c565dd21",
+                      "name": "Sample API",
+                      "state": "out-of-sync",
+                      "createdAt": "2025-03-15T12:37:15Z",
+                      "updatedAt": "2025-03-15T11:37:15Z",
+                      "createdBy": 12345678,
+                      "updatedBy": 12345678
+                  }
+              ],
+              "meta": {
+                  "nextCursor": null
+              }
+          }
+  - name: Pagination with Cursor Response
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType?limit=1&cursor=VGh1IE1hciAxNiAyMDIzIDE3OjIxOjUzIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+      method: GET
+      params:
+        - name: limit
+          value: "1"
+          type: query
+        - name: cursor
+          value: VGh1IE1hciAxNiAyMDIzIDE3OjIxOjUzIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk=
+          type: query
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "collections": [
+                  {
+                      "id": "e8a015e0-f472-4bb3-a523-57ce7c4583ed",
+                      "name": "Sample API",
+                      "state": "in-sync",
+                      "createdAt": "2025-03-17T11:03:15Z",
+                      "updatedAt": "2025-03-17T12:03:15Z",
+                      "createdBy": 12345678,
+                      "updatedBy": 12345678
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "VGh1IE1hciAxNiAyMDIzIDE3OjIxOjUzIEdNVCswMDAwIChDb29yZGluYXRlZCBVbml2ZXJzYWwgVGltZSk="
+              }
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/specs/:specId/generations/:elementType
+      method: GET
+      params:
+        - name: specId
+          value: 73e15000-bc7a-4802-b80e-05fff18fd7f8
+          type: path
+        - name: elementType
+          value: collection
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "status": 404,
+              "detail": "Entity that you are trying to access does not exist."
+          }
+
+docs: Gets all of an API specification's generated collections.

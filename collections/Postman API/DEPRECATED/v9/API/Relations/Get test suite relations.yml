@@ -1,0 +1,71 @@
+info:
+  name: Get test suite relations
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/testsuite
+  auth: inherit
+
+runtime:
+  scripts:
+    - type: after-response
+      code: |-
+        test("Status code is 200", function () {
+            expect(res.getStatus()).to.equal(200);
+        });
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/relations/testsuite
+      method: GET
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "testsuite": [
+                  {
+                      "id": "2a9b8fa8-88b7-4b86-8372-8e3f6f6e07f2",
+                      "name": "C test",
+                      "updatedAt": "2019-08-29T10:18:11.000Z",
+                      "collectionId": "7732157-a8bcd149-2b01-4b4c-8c14-c7d05be77745"
+                  },
+                  {
+                      "id": "521b0486-ab91-4d3a-9189-43c9380a0533",
+                      "name": "C1",
+                      "updatedAt": "2019-08-29T11:40:39.000Z",
+                      "collectionId": "7332157-a8bcd143-2b01-4b12-8c14-c7d05be77725"
+                  }
+              ]
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/relations/testsuite
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: "**This endpoint is deprecated.**"

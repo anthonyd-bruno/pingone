@@ -1,0 +1,212 @@
+info:
+  name: Migrate API Builder API to Spec Hub
+  type: http
+  seq: 12
+
+http:
+  method: POST
+  url: "{{baseUrl}}/apis/:apiId/spec-migrations"
+  params:
+    - name: apiId
+      value: ""
+      type: path
+      description: The API's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "workspaceId": "{{workspaceId}}"
+      }
+
+      // Use the following request body to migrate an API Builder definition into a new workspace:
+      // {
+      //    "workspaceInfo": {
+      //        "name": "{{workspaceName}}"
+      //   }
+      //}
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Migrate to Existing Workspace
+    request:
+      url: https://api.getpostman.com/apis/:apiId/spec-migrations
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+          }
+    response:
+      statusText: "202"
+      body:
+        type: text
+        data: |-
+          {
+              "message": "Moving to Spec Hub started successfully",
+              "success": true
+          }
+  - name: Migrate to New Workspace
+    request:
+      url: https://api.getpostman.com/apis/:apiId/spec-migrations
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspaceInfo": {
+                  "name": "API Workspace"
+              }
+          }
+    response:
+      statusText: "202"
+      body:
+        type: text
+        data: |-
+          {
+              "message": "Moving to Spec Hub started successfully",
+              "success": true
+          }
+  - name: Empty API Migration
+    request:
+      url: https://api.getpostman.com/apis/:apiId/spec-migrations
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+          description: The API's ID.
+      body:
+        type: json
+        data: |-
+          {
+              "workspaceId": "{{workspaceId}}"
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "message": "This API doesn't have any API Definition or Collection",
+              "success": true
+          }
+  - name: Unsupported Definition Type
+    request:
+      url: https://api.getpostman.com/apis/:apiId/spec-migrations
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "title": "Definition type not supported",
+                  "message": "This API contains an unsupported definition type wsdl:1.0. Spec Hub supports: OAS3, OAS3.1, OAS2.0, AsyncAPI2.0, graphQl, gRPC."
+              }
+          }
+  - name: Repo Linked to Another Workspace
+    request:
+      url: https://api.getpostman.com/apis/:apiId/spec-migrations
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "title": "Moving to Spec Hub not possible",
+                  "details": {
+                      "workspaceId": "1f0df51a-8658-4ee8-a2a1-d2567dfa09a9"
+                  },
+                  "message": "The git repository is already linked to another workspace. Please reach out to Postman support for assistance."
+              }
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/apis/:apiId/spec-migrations
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "Unauthorized",
+              "title": "Unauthorized",
+              "type": "https://api.postman.com/problems/unauthorized",
+              "instance": "/apis/90ca9f5a-c4c4-11ed-afa1-0242ac120002/spec-migrations",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/spec-migrations
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "You are not permitted to perform the action.",
+              "status": 403,
+              "detail": "Please ensure that you have required permissions"
+          }
+
+docs: |-
+  Migrates an API Builder definition to a [Spec Hub](https://learning.postman.com/docs/design-apis/specifications/overview) specification. You can migrate the definition to an existing workspace, or create a new workspace to migrate the definition into. On success, this returns an HTTP `202 Created` response. You can use the GET `/apis/{apiId}/spec-migrations` endpoint to check the migration status.
+
+  **Note:**
+
+  This returns an HTTP `200 OK` response if the given API ID isn't an API Builder definition.

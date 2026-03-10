@@ -1,0 +1,121 @@
+info:
+  name: Delete a mock server
+  type: http
+  seq: 6
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/mocks/:mockId"
+  params:
+    - name: mockId
+      value: ""
+      type: path
+      description: The mock's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: DELETE
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "mock": {
+                  "id": "0fca2246-c108-41f5-8454-cc032def329f",
+                  "uid": "1679925-0fca2246-c108-41f5-8454-cc032def329f"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: DELETE
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "The specified mock does not exist.",
+                  "details": {}
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: DELETE
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/mocks/:mockId
+      method: DELETE
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+    response:
+      statusText: "500"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+            "error": {
+              "type": "serverError",
+              "message": "Something went wrong with the server"
+            }
+          }
+
+docs: Deletes a mock server.

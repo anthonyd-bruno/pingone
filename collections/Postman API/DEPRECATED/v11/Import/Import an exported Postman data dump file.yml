@@ -1,0 +1,156 @@
+info:
+  name: Import an exported Postman data dump file
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/import/exported"
+  headers:
+    - name: Content-Type
+      value: multipart/form-data
+  params:
+    - name: workspace
+      value: <string>
+      type: query
+      description: |-
+        The workspace ID in which to import the exported Postman data dump file.
+
+        If you do not include this query parameter, the system defaults to the "My Workspace" workspace.
+      disabled: true
+  body:
+    type: multipart-form
+    data:
+      - name: type
+        type: text
+        value: file
+        description: (Required) The `file` type value.
+      - name: input
+        type: file
+        value: []
+        description: (Required) A file containing a valid user's export .zip file.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/import/exported?type=file&input
+      method: POST
+      params:
+        - name: type
+          value: file
+          type: query
+        - name: input
+          value: ""
+          type: query
+      body:
+        type: multipart-form
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "collections": [
+                  {
+                      "id": "12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                      "name": "Test API",
+                      "uid": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+                  }
+              ]
+          }
+  - name: Invalid Parameters
+    request:
+      url: https://api.getpostman.com/import/exported?type=file&input
+      method: POST
+      params:
+        - name: type
+          value: file
+          type: query
+        - name: input
+          value: ""
+          type: query
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "invalidParamsError",
+                  "message": "The request body has invalid values for the type parameter. Value must be one of file, string, json",
+                  "details": {
+                      "param": "type"
+                  }
+              }
+          }
+  - name: Missing Parameter
+    request:
+      url: https://api.getpostman.com/import/exported?type=file&input
+      method: POST
+      params:
+        - name: type
+          value: file
+          type: query
+        - name: input
+          value: ""
+          type: query
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "paramMissingError",
+                  "message": "The request body is missing a value for the type parameter. Check your request and try again.",
+                  "details": {
+                      "param": "type"
+                  }
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/import/exported?type=file&input
+      method: POST
+      params:
+        - name: type
+          value: file
+          type: query
+        - name: input
+          value: ""
+          type: query
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  **This endpoint is deprecated.**
+
+  Imports exported Postman data. This endpoint only accepts [export data dump files](https://postman.postman.co/me/export).
+
+  For more information, read our [Exporting data dumps](https://learning.postman.com/docs/getting-started/importing-and-exporting-data/#exporting-data-dumps) documentation.

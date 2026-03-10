@@ -1,0 +1,11 @@
+info:
+  name: Monitors
+  type: folder
+  seq: 10
+
+request:
+  auth: inherit
+
+docs:
+  content: The **Monitors** endpoints enable you to manage your [monitors](https://learning.postman.com/docs/monitoring-your-api/intro-monitors/).
+  type: text/markdown

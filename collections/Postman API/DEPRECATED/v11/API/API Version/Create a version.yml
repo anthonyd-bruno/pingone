@@ -1,0 +1,733 @@
+info:
+  name: Create a version
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/apis/:apiId/versions"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "name": "{{apiReleaseName}}",
+          "releaseNotes": "{{apiReleaseDescription}}",
+          "collections": [
+              {
+                  "id": "{{collectionUid}}"
+              }
+          ],
+          "schemas": [
+              {
+                  "id": "{{schemaId}}"
+              }
+          ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Create Version
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "v1",
+              "releaseNotes": "This is the first release.",
+              "collections": [
+                  {
+                      "id": "12345678-e8a015e0-f472-4bb3-a523-57ce7c4583ed"
+                  }
+              ],
+              "schemas": [
+                  {
+                      "id": "18a015e0-f472-4bb3-a523-57ce7c458387"
+                  }
+              ]
+          }
+    response:
+      statusText: "202"
+      headers:
+        - name: Location
+          value: /apis/90ca9f5a-c4c4-11ed-afa1-0242ac120002/tasks/3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+              "name": "v1",
+              "releaseNotes": "This is the first release."
+          }
+  - name: Git-Linked Version with Schema Directory Path
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "v1",
+              "branch": "develop",
+              "releaseNotes": "This is the first release.",
+              "collections": [
+                  {
+                      "filePath": "postman/collections/c1.json"
+                  }
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schema"
+                  }
+              ]
+          }
+    response:
+      statusText: "202"
+      headers:
+        - name: Location
+          value: /apis/90ca9f5a-c4c4-11ed-afa1-0242ac120002/tasks/3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+              "name": "v1",
+              "releaseNotes": "This is the first release."
+          }
+  - name: Git-Linked Version with root File Integration
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "v1",
+              "branch": "develop",
+              "releaseNotes": "This is the first release.",
+              "schemas": [
+                  {
+                      "filePath": "/dir/index.yml"
+                  }
+              ],
+              "collections": [
+                  {
+                      "filePath": "postman/collections/c1.json"
+                  }
+              ]
+          }
+    response:
+      statusText: "202"
+      headers:
+        - name: Location
+          value: /apis/90ca9f5a-c4c4-11ed-afa1-0242ac120002/tasks/3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-06-09T14:48:45.000Z",
+              "updatedAt": "2022-06-09T19:50:49.000Z",
+              "id": "3563baaa-07a2-46ed-9fd2-0e8a3c5f7ec2",
+              "name": "v1",
+              "releaseNotes": "This is the first release."
+          }
+  - name: Parameter branch Missing for Git-Linked API
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "paramMissingError",
+              "title": "Parameter is missing in the request.",
+              "detail": "Parameter, branch is missing in the request."
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Auth Token Expired
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "Unauthorized",
+              "title": "You are not permitted to perform the action.",
+              "detail": "Please use the Postman app to link your OAuth token with the API. Head over here, https://postman.postman.co/api/4ca6c9ae-da02-11ed-afa1-0242ac120002"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "Unauthorized",
+              "title": "You are not permitted to perform the action.",
+              "detail": "Please use the Postman app to link your OAuth token with the API. Head over here, https://postman.postman.co/api/4ca6c9ae-da02-11ed-afa1-0242ac120002"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "id": "12345678-e8a015e0-f472-4bb3-a523-57ce7c4583ed"
+                  }
+              ],
+              "schemas": [
+                  {
+                      "id": "18a015e0-f472-4bb3-a523-57ce7c4183ed"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "You do not have access to perform this operation.",
+              "title": "You are not permitted to perform the action.",
+              "type": "forbiddenError"
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "id": "12345678-e8a015e0-f472-4bb3-a523-57ce7c4583ed"
+                  }
+              ],
+              "schemas": [
+                  {
+                      "id": "18a015e0-f472-4bb3-a523-57ce7c4183ed"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Repository Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "RepositoryNotFound",
+              "title": "Repository not found.",
+              "detail": "We could not find the Git repository you are looking for."
+          }
+  - name: Collection Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "CollectionNotFound",
+              "title": "Collection not found.",
+              "detail": "We could not find the collection, path/to/collection1.json, in the Git repository. Please ensure that the path is correct."
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "We could not find the API you are looking for",
+              "detail": "We could not find the API you are looking for."
+          }
+  - name: Branch Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "BranchNotFound",
+              "title": "Branch not found.",
+              "details": "We could not find the branch you are looking for."
+          }
+  - name: Schema Root Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "SchemaRootNotFound",
+              "detail": "Please perform a Git push from the Postman app to sync state between app and repository.",
+              "title": "Postman app config seems to be corrupted."
+          }
+  - name: Invalid Collection Path
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "CollectionPathInvalid",
+              "detail": "Please perform a Git push from the Postman app to sync state between app and repository.",
+              "title": "Collection not found."
+          }
+  - name: Inconsistent API State
+    request:
+      url: https://api.getpostman.com/apis/:apiId/versions
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "name": "Release 1.5",
+              "releaseNotes": "This is the first public release update.",
+              "collections": [
+                  {
+                      "filePath": "path/to/collection1.json"
+                  },
+                  {
+                      "filePath": "path/to/collection2.json"
+                  }
+
+              ],
+              "schemas": [
+                  {
+                      "directoryPath": "postman/schemas"
+                  }
+              ],
+              "branch": "develop"
+          }
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "APIStateInconsistent",
+              "title": "API state seems to be inconsistent.",
+              "detail": "Please perform a Git push from the Postman app to sync state between app and repository."
+          }
+
+docs: |-
+  Creates a new API version asynchronously and immediately returns an HTTP `202 Accepted` response. The response contains a polling link to the task status API in the `Location` header.
+
+  This endpoint is equivalent to publishing a version in Postman app, which is the snapshot of API collections and schema at a given point in time.
+
+  Include the following properties in the request body:
+
+  - `name` — A **string** value that contains the version name.
+      
+  - `collections` — An **array** containing the collection unique IDs to publish.
+      
+  - `schemas` — An **array** containing the schema IDs to publish.
+      
+  - `branch` — A **string** value that contains the name of the repository branch. This property is required only for Git-linked APIs.
+      
+
+  You can include the following optional properties:
+
+  - `releaseNotes` — A **string** value that contains the Markdown-supported version summary.

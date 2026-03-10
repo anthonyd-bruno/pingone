@@ -1,0 +1,70 @@
+info:
+  name: Delete an API
+  type: http
+  seq: 9
+
+http:
+  method: DELETE
+  url: https://api.getpostman.com/apis/{{apiId}}
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d
+      method: DELETE
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "api": {
+                  "id": "5360b75f-447e-467c-9299-12fd6c92450d"
+              }
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d
+      method: DELETE
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "We could not find the API you are looking for"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/5360b75f-447e-467c-9299-12fd6c92450d
+      method: DELETE
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Deletes an API.

@@ -1,0 +1,300 @@
+info:
+  name: Generate a tool
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/postbot/generations/tool"
+  body:
+    type: json
+    data: |-
+      {
+          "collectionId": "{{collectionId}}",
+          "requestId": "{{requestId}}",
+          "config": {
+              "language": "{{language}}", // javascript, typescript, or python
+              "agentFramework": "{{agentFramework}}" // openai, mistral, gemini, anthropic, langchain, or autogen (Python only)
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "javascript",
+                  "agentFramework": "openai"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "data": {
+                  "text": "/**\n * Function to query a Notion database.\n *\n * @param {Object} args - Arguments for the query.\n * @param {string} args.databaseId - The ID of the Notion database to query.\n * @param {Object} [args.filter] - The filter conditions for the query.\n * @param {Array} [args.sorts] - The sort conditions for the query.\n * @returns {Promise<Object>} - The result of the database query.\n */\nconst executeFunction = async ({ databaseId, filter, sorts }) => {\n    // NOTE before using the tool: verify this section is correct\n    const baseUrl = `https://api.notion.com/v1/databases/${databaseId}/query`;\n    \n    // NOTE! Replace this with your actual API token\n    const token = process.env.NOTION_API_TOKEN;\n    const notionVersion = process.env.NOTION_VERSION || '2022-06-28'; // Default version, update as needed\n\n    // Set up headers for the request\n    const headers = {\n        'Authorization': `Bearer ${token}`,\n        'Content-Type': 'application/json',\n        'Notion-Version': notionVersion,\n    };\n\n    const body = JSON.stringify({\n        filter,\n        sorts,\n    });\n\n    // Perform the fetch request\n    const response = await fetch(baseUrl, {\n        method: 'POST',\n        headers,\n        body\n    });\n\n    // Check if the response was successful\n    if (!response.ok) {\n        const errorData = await response.json();\n        throw new Error(errorData);\n    }\n\n    // Parse and return the response data\n    const data = await response.json();\n    return data;\n};\n\n/**\n * Tool configuration for querying a Notion database.\n * @type {Object}\n */\nconst apiTool = {\n    type: 'function',\n    function: {\n        name: 'query_notion_database',\n        function: executeFunction,\n        description: 'Query a Notion database using specific filter and sort parameters.',\n        parse: JSON.parse,\n        parameters: {\n            type: 'object',\n            properties: {\n                databaseId: {\n                    type: 'string',\n                    description: 'The ID of the Notion database to query.',\n                },\n                filter: {\n                    type: 'object',\n                    description: 'The filter conditions for the query.',\n                },\n                sorts: {\n                    type: 'array',\n                    description: 'The sort conditions for the query.',\n                    items: {\n                        type: 'object',\n                        properties: {\n                            property: {\n                                type: 'string',\n                                description: 'The database property to sort by.',\n                            },\n                            direction: {\n                                type: 'string',\n                                description: 'The direction of sorting, either \"ascending\" or \"descending\".',\n                                enum: ['ascending', 'descending'],\n                            },\n                        },\n                    },\n                },\n            },\n            required: ['databaseId'],\n            additionalProperties: false,\n        },\n    },\n};\n\nexport default apiTool;"
+              }
+          }
+  - name: Collection Not Found
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "javascript",
+                  "agentFramework": "openai"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Collection does not exist or is not public"
+          }
+  - name: Collection Not Public
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "javascript",
+                  "agentFramework": "openai"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Collection does not exist or is not public"
+          }
+  - name: Invalid Framework
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "javascript",
+                  "agentFramework": "postman"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "\"body.config.agentFramework\" must be one of [openai, mistral, gemini, anthropic, langchain, autogen]"
+          }
+  - name: Invalid Language
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "js",
+                  "agentFramework": "openai"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "\"body.config.language\" must be one of [javascript, typescript]"
+          }
+  - name: Missing Property
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Missing property 'config'",
+              "detail": "POST request body for '/postbot/generations/tool' failed to validate schema. Location: /required",
+              "status": 400
+          }
+  - name: Request Not Found
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "javascript",
+                  "agentFramework": "openai"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Request not found"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "javascript",
+                  "agentFramework": "openai"
+              }
+          }
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Something went wrong",
+              "status": 500,
+              "detail": "Something went wrong"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/postbot/generations/tool
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "collectionId": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+              "requestId": "c82dd02c-4870-4907-8fcb-593a876cf05b",
+              "config": {
+                  "language": "javascript",
+                  "agentFramework": "openai"
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: x-ratelimit-reset
+          value: "57"
+        - name: ratelimit-policy
+          value: 10000;w=60
+        - name: x-ratelimit-retryafter
+          value: "4162"
+        - name: ratelimit
+          value: limit=10000, remaining=9999, reset=57
+        - name: x-ratelimit-limit
+          value: "10000"
+        - name: x-ratelimit-remaining
+          value: "9999"
+        - name: ratelimit-limit-month
+          value: "1000000"
+        - name: x-ratelimit-remaining-month
+          value: "999970"
+        - name: ratelimit-remaining-month
+          value: "999970"
+        - name: x-ratelimit-limit-month
+          value: "1000000"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/too-many-requests",
+              "title": "Too Many Requests",
+              "detail": "You have exceeded your request limit",
+              "status": 429
+          }
+
+docs: |-
+  Generates code for an AI agent tool using a collection and request from the Public API Network. For more information, see [<b>Tool Generation Demo</b>](http://postman.com/explore/toolgen) in Postman's Public API Network.
+
+  Include the following in your request:
+
+  - `collectionId` — A **string** value that contains the Public API Network collection's ID.
+      
+  - `requestId` — A **string** value that contains the public request ID.
+      
+  - `config` — An **object** that contains the following properties:
+      
+      - `language` — A **string** value that contains the programming language to use to generate the request. Accepts `javascript`, `typescript`, or `python`.
+          
+      - `agentFramework` — A **string** value that contains the AI agent framework to use. Accepts `openai`, `mistral`, `gemini`, `anthropic`, `langchain`, or `autogen` (Python only).
+          
+
+  ### Important
+
+  - This endpoint has a rate limit of **300 calls every 3 hours**. This does not accrue Postbot usage.
+      
+  - This endpoint only supports public Postman Collections and requests.

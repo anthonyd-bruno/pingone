@@ -1,0 +1,77 @@
+info:
+  name: Get all linked relations
+  type: http
+  seq: 6
+
+http:
+  method: GET
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/relations
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/relations
+      method: GET
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "relations": {
+                  "apiDefintion": {
+                      "16bb367e-fafb-4ef3-933b-ee3d971866fb": {
+                          "id": "16bb367e-fafb-4ef3-933b-ee3d971866fb"
+                      }
+                  },
+                  "unclassified": {
+                      "b9bccf0f-e06a-433d-b556-a3cd158f0270": {
+                          "id": "b9bccf0f-e06a-433d-b556-a3cd158f0270",
+                          "name": "Test Collection",
+                          "createdAt": "2023-01-30T17:41:50.000Z",
+                          "updatedAt": "2023-01-19T14:50:05.000Z"
+                      }
+                  },
+                  "schema": {
+                      "16bb367e-fafb-4ef3-933b-ee3d971866fb": {
+                          "id": "16bb367e-fafb-4ef3-933b-ee3d971866fb"
+                      }
+                  }
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/relations
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Gets all of an API version's relations.
+
+  **Note:**
+
+  In Postman v10 and higher, this endpoint returns the following:
+
+  - The `unclassified` relation is for documentation and testing. This is the default relation type.
+  - The `apiDefinition` relation is the relation used for API definitions.

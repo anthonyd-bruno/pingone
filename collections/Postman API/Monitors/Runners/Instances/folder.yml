@@ -1,0 +1,11 @@
+info:
+  name: Instances
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints manage runner instances. Instances are runner executions that share the same runner ID and key.
+  type: text/markdown

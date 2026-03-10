@@ -1,0 +1,687 @@
+info:
+  name: Create a schema
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/apis/:apiId/schemas"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "type": "{{schemaType}}",
+          "files": [
+              {
+                  "path": "{{filePath1}}",
+                  "content": "{{content1}}"
+              },
+              {
+                  "path": "{{filePath2}}",
+                  "content": "{{content2}}"
+              },
+              {
+                  "path": "{{filePath3}}",
+                  "content": "{{content3}}"
+              },
+              {
+                  "path": "{{filePath4}}",
+                  "content": "{{content4}}"
+              }
+          ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Create JSON Schema
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "openapi:3",
+              "files": [
+                  {
+                      "path": "index.json",
+                      "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": [\n\n      ]\n    }\n  ]\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "openapi:3",
+              "files": [
+                  {
+                      "createdBy": "12345678",
+                      "path": "index.json",
+                      "updatedBy": "12345678",
+                      "updatedAt": "2024-07-18T13:17:30.000Z",
+                      "root": {
+                          "enabled": true
+                      },
+                      "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4",
+                      "name": "index.json",
+                      "createdAt": "2024-07-18T13:17:30.000Z"
+                  }
+              ],
+              "updatedAt": "2024-07-18T13:17:30.000Z",
+              "createdAt": "2024-07-18T13:17:30.000Z",
+              "createdBy": "12345678",
+              "updatedBy": "12345678",
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4"
+          }
+  - name: Create YAML Schema
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "openapi:3_1",
+              "files": [
+                  {
+                      "path": "index.yaml",
+                      "content": "openapi: \"3.1.0\"\ninfo:\n  version: \"1.0.0\"\n  title: \"Sample API\"\n  description: Buy or rent spacecrafts\n\npaths:\n  /spacecrafts/{spacecraftId}:\n    parameters:\n      - name: spacecraftId\n        description: The unique identifier of the spacecraft\n        in: path\n        required: true\n        schema:\n          $ref: \"#/components/schemas/SpacecraftId\"\n    get:\n      summary: Read a spacecraft\n      responses:\n        \"200\":\n          description: The spacecraft corresponding to the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Spacecraft\"\n        404:\n          description: No spacecraft found for the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Error\"\n        500:\n          description: Unexpected error\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Error\"\ncomponents:\n  schemas:\n    SpacecraftId:\n      description: The unique identifier of a spacecraft\n      type: string\n    Spacecraft:\n      type: object\n      required:\n        - id\n        - name\n        - type\n      properties:\n        id:\n          $ref: \"#/components/schemas/SpacecraftId\"\n        name:\n          type: string\n        type:\n          type: string\n          enum:\n            - capsule\n            - probe\n            - satellite\n            - spaceplane\n            - station\n        description:\n          type: string\n    Error:\n      type: object\n      required:\n        - message\n      properties:\n        message:\n          description: A human readable error message\n          type: string\n  securitySchemes:\n    ApiKey:\n      type: apiKey\n      in: header\n      name: X-Api-Key\nsecurity:\n  - ApiKey: []\n"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "openapi:3_1",
+              "files": [
+                  {
+                      "createdBy": "12345678",
+                      "path": "index.yaml",
+                      "updatedBy": "12345678",
+                      "updatedAt": "2024-07-18T13:28:40.000Z",
+                      "root": {
+                          "enabled": true
+                      },
+                      "id": "2fdc8ea1-d02e-4e50-989e-6fa28f42b995",
+                      "name": "index.yaml",
+                      "createdAt": "2024-07-18T13:28:40.000Z"
+                  }
+              ],
+              "updatedAt": "2024-07-18T13:28:40.000Z",
+              "createdAt": "2024-07-18T13:28:40.000Z",
+              "createdBy": "12345678",
+              "updatedBy": "12345678",
+              "id": "2fdc8ea1-d02e-4e50-989e-6fa28f42b995"
+          }
+  - name: Create GraphQL Schema
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "graphql",
+              "files": [
+                  {
+                      "path": "posts.graphql",
+                      "content": "type Query {\r\n  allPosts: [Post]\r\n  allUsers: [User]\r\n  postById(id: Int!): Post\r\n  userById(id: Int!): User\r\n}\r\n\r\ntype Mutation {\r\n  createPost(input: CreatePostInput!): CreatePostPayload\r\n  createUser(input: CreateUserInput!): CreateUserPayload\r\n}\r\n\r\ntype Post {\r\n  id: Int!\r\n  title: String\r\n  body: String\r\n  createdDate: Datetime\r\n  authorId: Int!\r\n  userByAuthorId: User\r\n}\r\n\r\ntype User {\r\n  id: Int!\r\n  username: String\r\n  createdDate: Datetime\r\n  postsByAuthorId: [Post]\r\n}\r\n\r\ntype CreatePostPayload {\r\n  clientMutationId: String\r\n  post: Post\r\n  userByAuthorId: User\r\n}\r\n\r\ninput CreatePostInput {\r\n  clientMutationId: String\r\n  post: PostInput!\r\n}\r\n\r\ninput PostInput {\r\n  id: Int\r\n  title: String\r\n  body: String\r\n  createdDate: Datetime\r\n  authorId: Int!\r\n}\r\n\r\ntype CreateUserPayload {\r\n  clientMutationId: String\r\n  user: User\r\n}\r\n\r\ninput CreateUserInput {\r\n  clientMutationId: String\r\n  user: UserInput!\r\n}\r\n\r\ninput UserInput {\r\n  id: Int\r\n  username: String\r\n  createdDate: Datetime\r\n}\r\n\r\nscalar Datetime\r\n"
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "0ccd23df-1b9c-4964-8d3c-62fc69f60c37",
+              "createdAt": "2024-01-29T16:53:40.000Z",
+              "type": "graphql",
+              "updatedBy": "12345678",
+              "updatedAt": "2024-01-29T16:53:40.000Z",
+              "files": [
+                  {
+                      "id": "0ccd23df-1b9c-4964-8d3c-62fc69f60c37",
+                      "createdAt": "2024-01-29T16:53:40.000Z",
+                      "updatedAt": "2024-01-29T16:53:40.000Z",
+                      "path": "posts.graphql",
+                      "updatedBy": "12345678",
+                      "root": {
+                          "enabled": true
+                      },
+                      "createdBy": "12345678",
+                      "name": "posts.graphql"
+                  }
+              ],
+              "createdBy": "12345678"
+          }
+  - name: Create Schema with Proto
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "proto:2",
+              "files": [
+                  {
+                      "path": "index.proto",
+                      "content": "<file contents>",
+                      "root": {
+                          "enabled": true
+                      }
+                  }
+              ]
+          }
+    response:
+      statusText: "201"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "proto:2",
+              "files": [
+                  {
+                      "path": "index.proto",
+                      "createdBy": "557089",
+                      "id": "41a3d7fd-bf9a-4053-b20e-37453962b4d6",
+                      "createdAt": "2023-03-21T10:10:54.000Z",
+                      "name": "index.proto",
+                      "updatedBy": "557089",
+                      "updatedAt": "2023-03-21T10:10:54.000Z",
+                      "root": {
+                          "enabled": true
+                      }
+                  }
+              ],
+              "createdBy": "557089",
+              "createdAt": "2023-03-21T10:10:54.000Z",
+              "id": "b4fc1bdc-6587-4f9b-95c9-f768146089b4",
+              "updatedBy": "557089",
+              "updatedAt": "2023-03-21T10:10:54.000Z"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "openapi:3",
+              "files": [
+                  {
+                      "path": "swagger.json",
+                      "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": []\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "Pet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "NewPet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"allOf\": [\n    {\n      \"$ref\": \"Pet.json\"\n    },\n    {\n      \"required\": [\n        \"name\"\n      ],\n      \"properties\": {\n        \"description\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        }\n      }\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "parameters.json",
+                      "content": "{\n  \"tagsParam\": {\n    \"name\": \"tags\",\n    \"in\": \"query\",\n    \"description\": \"tags to filter by\",\n    \"required\": false,\n    \"type\": \"array\",\n    \"collectionFormat\": \"csv\",\n    \"items\": {\n      \"type\": \"string\"\n    }\n  },\n  \"limitsParam\": {\n    \"name\": \"limit\",\n    \"in\": \"query\",\n    \"description\": \"maximum number of results to return\",\n    \"required\": false,\n    \"type\": \"integer\",\n    \"format\": \"int32\"\n  }\n}"
+                  },
+                  {
+                      "path": "common/Error.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"code\",\n    \"message\"\n  ],\n  \"properties\": {\n    \"code\": {\n      \"type\": \"integer\",\n      \"format\": \"int32\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "You do not have access to perform this operation.",
+              "title": "You are not permitted to perform the action.",
+              "type": "forbiddenError"
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "openapi:3",
+              "files": [
+                  {
+                      "path": "swagger.json",
+                      "content": "{\n  \"openapi\": \"3.0.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": []\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "Pet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "NewPet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"allOf\": [\n    {\n      \"$ref\": \"Pet.json\"\n    },\n    {\n      \"required\": [\n        \"name\"\n      ],\n      \"properties\": {\n        \"description\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        }\n      }\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "parameters.json",
+                      "content": "{\n  \"tagsParam\": {\n    \"name\": \"tags\",\n    \"in\": \"query\",\n    \"description\": \"tags to filter by\",\n    \"required\": false,\n    \"type\": \"array\",\n    \"collectionFormat\": \"csv\",\n    \"items\": {\n      \"type\": \"string\"\n    }\n  },\n  \"limitsParam\": {\n    \"name\": \"limit\",\n    \"in\": \"query\",\n    \"description\": \"maximum number of results to return\",\n    \"required\": false,\n    \"type\": \"integer\",\n    \"format\": \"int32\"\n  }\n}"
+                  },
+                  {
+                      "path": "common/Error.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"code\",\n    \"message\"\n  ],\n  \"properties\": {\n    \"code\": {\n      \"type\": \"integer\",\n      \"format\": \"int32\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type" : "openapi:3",
+              "files": [
+                  {
+                      "path": "swagger.json",
+                      "content": "{\n  \"swagger\": \"2.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Swagger Petstore\",\n    \"description\": \"A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification\",\n    \"termsOfService\": \"http://swagger.io/terms/\",\n    \"contact\": {\n      \"name\": \"Swagger API Team\",\n      \"email\": \"apiteam@swagger.io\",\n      \"url\": \"http://swagger.io\"\n    },\n    \"license\": {\n      \"name\": \"Apache 2.0\",\n      \"url\": \"https://www.apache.org/licenses/LICENSE-2.0.html\"\n    }\n  },\n  \"host\": \"petstore.swagger.io\",\n  \"basePath\": \"/api\",\n  \"schemes\": [\n    \"http\"\n  ],\n  \"consumes\": [\n    \"application/json\"\n  ],\n  \"produces\": [\n    \"application/json\"\n  ],\n  \"paths\": {\n    \"/pets\": {\n      \"get\": {\n        \"description\": \"Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n\",\n        \"operationId\": \"findPets\",\n        \"parameters\": [\n          {\n            \"$ref\": \"parameters.json#/tagsParam\"\n          },\n          {\n            \"$ref\": \"parameters.json#/limitsParam\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"$ref\": \"Pet.json\"\n              }\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"post\": {\n        \"description\": \"Creates a new pet in the store.  Duplicates are allowed\",\n        \"operationId\": \"addPet\",\n        \"parameters\": [\n          {\n            \"name\": \"pet\",\n            \"in\": \"body\",\n            \"description\": \"Pet to add to the store\",\n            \"required\": true,\n            \"schema\": {\n              \"$ref\": \"NewPet.json\"\n            }\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    },\n    \"/pets/{id}\": {\n      \"get\": {\n        \"description\": \"Returns a user based on a single ID, if the user does not have access to the pet\",\n        \"operationId\": \"find pet by id\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to fetch\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"delete\": {\n        \"description\": \"deletes a single pet based on the ID supplied\",\n        \"operationId\": \"deletePet\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to delete\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"204\": {\n            \"description\": \"pet deleted\"\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "Pet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "NewPet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"allOf\": [\n    {\n      \"$ref\": \"Pet.json\"\n    },\n    {\n      \"required\": [\n        \"name\"\n      ],\n      \"properties\": {\n        \"description\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        }\n      }\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "parameters.json",
+                      "content": "{\n  \"tagsParam\": {\n    \"name\": \"tags\",\n    \"in\": \"query\",\n    \"description\": \"tags to filter by\",\n    \"required\": false,\n    \"type\": \"array\",\n    \"collectionFormat\": \"csv\",\n    \"items\": {\n      \"type\": \"string\"\n    }\n  },\n  \"limitsParam\": {\n    \"name\": \"limit\",\n    \"in\": \"query\",\n    \"description\": \"maximum number of results to return\",\n    \"required\": false,\n    \"type\": \"integer\",\n    \"format\": \"int32\"\n  }\n}"
+                  },
+                  {
+                      "path": "common/Error.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"code\",\n    \"message\"\n  ],\n  \"properties\": {\n    \"code\": {\n      \"type\": \"integer\",\n      \"format\": \"int32\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "detail": "We could not find the API you are looking for"
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type" : "openapi:3",
+              "files": [
+                  {
+                      "path": "swagger.json",
+                      "content": "{\n  \"swagger\": \"2.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Swagger Petstore\",\n    \"description\": \"A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification\",\n    \"termsOfService\": \"http://swagger.io/terms/\",\n    \"contact\": {\n      \"name\": \"Swagger API Team\",\n      \"email\": \"apiteam@swagger.io\",\n      \"url\": \"http://swagger.io\"\n    },\n    \"license\": {\n      \"name\": \"Apache 2.0\",\n      \"url\": \"https://www.apache.org/licenses/LICENSE-2.0.html\"\n    }\n  },\n  \"host\": \"petstore.swagger.io\",\n  \"basePath\": \"/api\",\n  \"schemes\": [\n    \"http\"\n  ],\n  \"consumes\": [\n    \"application/json\"\n  ],\n  \"produces\": [\n    \"application/json\"\n  ],\n  \"paths\": {\n    \"/pets\": {\n      \"get\": {\n        \"description\": \"Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n\",\n        \"operationId\": \"findPets\",\n        \"parameters\": [\n          {\n            \"$ref\": \"parameters.json#/tagsParam\"\n          },\n          {\n            \"$ref\": \"parameters.json#/limitsParam\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"$ref\": \"Pet.json\"\n              }\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"post\": {\n        \"description\": \"Creates a new pet in the store.  Duplicates are allowed\",\n        \"operationId\": \"addPet\",\n        \"parameters\": [\n          {\n            \"name\": \"pet\",\n            \"in\": \"body\",\n            \"description\": \"Pet to add to the store\",\n            \"required\": true,\n            \"schema\": {\n              \"$ref\": \"NewPet.json\"\n            }\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    },\n    \"/pets/{id}\": {\n      \"get\": {\n        \"description\": \"Returns a user based on a single ID, if the user does not have access to the pet\",\n        \"operationId\": \"find pet by id\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to fetch\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"delete\": {\n        \"description\": \"deletes a single pet based on the ID supplied\",\n        \"operationId\": \"deletePet\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to delete\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"204\": {\n            \"description\": \"pet deleted\"\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "Pet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "NewPet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"allOf\": [\n    {\n      \"$ref\": \"Pet.json\"\n    },\n    {\n      \"required\": [\n        \"name\"\n      ],\n      \"properties\": {\n        \"description\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        }\n      }\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "parameters.json",
+                      "content": "{\n  \"tagsParam\": {\n    \"name\": \"tags\",\n    \"in\": \"query\",\n    \"description\": \"tags to filter by\",\n    \"required\": false,\n    \"type\": \"array\",\n    \"collectionFormat\": \"csv\",\n    \"items\": {\n      \"type\": \"string\"\n    }\n  },\n  \"limitsParam\": {\n    \"name\": \"limit\",\n    \"in\": \"query\",\n    \"description\": \"maximum number of results to return\",\n    \"required\": false,\n    \"type\": \"integer\",\n    \"format\": \"int32\"\n  }\n}"
+                  },
+                  {
+                      "path": "common/Error.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"code\",\n    \"message\"\n  ],\n  \"properties\": {\n    \"code\": {\n      \"type\": \"integer\",\n      \"format\": \"int32\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: Schema Already Exists
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type" : "openapi:3",
+              "files": [
+                  {
+                      "path": "swagger.json",
+                      "content": "{\n  \"swagger\": \"2.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Swagger Petstore\",\n    \"description\": \"A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification\",\n    \"termsOfService\": \"http://swagger.io/terms/\",\n    \"contact\": {\n      \"name\": \"Swagger API Team\",\n      \"email\": \"apiteam@swagger.io\",\n      \"url\": \"http://swagger.io\"\n    },\n    \"license\": {\n      \"name\": \"Apache 2.0\",\n      \"url\": \"https://www.apache.org/licenses/LICENSE-2.0.html\"\n    }\n  },\n  \"host\": \"petstore.swagger.io\",\n  \"basePath\": \"/api\",\n  \"schemes\": [\n    \"http\"\n  ],\n  \"consumes\": [\n    \"application/json\"\n  ],\n  \"produces\": [\n    \"application/json\"\n  ],\n  \"paths\": {\n    \"/pets\": {\n      \"get\": {\n        \"description\": \"Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n\",\n        \"operationId\": \"findPets\",\n        \"parameters\": [\n          {\n            \"$ref\": \"parameters.json#/tagsParam\"\n          },\n          {\n            \"$ref\": \"parameters.json#/limitsParam\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"$ref\": \"Pet.json\"\n              }\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"post\": {\n        \"description\": \"Creates a new pet in the store.  Duplicates are allowed\",\n        \"operationId\": \"addPet\",\n        \"parameters\": [\n          {\n            \"name\": \"pet\",\n            \"in\": \"body\",\n            \"description\": \"Pet to add to the store\",\n            \"required\": true,\n            \"schema\": {\n              \"$ref\": \"NewPet.json\"\n            }\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    },\n    \"/pets/{id}\": {\n      \"get\": {\n        \"description\": \"Returns a user based on a single ID, if the user does not have access to the pet\",\n        \"operationId\": \"find pet by id\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to fetch\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"delete\": {\n        \"description\": \"deletes a single pet based on the ID supplied\",\n        \"operationId\": \"deletePet\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to delete\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"204\": {\n            \"description\": \"pet deleted\"\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "Pet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "NewPet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"allOf\": [\n    {\n      \"$ref\": \"Pet.json\"\n    },\n    {\n      \"required\": [\n        \"name\"\n      ],\n      \"properties\": {\n        \"description\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        }\n      }\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "parameters.json",
+                      "content": "{\n  \"tagsParam\": {\n    \"name\": \"tags\",\n    \"in\": \"query\",\n    \"description\": \"tags to filter by\",\n    \"required\": false,\n    \"type\": \"array\",\n    \"collectionFormat\": \"csv\",\n    \"items\": {\n      \"type\": \"string\"\n    }\n  },\n  \"limitsParam\": {\n    \"name\": \"limit\",\n    \"in\": \"query\",\n    \"description\": \"maximum number of results to return\",\n    \"required\": false,\n    \"type\": \"integer\",\n    \"format\": \"int32\"\n  }\n}"
+                  },
+                  {
+                      "path": "common/Error.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"code\",\n    \"message\"\n  ],\n  \"properties\": {\n    \"code\": {\n      \"type\": \"integer\",\n      \"format\": \"int32\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamsError",
+              "title": "Could not create the resource",
+              "detail": "Schema already exists for this API"
+          }
+  - name: Missing files Parameter
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type" : "openapi:3"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamError",
+              "title": "Invalid request body",
+              "detail": "Missing parameter: 'files'"
+          }
+  - name: Missing content Parameter
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type": "openapi:3",
+              "files": [
+                  {
+                      "path": "index.json"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamError",
+              "title": "Invalid request body",
+              "detail": "Required field 'content' missing in the files array"
+          }
+  - name: Invalid type Parameter
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type" : "openapi3",
+               "files": [
+                  {
+                      "path": "swagger.json",
+                      "content": "{\n  \"swagger\": \"2.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Swagger Petstore\",\n    \"description\": \"A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification\",\n    \"termsOfService\": \"http://swagger.io/terms/\",\n    \"contact\": {\n      \"name\": \"Swagger API Team\",\n      \"email\": \"apiteam@swagger.io\",\n      \"url\": \"http://swagger.io\"\n    },\n    \"license\": {\n      \"name\": \"Apache 2.0\",\n      \"url\": \"https://www.apache.org/licenses/LICENSE-2.0.html\"\n    }\n  },\n  \"host\": \"petstore.swagger.io\",\n  \"basePath\": \"/api\",\n  \"schemes\": [\n    \"http\"\n  ],\n  \"consumes\": [\n    \"application/json\"\n  ],\n  \"produces\": [\n    \"application/json\"\n  ],\n  \"paths\": {\n    \"/pets\": {\n      \"get\": {\n        \"description\": \"Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n\",\n        \"operationId\": \"findPets\",\n        \"parameters\": [\n          {\n            \"$ref\": \"parameters.json#/tagsParam\"\n          },\n          {\n            \"$ref\": \"parameters.json#/limitsParam\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"$ref\": \"Pet.json\"\n              }\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"post\": {\n        \"description\": \"Creates a new pet in the store.  Duplicates are allowed\",\n        \"operationId\": \"addPet\",\n        \"parameters\": [\n          {\n            \"name\": \"pet\",\n            \"in\": \"body\",\n            \"description\": \"Pet to add to the store\",\n            \"required\": true,\n            \"schema\": {\n              \"$ref\": \"NewPet.json\"\n            }\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    },\n    \"/pets/{id}\": {\n      \"get\": {\n        \"description\": \"Returns a user based on a single ID, if the user does not have access to the pet\",\n        \"operationId\": \"find pet by id\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to fetch\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"delete\": {\n        \"description\": \"deletes a single pet based on the ID supplied\",\n        \"operationId\": \"deletePet\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to delete\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"204\": {\n            \"description\": \"pet deleted\"\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "Pet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "NewPet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"allOf\": [\n    {\n      \"$ref\": \"Pet.json\"\n    },\n    {\n      \"required\": [\n        \"name\"\n      ],\n      \"properties\": {\n        \"description\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        }\n      }\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "parameters.json",
+                      "content": "{\n  \"tagsParam\": {\n    \"name\": \"tags\",\n    \"in\": \"query\",\n    \"description\": \"tags to filter by\",\n    \"required\": false,\n    \"type\": \"array\",\n    \"collectionFormat\": \"csv\",\n    \"items\": {\n      \"type\": \"string\"\n    }\n  },\n  \"limitsParam\": {\n    \"name\": \"limit\",\n    \"in\": \"query\",\n    \"description\": \"maximum number of results to return\",\n    \"required\": false,\n    \"type\": \"integer\",\n    \"format\": \"int32\"\n  }\n}"
+                  },
+                  {
+                      "path": "common/Error.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"code\",\n    \"message\"\n  ],\n  \"properties\": {\n    \"code\": {\n      \"type\": \"integer\",\n      \"format\": \"int32\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "InvalidParamsError",
+              "title": "Required parameter is invalid",
+              "detail": "Required property `type` is invalid. Should be one of: proto:2, proto:3, graphql, openapi:3_1, openapi:3, openapi:2, openapi:1, raml:1, raml:0_8, wsdl:2, wsdl:1, asyncapi:2"
+          }
+  - name: Git-Linked API Errror
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas
+      method: POST
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "type" : "openapi:3",
+              "files": [
+                  {
+                      "path": "swagger.json",
+                      "content": "{\n  \"swagger\": \"2.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Swagger Petstore\",\n    \"description\": \"A sample API that uses a petstore as an example to demonstrate features in the swagger-2.0 specification\",\n    \"termsOfService\": \"http://swagger.io/terms/\",\n    \"contact\": {\n      \"name\": \"Swagger API Team\",\n      \"email\": \"apiteam@swagger.io\",\n      \"url\": \"http://swagger.io\"\n    },\n    \"license\": {\n      \"name\": \"Apache 2.0\",\n      \"url\": \"https://www.apache.org/licenses/LICENSE-2.0.html\"\n    }\n  },\n  \"host\": \"petstore.swagger.io\",\n  \"basePath\": \"/api\",\n  \"schemes\": [\n    \"http\"\n  ],\n  \"consumes\": [\n    \"application/json\"\n  ],\n  \"produces\": [\n    \"application/json\"\n  ],\n  \"paths\": {\n    \"/pets\": {\n      \"get\": {\n        \"description\": \"Returns all pets from the system that the user has access to\\nNam sed condimentum est. Maecenas tempor sagittis sapien, nec rhoncus sem sagittis sit amet. Aenean at gravida augue, ac iaculis sem. Curabitur odio lorem, ornare eget elementum nec, cursus id lectus. Duis mi turpis, pulvinar ac eros ac, tincidunt varius justo. In hac habitasse platea dictumst. Integer at adipiscing ante, a sagittis ligula. Aenean pharetra tempor ante molestie imperdiet. Vivamus id aliquam diam. Cras quis velit non tortor eleifend sagittis. Praesent at enim pharetra urna volutpat venenatis eget eget mauris. In eleifend fermentum facilisis. Praesent enim enim, gravida ac sodales sed, placerat id erat. Suspendisse lacus dolor, consectetur non augue vel, vehicula interdum libero. Morbi euismod sagittis libero sed lacinia.\\n\\nSed tempus felis lobortis leo pulvinar rutrum. Nam mattis velit nisl, eu condimentum ligula luctus nec. Phasellus semper velit eget aliquet faucibus. In a mattis elit. Phasellus vel urna viverra, condimentum lorem id, rhoncus nibh. Ut pellentesque posuere elementum. Sed a varius odio. Morbi rhoncus ligula libero, vel eleifend nunc tristique vitae. Fusce et sem dui. Aenean nec scelerisque tortor. Fusce malesuada accumsan magna vel tempus. Quisque mollis felis eu dolor tristique, sit amet auctor felis gravida. Sed libero lorem, molestie sed nisl in, accumsan tempor nisi. Fusce sollicitudin massa ut lacinia mattis. Sed vel eleifend lorem. Pellentesque vitae felis pretium, pulvinar elit eu, euismod sapien.\\n\",\n        \"operationId\": \"findPets\",\n        \"parameters\": [\n          {\n            \"$ref\": \"parameters.json#/tagsParam\"\n          },\n          {\n            \"$ref\": \"parameters.json#/limitsParam\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"type\": \"array\",\n              \"items\": {\n                \"$ref\": \"Pet.json\"\n              }\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"post\": {\n        \"description\": \"Creates a new pet in the store.  Duplicates are allowed\",\n        \"operationId\": \"addPet\",\n        \"parameters\": [\n          {\n            \"name\": \"pet\",\n            \"in\": \"body\",\n            \"description\": \"Pet to add to the store\",\n            \"required\": true,\n            \"schema\": {\n              \"$ref\": \"NewPet.json\"\n            }\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    },\n    \"/pets/{id}\": {\n      \"get\": {\n        \"description\": \"Returns a user based on a single ID, if the user does not have access to the pet\",\n        \"operationId\": \"find pet by id\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to fetch\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"200\": {\n            \"description\": \"pet response\",\n            \"schema\": {\n              \"$ref\": \"Pet.json\"\n            }\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      },\n      \"delete\": {\n        \"description\": \"deletes a single pet based on the ID supplied\",\n        \"operationId\": \"deletePet\",\n        \"parameters\": [\n          {\n            \"name\": \"id\",\n            \"in\": \"path\",\n            \"description\": \"ID of pet to delete\",\n            \"required\": true,\n            \"type\": \"integer\",\n            \"format\": \"int64\"\n          }\n        ],\n        \"responses\": {\n          \"204\": {\n            \"description\": \"pet deleted\"\n          },\n          \"default\": {\n            \"description\": \"unexpected error\",\n            \"schema\": {\n              \"$ref\": \"../common/Error.json\"\n            }\n          }\n        }\n      }\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "Pet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  },
+                  {
+                      "path": "NewPet.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"allOf\": [\n    {\n      \"$ref\": \"Pet.json\"\n    },\n    {\n      \"required\": [\n        \"name\"\n      ],\n      \"properties\": {\n        \"description\": {\n          \"type\": \"integer\",\n          \"format\": \"int64\"\n        }\n      }\n    }\n  ]\n}"
+                  },
+                  {
+                      "path": "parameters.json",
+                      "content": "{\n  \"tagsParam\": {\n    \"name\": \"tags\",\n    \"in\": \"query\",\n    \"description\": \"tags to filter by\",\n    \"required\": false,\n    \"type\": \"array\",\n    \"collectionFormat\": \"csv\",\n    \"items\": {\n      \"type\": \"string\"\n    }\n  },\n  \"limitsParam\": {\n    \"name\": \"limit\",\n    \"in\": \"query\",\n    \"description\": \"maximum number of results to return\",\n    \"required\": false,\n    \"type\": \"integer\",\n    \"format\": \"int32\"\n  }\n}"
+                  },
+                  {
+                      "path": "common/Error.json",
+                      "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"code\",\n    \"message\"\n  ],\n  \"properties\": {\n    \"code\": {\n      \"type\": \"integer\",\n      \"format\": \"int32\"\n    },\n    \"message\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+                  }
+              ]
+          }
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "This action is not allowed for git linked APIs",
+              "type": "actionNotAllowedError",
+              "title": "Action not allowed"
+          }
+
+docs: |-
+  Creates a schema for an API. Include the following in the the request body:
+
+  - `type` — A **string** value that contains the API schema's type. One of:
+      - `openapi:3_1`
+          
+      - `openapi:3`
+          
+      - `openapi:2`
+          
+      - `openapi:1`
+          
+      - `raml:0_8`
+          
+      - `raml:1`
+          
+      - `wsdl:1`
+          
+      - `wsdl:2`
+          
+      - `graphql`
+          
+      - `proto:2`
+          
+      - `proto:3`
+          
+      - `asyncapi:2`
+          
+  - `files` — An **array** of schema files that contains the following:
+      - `path` — A **string** value that contains the schema file's path.
+          
+      - `content` — A **string** value that contains the schema file's stringified contents.

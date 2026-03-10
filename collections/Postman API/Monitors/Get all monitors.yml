@@ -1,0 +1,528 @@
+info:
+  name: Get all monitors
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{baseUrl}}/monitors"
+  params:
+    - name: workspace
+      value: ""
+      type: query
+      description: Return only results found in the given workspace ID.
+      disabled: true
+    - name: active
+      value: "true"
+      type: query
+      description: If true, return only active monitors.
+      disabled: true
+    - name: owner
+      value: ""
+      type: query
+      description: Return the results by the given user ID.
+      disabled: true
+    - name: collectionUid
+      value: ""
+      type: query
+      description: Filter the results by a collection's unique ID.
+      disabled: true
+    - name: environmentUid
+      value: ""
+      type: query
+      description: Filter the results by an environment's unique ID.
+      disabled: true
+    - name: cursor
+      value: ""
+      type: query
+      description: The pointer to the first record of the set of paginated results. To view the next response, use the `nextCursor` value for this parameter.
+      disabled: true
+    - name: limit
+      value: "25"
+      type: query
+      description: The maximum number of rows to return in the response, up to a maximum value of 25. Any value greater than 25 returns a 400 Bad Request response. Defaults to `25`.
+      disabled: true
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/monitors
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [
+                  {
+                      "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "name": "Test Monitor",
+                      "active": true,
+                      "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a",
+                      "environmentUid": "12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905"
+                  },
+                  {
+                      "id": "1e6b6cb7-f13d-4000-acb7-0695757174a8",
+                      "name": "Postman Echo Monitor",
+                      "active": true,
+                      "uid": "87654321-1e6b6cb7-f13d-4000-acb7-0695757174a8",
+                      "owner": 87654321,
+                      "collectionUid": "87654321-b2f818c8-0ff3-4b54-8922-4525dd7acaf7",
+                      "environmentUid": "87654321-a674962b-feeb-475d-a796-c59dd4ee28a7"
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Get Monitors in a Workspace
+    request:
+      url: https://api.getpostman.com/monitors?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: GET
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [
+                  {
+                      "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "name": "Test Monitor",
+                      "active": true,
+                      "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a",
+                      "environmentUid": "12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905"
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Filter by collectionUid
+    request:
+      url: https://api.getpostman.com/monitors?collectionUid=12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [
+                  {
+                      "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "name": "Test Monitor",
+                      "active": true,
+                      "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a",
+                      "environmentUid": "12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905"
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Filter by environmentUid
+    request:
+      url: https://api.getpostman.com/monitors?environmentUid=12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905
+      method: GET
+      params:
+        - name: environmentUid
+          value: 12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [
+                  {
+                      "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "name": "Test Monitor",
+                      "active": true,
+                      "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a",
+                      "environmentUid": "12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905"
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Filter by active
+    request:
+      url: https://api.getpostman.com/monitors?active=false
+      method: GET
+      params:
+        - name: active
+          value: "false"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [
+                  {
+                      "id": "3d08e460-b58f-4f46-9dbb-018c57760864",
+                      "name": "Billing",
+                      "active": false,
+                      "uid": "56781234-3d08e460-b58f-4f46-9dbb-018c57760864",
+                      "owner": 56781234,
+                      "collectionUid": "56781234-b79c429b-b347-4b9c-a969-9cc3e1349f68",
+                      "environmentUid": "56781234-ec29504a-a305-47b2-9c73-8b0dcd6ddd61"
+                  },
+                  {
+                      "id": "5c8ff94d-ae04-4f23-812c-d428fa72bc43",
+                      "name": "API Test 2",
+                      "active": false,
+                      "uid": "87654321-5c8ff94d-ae04-4f23-812c-d428fa72bc43",
+                      "owner": 87654321,
+                      "collectionUid": "87654321-01c3b7c7-bf1e-47ab-8d57-0f9f950dca65",
+                      "environmentUid": "87654321-2ff3607d-2bdc-49a4-91af-40b0f48a0c77"
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Filter by owner
+    request:
+      url: https://api.getpostman.com/monitors?owner=12345678
+      method: GET
+      params:
+        - name: owner
+          value: "12345678"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [
+                  {
+                      "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "name": "Test Monitor",
+                      "active": true,
+                      "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a",
+                      "environmentUid": "12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905"
+                  },
+                  {
+                      "id": "90e01576-3ec4-4245-a327-e56b78becdce",
+                      "name": "Testing Monitor",
+                      "active": true,
+                      "uid": "12345678-90e01576-3ec4-4245-a327-e56b78becdce",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-ecfd0f2c-cf60-4935-b2ed-b65c58d2910c",
+                      "environmentUid": "12345678-106dabbe-324c-488f-b628-c9f45033dcc7"
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Limit with Cursor Pagination
+    request:
+      url: https://api.getpostman.com/monitors?limit=5
+      method: GET
+      params:
+        - name: limit
+          value: "5"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [
+                  {
+                      "id": "1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "name": "Test Monitor",
+                      "active": true,
+                      "uid": "12345678-1e6b6cc1-c760-48e0-968f-4bfaeeae9af1",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a",
+                      "environmentUid": "12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905"
+                  },
+                  {
+                      "id": "1e6b6cb7-f13d-4000-acb7-0695757174a8",
+                      "name": "API Test",
+                      "active": true,
+                      "uid": "87654321-1e6b6cb7-f13d-4000-acb7-0695757174a8",
+                      "owner": 87654321,
+                      "collectionUid": "87654321-2f5e0f30-15f9-4c8a-9371-bb4402149abb",
+                      "environmentUid": "87654321-da11b6bf-1856-4625-ade2-46843b8eb31c"
+                  },
+                  {
+                      "id": "3d08e460-b58f-4f46-9dbb-018c57760864",
+                      "name": "Billing",
+                      "active": false,
+                      "uid": "56781234-3d08e460-b58f-4f46-9dbb-018c57760864",
+                      "owner": 56781234,
+                      "collectionUid": "56781234-b79c429b-b347-4b9c-a969-9cc3e1349f68",
+                      "environmentUid": "56781234-ec29504a-a305-47b2-9c73-8b0dcd6ddd61"
+                  },
+                  {
+                      "id": "90e01576-3ec4-4245-a327-e56b78becdce",
+                      "name": "Testing Monitor",
+                      "active": true,
+                      "uid": "12345678-90e01576-3ec4-4245-a327-e56b78becdce",
+                      "owner": 12345678,
+                      "collectionUid": "12345678-ecfd0f2c-cf60-4935-b2ed-b65c58d2910c",
+                      "environmentUid": "12345678-106dabbe-324c-488f-b628-c9f45033dcc7"
+                  },
+                  {
+                      "id": "5c8ff94d-ae04-4f23-812c-d428fa72bc43",
+                      "name": "API Test 2",
+                      "active": false,
+                      "uid": "87654321-5c8ff94d-ae04-4f23-812c-d428fa72bc43",
+                      "owner": 87654321,
+                      "collectionUid": "87654321-01c3b7c7-bf1e-47ab-8d57-0f9f950dca65",
+                      "environmentUid": "87654321-2ff3607d-2bdc-49a4-91af-40b0f48a0c77"
+                  }
+              ],
+              "meta": {
+                  "nextCursor": "D7TopGzwFnQtrVmj8QRbSBsBKkHAq19dnoRp5XxKVfVJW4pUx74P3L9BW9qTnR8vhAbgmXA3KEBTSG8Y4BXxJDmU8vJMH76RfKF1f51DfYm2qgt14AK1oLX1mj5qcmH2buYxiPL5CmdyktVVmNqs9zsMtLD9",
+                  "limit": 5
+              }
+          }
+  - name: Owner Not Found
+    request:
+      url: https://api.getpostman.com/monitors?owner=12345678
+      method: GET
+      params:
+        - name: owner
+          value: "12345678"
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Collection Not Found
+    request:
+      url: https://api.getpostman.com/monitors?collectionUid=12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a
+      method: POST
+      params:
+        - name: collectionUid
+          value: 12345678-d35c5bfa-380e-4e98-9052-4eaf3bd0f14a
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Environment Not Found
+    request:
+      url: https://api.getpostman.com/monitors?environmentUid=12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905
+      method: POST
+      params:
+        - name: environmentUid
+          value: 12345678-9ce0605e-e7cb-40dc-8074-2f6a69252905
+          type: query
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "monitors": [],
+              "meta": {
+                  "nextCursor": "",
+                  "limit": 25
+              }
+          }
+  - name: Invalid active Value
+    request:
+      url: https://api.getpostman.com/monitors?cursor=1
+      method: POST
+      params:
+        - name: cursor
+          value: "1"
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Active must be a boolean."
+              }
+          }
+  - name: Invalid Cursor
+    request:
+      url: https://api.getpostman.com/monitors?cursor=1
+      method: POST
+      params:
+        - name: cursor
+          value: "1"
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Invalid cursor query parameter passed."
+              }
+          }
+  - name: Invalid owner Value
+    request:
+      url: https://api.getpostman.com/monitors?cursor=1&owner=a
+      method: POST
+      params:
+        - name: cursor
+          value: "1"
+          type: query
+        - name: owner
+          value: a
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Owner user ID must be an integer."
+              }
+          }
+  - name: Invalid Pagination Limit
+    request:
+      url: https://api.getpostman.com/monitors?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9&limit=30
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+        - name: limit
+          value: "30"
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Query param limit cannot exceed 25."
+              }
+          }
+  - name: Invalid Workspace ID
+    request:
+      url: https://api.getpostman.com/monitors?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9bQ32
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9bQ32
+          type: query
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "badRequest",
+                  "message": "Workspace ID must be 36 characters (37)."
+              }
+          }
+  - name: Workspace Not Found
+    request:
+      url: https://api.getpostman.com/monitors?workspace=1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+      method: POST
+      params:
+        - name: workspace
+          value: 1f0df51a-8658-4ee8-a2a1-d2567dfa09a9
+          type: query
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "Workspace not found"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/monitors
+      method: GET
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: Gets all monitors.

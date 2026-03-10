@@ -1,0 +1,67 @@
+info:
+  name: Get service provider configuration
+  type: http
+  seq: 4
+
+http:
+  method: GET
+  url: "{{baseUrl}}/scim/v2/ServiceProviderConfig"
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/ServiceProviderConfig
+      method: GET
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "schemas": [
+                  "urn:ietf:params:scim:schemas:core:2.0:ServiceProviderConfig"
+              ],
+              "documentationUri": "https://learning.postman.com/docs/administration/managing-your-team/configuring-scim",
+              "patch": {
+                  "supported": true
+              },
+              "bulk": {
+                  "supported": false,
+                  "maxOperations": 0,
+                  "maxPayloadSize": 0
+              },
+              "filter": {
+                  "supported": true,
+                  "maxResults": 100
+              },
+              "changePassword": {
+                  "supported": false
+              },
+              "sort": {
+                  "supported": false
+              },
+              "etag": {
+                  "supported": false
+              },
+              "authenticationSchemes": [
+                  {
+                      "name": "OAuth Bearer Token",
+                      "description": "Authentication scheme using the OAuth Bearer Token Standard",
+                      "specUri": "http://www.rfc-editor.org/info/rfc6750",
+                      "type": "oauthbearertoken"
+                  }
+              ],
+              "meta": {
+                  "resourceType": "ServiceProviderConfig",
+                  "location": "https://api.getpostman.com/scim/v2/ServiceProviderConfig"
+              }
+          }
+
+docs: Gets the Postman SCIM API configuration information. This includes a list of supported operations.

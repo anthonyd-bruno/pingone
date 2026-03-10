@@ -1,0 +1,135 @@
+info:
+  name: Get a collection's roles
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/collections/:collectionId/roles"
+  params:
+    - name: collectionId
+      value: ""
+      type: path
+      description: The collection's ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "group": [
+                  {
+                      "role": "VIEWER",
+                      "id": 321
+                  }
+              ],
+              "team": [
+                  {
+                      "role": "EDITOR",
+                      "id": 123
+                  }
+              ],
+              "user": [
+                  {
+                      "role": "VIEWER",
+                      "id": 12345678
+                  },
+                  {
+                      "role": "EDITOR",
+                      "id": 87654321
+                  }
+              ]
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "An API key must be provided in the request header or query string",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Resource cannot be accessed",
+              "detail": "Inadequate permissions. Resource access forbidden.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "We could not find the collection you are looking for",
+              "type": "instanceNotFoundError"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionId/roles
+      method: GET
+      params:
+        - name: collectionId
+          value: 12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: Gets information about all [roles](https://learning.postman.com/docs/collaborating-in-postman/roles-and-permissions/#collection-roles) in a collection. The response returns the IDs of all users, teams, and groups with access to view or edit the collection.

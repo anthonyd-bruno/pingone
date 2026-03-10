@@ -1,0 +1,100 @@
+info:
+  name: Resolve a comment thread
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/comments-resolutions/:threadId"
+  params:
+    - name: threadId
+      value: ""
+      type: path
+      description: The comment's thread ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/comments-resolutions/:threadId
+      method: POST
+      params:
+        - name: threadId
+          value: "34567"
+          type: path
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/comments-resolutions/:threadId
+      method: POST
+      params:
+        - name: threadId
+          value: "34567"
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401,
+              "instance": "/comments-resolutions"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/comments-resolutions/:threadId
+      method: POST
+      params:
+        - name: threadId
+          value: "34567"
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404,
+              "instance": "/comments-resolutions"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/comments-resolutions/:threadId
+      method: POST
+      params:
+        - name: threadId
+          value: "34567"
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500,
+              "instance": "/comments-resolutions"
+          }
+
+docs: |-
+  Resolves a comment and any associated replies. On success, this returns an HTTP `204 No Content` response.
+
+  Comment thread IDs return in the GET `/comments` response for [collections](https://www.postman.com/postman/workspace/postman-public-workspace/request/12959542-a6582e0a-9382-4760-8b91-53a8aa6cb8d7) and [collection items](https://www.postman.com/postman/workspace/postman-public-workspace/folder/12959542-efeda219-66e1-474c-a83b-253d15723bf7).

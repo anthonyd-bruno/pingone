@@ -1,0 +1,11 @@
+info:
+  name: Generated Specs
+  type: folder
+  seq: 3
+
+request:
+  auth: inherit
+
+docs:
+  content: These endpoints enable you to manage your generated API specifications.
+  type: text/markdown

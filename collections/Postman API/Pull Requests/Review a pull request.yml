@@ -1,0 +1,248 @@
+info:
+  name: Review a pull request
+  type: http
+  seq: 2
+
+http:
+  method: POST
+  url: "{{baseUrl}}/pull-requests/:pullRequestId/tasks"
+  params:
+    - name: pullRequestId
+      value: ""
+      type: path
+      description: The pull request's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "action": "{{pullRequestAction}}",
+          "comment": "{{declineComment}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Approved
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "approve"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "4e1a6609-1a29-4037-a411-89ecc14c6cd8",
+              "reviewedBy": {
+                  "id": 12345678,
+                  "name": "Taylor Lee",
+                  "username": "taylor-lee"
+              },
+              "status": "approved",
+              "updatedAt": "2024-02-21T08:19:09.000Z"
+          }
+  - name: Merged
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "merge"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "4e1a6609-1a29-4037-a411-89ecc14c6cd8",
+              "reviewedBy": {
+                  "id": 12345678,
+                  "name": "Taylor Lee",
+                  "username": "taylor-lee"
+              },
+              "status": "merged",
+              "updatedAt": "2024-02-21T08:19:09.000Z"
+          }
+  - name: Declined
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "decline",
+              "comment": "Missing descriptions in requests"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "4e1a6609-1a29-4037-a411-89ecc14c6cd8",
+              "reviewedBy": {
+                  "id": 12345678,
+                  "name": "Taylor Lee",
+                  "username": "taylor-lee"
+              },
+              "status": "declined",
+              "updatedAt": "2024-02-21T08:19:09.000Z"
+          }
+  - name: Unapproved
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "unapprove"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "4e1a6609-1a29-4037-a411-89ecc14c6cd8",
+              "reviewedBy": {
+                  "id": 12345678,
+                  "name": "Taylor Lee",
+                  "username": "taylor-lee"
+              },
+              "status": "open",
+              "updatedAt": "2024-02-21T08:19:09.000Z"
+          }
+  - name: Action Not Allowed
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "decline"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Bad Request",
+              "detail": "Given action on current pull request is not allowed",
+              "status": 400
+          }
+  - name: Invalid Action
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "reject"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "title": "Value must be one of \"approve\", \"unapprove\", \"decline\", \"merge\"",
+              "detail": "POST request body for '/pull-requests/4e1a6609-1a29-4037-a411-89ecc14c6cd8/tasks' failed to validate schema. Location: /properties/action/enum",
+              "status": 400
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "unapproved"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "You do not have enough permissions to perform this action.",
+              "status": 403
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/pull-requests/:pullRequestId/tasks
+      method: POST
+      params:
+        - name: pullRequestId
+          value: 4e1a6609-1a29-4037-a411-89ecc14c6cd8
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "action": "unapproved"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+
+docs: Updates the [review](https://learning.postman.com/docs/collaborating-in-postman/using-version-control/reviewing-pull-requests/) status of a pull request.

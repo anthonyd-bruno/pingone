@@ -1,0 +1,127 @@
+info:
+  name: Create relations
+  type: http
+  seq: 11
+
+http:
+  method: POST
+  url: https://api.getpostman.com/apis/{{apiId}}/versions/{{apiVersionId}}/relations
+  headers:
+    - name: Content-Type
+      value: application/json
+  body:
+    type: json
+    data: |-
+      {
+          "{{relationType}}": [
+              "{{entityId}}"
+          ]
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/relations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "unclassified": [
+                  "12345678-b4abc083-3ee2-4fc2-8959-29a7653a1c91"
+              ]
+          }
+    response:
+      statusText: "200"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "unclassified": [
+                  "2e006451-e819-443f-97bc-d1635e51007f"
+              ]
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/relations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+
+          }
+    response:
+      statusText: "400"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": {
+                  "name": "invalidParamsError",
+                  "message": "The specified parameter is in an invalid format"
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/apis/387c2863-6ee3-4a56-8210-225f774edade/versions/a9879d02-74bf-425a-bbec-6d27aa135507/relations
+      method: POST
+      body:
+        type: json
+        data: |-
+          {
+              "unclassified": [
+                  "12345678-b4abc083-3ee2-4fc2-8959-29a7653a1c91"
+              ]
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: Content-Type
+          value: application/json
+      body:
+        type: json
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Creates a new relation for an API version. Include the following in the request body:
+
+  - `relationType` — An **array** that contains entity relations. The key value for this array must be the `unclassified` value.
+      
+
+  You must include the following properties in the `relationType` array:
+
+  - `entityId` — The collection's UID value.
+      
+
+  **Note:**
+
+  The following is **deprecated** in Postman API v10 and higher:
+
+  | **`relationType`** | **`entityId`** |
+  | --- | --- |
+  | `documentation` and `test` | A collection UID value. |
+  | `environment` | An environment UID value. |
+  | `mock` | A mock ID value. |
+  | `monitor` | A monitor ID value. |
+
+  The endpoint accepts multiple `relationType` arrays in a single call. For an example, see the example response documentation.
+
+  The `documentation` and `test` values returned in the response are the relation ID values, **not** the collection ID values.

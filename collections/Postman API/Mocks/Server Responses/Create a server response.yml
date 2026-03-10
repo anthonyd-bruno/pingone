@@ -1,0 +1,188 @@
+info:
+  name: Create a server response
+  type: http
+  seq: 3
+
+http:
+  method: POST
+  url: "{{baseUrl}}/mocks/:mockId/server-responses"
+  params:
+    - name: mockId
+      value: ""
+      type: path
+      description: The mock's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "serverResponse": {
+              "name": "{{serverStubName}}",
+              "statusCode": 500,
+              "headers": [
+                  {
+                      "key": "{{headerKey}}",
+                      "value": "{{headerValue}}"
+                  }
+              ],
+              "body": "{{serverStubBody}}",
+              "language": "{{languageType}}"
+          }
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/server-responses
+      method: POST
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "serverResponse": {
+                  "name": "Internal Server Error",
+                  "statusCode": 500,
+                  "header": [
+                      {
+                          "key": "Content-Type",
+                          "value": "application/json"
+                      }
+                  ],
+                  "body": "{\n    \"message\": \"Something went wrong; try again later.\"\n}"
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdAt": "2022-08-02T15:08:03.000Z",
+              "updatedAt": "2022-08-02T15:08:03.000Z",
+              "id": "965cdd16-fe22-4d96-a161-3d05490ac421",
+              "name": "Internal Server Error",
+              "statusCode": 500,
+              "headers": [],
+              "language": null,
+              "body": "{\n    \"message\": \"Something went wrong; try again later.\"\n}",
+              "createdBy": "20891195",
+              "updatedBy": "20891195",
+              "mock": "32cd624d-9986-4f20-9048-89252f722269"
+          }
+  - name: Bad Request
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/server-responses
+      method: POST
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "serverResponse": {
+                  "name": "Internal Server Error"
+              }
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "paramMissingError",
+                  "message": "Parameter is missing in the request.",
+                  "details": {
+                      "param": [
+                          "statusCode"
+                      ]
+                  }
+              }
+          }
+  - name: Mock Server Not Found
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/server-responses
+      method: POST
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "serverResponse": {
+                  "name": "Internal Server Error"
+              }
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "mockNotFoundError",
+                  "header": "Unable to find mock",
+                  "message": "Please refresh and try again."
+              }
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/mocks/:mockId/server-responses
+      method: POST
+      params:
+        - name: mockId
+          value: 12345678-e3d951bf-873f-49ac-a658-b2dcb91d3289
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "serverResponse": {
+                  "name": "Internal Server Error"
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Creates a server response. Server responses let you simulate 5xx server-level responses, such as 500 or 503.
+
+  Server-level responses are agnostic to application-level logic. Server responses let you simulate this behavior on a mock server. You do not need to define each error for all exposed paths on the mock server.
+
+  If you set a server response as active, then all the calls to the mock server return with that active server response.
+
+  **Note:**
+
+  You can create multiple server responses for a mock server, but only one mock server can be set as active.

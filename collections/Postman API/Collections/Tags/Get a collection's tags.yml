@@ -1,0 +1,160 @@
+info:
+  name: Get a collection's tags
+  type: http
+  seq: 1
+
+http:
+  method: GET
+  url: "{{baseUrl}}/collections/:collectionUid/tags"
+  params:
+    - name: collectionUid
+      value: ""
+      type: path
+      description: The collection's unique ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "tags": [
+                  {
+                      "slug": "needs-review"
+                  },
+                  {
+                      "slug": "test-api"
+                  }
+              ]
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "status": 401
+          }
+  - name: Invalid Credentials
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "The request lacks valid credentials.",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Access Denied",
+              "detail": "You do not have developer role. Ask your (super)admin to grant you developer role",
+              "status": 403
+          }
+  - name: Not Enterprise
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Access Denied",
+              "detail": "The tags feature is only available to enterprise teams",
+              "status": 403
+          }
+  - name: No View Permissions
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Access Denied",
+              "status": 403,
+              "detail": "You do not have view permission",
+              "instance": "/tags/collections/12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collections/:collectionUid/tags
+      method: GET
+      params:
+        - name: collectionUid
+          value: 12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "status": 500
+          }
+
+docs: Gets all the tags associated with a collection.

@@ -1,0 +1,179 @@
+info:
+  name: Get duplication task status
+  type: http
+  seq: 15
+
+http:
+  method: GET
+  url: "{{baseUrl}}/collection-duplicate-tasks/:taskId"
+  params:
+    - name: taskId
+      value: ""
+      type: path
+      description: The task's unique ID.
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Task Completed
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "task": {
+                  "status": "completed",
+                  "reason": null,
+                  "id": "12345678-66ae9950-0869-4e65-96b0-1e0e47e771af"
+              }
+          }
+  - name: Task Processing
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "task": {
+                  "status": "processing",
+                  "reason": null,
+                  "id": "12345678-66ae9950-0869-4e65-96b0-1e0e47e771af"
+              }
+          }
+  - name: Task Failed
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "task": {
+                  "status": "failed",
+                  "id": "12345678-66ae9950-0869-4e65-96b0-1e0e47e771af",
+                  "reason": "instance not found"
+              }
+          }
+  - name: Invalid Task ID
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Bad request",
+              "status": 400,
+              "type": "https://api.postman.com/problems/bad-request",
+              "detail": "Invalid task id"
+          }
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "status": 403,
+              "detail": "You do not have access to this workspace."
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "The requested resource was not found.",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/collection-duplicate-tasks/:taskId
+      method: GET
+      params:
+        - name: taskId
+          value: 12345678-66ae9950-0869-4e65-96b0-1e0e47e771af
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "serverError",
+                  "message": "An error has occurred on the server."
+              }
+          }
+
+docs: Gets the status of a collection duplication task.

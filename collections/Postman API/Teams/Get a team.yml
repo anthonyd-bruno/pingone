@@ -1,0 +1,340 @@
+info:
+  name: Get a team
+  type: http
+  seq: 5
+
+http:
+  method: GET
+  url: "{{baseUrl}}/teams/:teamId"
+  headers:
+    - name: identifierType
+      value: scim
+      description: Use SCIM user and group IDs instead of Postman user IDs.
+      disabled: true
+  params:
+    - name: include
+      value: ""
+      type: query
+      description: |-
+        Include additional information in the request's response:
+        - `members` — Include all users and groups, including groups that represent other teams or the entire organization, with access to the team's entities. This includes team managers, members, and persons invited to collaborate as guests.
+        - `userRoles` — Include all the team's user roles in the response.
+      disabled: true
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Successful Response
+    request:
+      url: https://api.getpostman.com/teams/:teamId
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "team": {
+                  "createdAt": "2025-02-26T08:17:42.000Z",
+                  "updatedAt": "2025-02-26T08:17:42.000Z",
+                  "id": 123,
+                  "name": "Testing Team",
+                  "handle": "testing-team",
+                  "description": "API testing team.",
+                  "organizationId": 1,
+                  "createdBy": 12345678,
+                  "enabled": true
+              }
+          }
+  - name: Successful Response with SCIM IDs
+    request:
+      url: https://api.getpostman.com/teams/:teamId
+      method: GET
+      headers:
+        - name: identifierType
+          value: scim
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "team": {
+                  "createdAt": "2025-02-26T08:17:42.000Z",
+                  "updatedAt": "2025-02-26T08:17:42.000Z",
+                  "id": 123,
+                  "name": "Testing Team",
+                  "handle": "testing-team",
+                  "description": "API testing team.",
+                  "organizationId": 1,
+                  "createdBy": "33d8e85cc5ec04715bb0c18b42312d80413bad8a96622eb7",
+                  "enabled": true
+              }
+          }
+  - name: Response with include=members
+    request:
+      url: https://api.getpostman.com/teams/:teamId?include=members
+      method: GET
+      params:
+        - name: include
+          value: members
+          type: query
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "team": {
+                  "createdAt": "2025-07-30T17:18:00.000Z",
+                  "updatedAt": "2025-07-30T17:18:00.000Z",
+                  "id": 123,
+                  "name": "Testing Team",
+                  "handle": "testing-team",
+                  "description": "API testing team.",
+                  "organizationId": 1,
+                  "createdBy": 12345678,
+                  "enabled": true,
+                  "members": {
+                      "user": {
+                          "12345678": {
+                              "roles": [
+                                  "TEAM_MANAGER"
+                              ]
+                          },
+                          "87654321": {
+                              "roles": [
+                                  "TEAM_GUEST_VIEWER"
+                              ]
+                          },
+                          "12348765": {
+                              "roles": [
+                                  "TEAM_GUEST_VIEWER"
+                              ]
+                          },
+                          "12457834": {
+                              "roles": [
+                                  "TEAM_DEVELOPER"
+                              ]
+                          },
+                          "11234567": {
+                              "roles": [
+                                  "TEAM_DEVELOPER"
+                              ]
+                          },
+                          "87456321": {
+                              "roles": [
+                                  "TEAM_DEVELOPER"
+                              ]
+                          }
+                      },
+                      "group": {},
+                      "team": {
+                          "123": {
+                              "roles": [
+                                  "TEAM_GUEST_DEVELOPER"
+                              ]
+                          }
+                      }
+                  },
+                  "memberCount": 4
+              }
+          }
+  - name: Response with include=members and SCIM IDs
+    request:
+      url: https://api.getpostman.com/teams/:teamId?include=members
+      method: GET
+      headers:
+        - name: identifierType
+          value: scim
+      params:
+        - name: include
+          value: members
+          type: query
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "team": {
+                  "createdAt": "2025-07-30T17:18:00.000Z",
+                  "updatedAt": "2025-07-30T17:18:00.000Z",
+                  "id": 123,
+                  "name": "Testing Team",
+                  "handle": "testing-team",
+                  "description": "API testing team.",
+                  "organizationId": 1,
+                  "createdBy": "f10ba7a8dac248e8fd9769163dc63aef920f3897c7ea2c86",
+                  "enabled": true,
+                  "members": {
+                      "user": {
+                          "87654321": {
+                              "roles": [
+                                  "TEAM_GUEST_VIEWER"
+                              ]
+                          },
+                          "g90b4ca5dd393c8cd81a1793d7f48bb96b003bfbb4b2384c": {
+                              "roles": [
+                                  "TEAM_MANAGER"
+                              ]
+                          },
+                          "g1eeb33164158e1dedc80cc79b405e3f977b11682d47b200": {
+                              "roles": [
+                                  "TEAM_GUEST_VIEWER"
+                              ]
+                          },
+                          "g653804770fd23fdd61ebbaa7906c115f546576215335fdb": {
+                              "roles": [
+                                  "TEAM_DEVELOPER"
+                              ]
+                          },
+                          "g0e46a85252b1d70c7ea9875e8a48c278f5160e53f2396b4": {
+                              "roles": [
+                                  "TEAM_DEVELOPER"
+                              ]
+                          },
+                          "gad7759db6fa9f709d54c9bf129ba0933400f1846c9d9480": {
+                              "roles": [
+                                  "TEAM_DEVELOPER"
+                              ]
+                          }
+                      },
+                      "group": {},
+                      "team": {
+                          "123": {
+                              "roles": [
+                                  "TEAM_GUEST_DEVELOPER"
+                              ]
+                          }
+                      }
+                  },
+                  "memberCount": 4
+              }
+          }
+  - name: Team ID Not Found
+    request:
+      url: https://api.getpostman.com/teams/:teamId
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "status": 404,
+              "title": "Not Found",
+              "detail": {
+                  "error": {
+                      "name": "EntityNotFound",
+                      "message": "No team found with the id provided"
+                  }
+              },
+              "instance": "/teams/12345"
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/teams/:teamId
+      method: GET
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "status": 500,
+              "title": "Internal Server Error",
+              "detail": {
+                  "error": {
+                      "name": "UnexpectedError",
+                      "message": "There was an issue while finding Team."
+                  }
+              },
+              "instance": "/teams"
+          }
+
+docs: Gets information about a Postman team.

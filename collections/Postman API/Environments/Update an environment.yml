@@ -1,0 +1,796 @@
+info:
+  name: Update an environment
+  type: http
+  seq: 5
+
+http:
+  method: PATCH
+  url: "{{baseUrl}}/environments/:environmentId"
+  params:
+    - name: environmentId
+      value: ""
+      type: path
+      description: The environment's ID.
+  body:
+    type: json
+    data: |-
+      [
+          {
+              "op": "{{operationType}}",
+              "path": "{{environmentPath}}",
+              "value": "{{value}}"
+          }
+      ]
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Update Environment Name
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "replace",
+                  "path": "/name",
+                  "value": "Test API Environment"
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:37:00.000Z",
+                  "updatedAt": "2025-03-10T15:56:19.000Z",
+                  "values": [
+                      {
+                          "key": "x-api-key",
+                          "value": "{{x-api-key}}",
+                          "type": "secret",
+                          "enabled": true
+                      }
+                  ],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Add Variable
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/1",
+                  "value": {
+                      "key": "collectionId",
+                      "value": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                      "type": "default",
+                      "enabled": true,
+                      "description": "The collection's ID."
+                  }
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:37:00.000Z",
+                  "updatedAt": "2025-03-10T15:56:19.000Z",
+                  "values": [
+                      {
+                          "key": "x-api-key",
+                          "value": "{{x-api-key}}",
+                          "type": "secret",
+                          "enabled": true
+                      },
+                      {
+                          "key": "collectionId",
+                          "value": "12345678-12ece9e1-2abf-4edc-8e34-de66e74114d2",
+                          "type": "default",
+                          "enabled": true,
+                          "description": "The collection's ID."
+                      }
+                  ],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Add Description to Existing Variable
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/0/description",
+                  "value": "A valid API key."
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:37:00.000Z",
+                  "updatedAt": "2025-03-10T15:54:02.000Z",
+                  "values": [
+                      {
+                          "key": "x-api-key",
+                          "value": "{{x-api-key}}",
+                          "type": "secret",
+                          "enabled": false,
+                          "description": "A valid API key."
+                      }
+                  ],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Enable Variable
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "replace",
+                  "path": "/values/0/enabled",
+                  "value": true
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:37:00.000Z",
+                  "updatedAt": "2025-03-10T15:54:02.000Z",
+                  "values": [
+                      {
+                          "key": "x-api-key",
+                          "value": "{{x-api-key}}",
+                          "type": "secret",
+                          "enabled": true
+                      }
+                  ],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Update Variable
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "replace",
+                  "path": "/values/0/key",
+                  "value": "x-api-key"
+              },
+              {
+                  "op": "replace",
+                  "path": "/values/0/enabled",
+                  "value": false
+              },
+              {
+                  "op": "replace",
+                  "path": "/values/0/value",
+                  "value": "{{x-api-key}}"
+              },
+              {
+                  "op": "replace",
+                  "path": "/values/0/type",
+                  "value": "secret"
+              },
+              {
+                  "op": "replace",
+                  "path": "/values/0/description",
+                  "value": "A valid API key."
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:37:00.000Z",
+                  "updatedAt": "2025-03-10T15:54:02.000Z",
+                  "values": [
+                      {
+                          "key": "x-api-key",
+                          "value": "{{x-api-key}}",
+                          "type": "secret",
+                          "enabled": false,
+                          "description": "A valid API key."
+                      }
+                  ],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Remove Variable
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "remove",
+                  "path": "/values/0"
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:16:18.000Z",
+                  "updatedAt": "2025-03-10T15:17:04.000Z",
+                  "values": [],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Remove Multiple Variables
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "remove",
+                  "path": "/values/4"
+              },
+              {
+                  "op": "remove",
+                  "path": "/values/3"
+              },
+              {
+                  "op": "remove",
+                  "path": "/values/2"
+              },
+              {
+                  "op": "remove",
+                  "path": "/values/1"
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:37:00.000Z",
+                  "updatedAt": "2025-03-10T15:54:02.000Z",
+                  "values": [
+                      {
+                          "key": "x-api-key",
+                          "value": "{{x-api-key}}",
+                          "type": "default",
+                          "enabled": true
+                      }
+                  ],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Remove and Add Variable
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "remove",
+                  "path": "/values/1"
+              },
+              {
+                  "op": "remove",
+                  "path": "/values/0"
+              },
+              {
+                  "op": "add",
+                  "path": "/values/0",
+                  "value": {
+                      "key": "x-api-key",
+                      "value": "{{x-api-key}}",
+                      "type": "default",
+                      "enabled": true,
+                      "description": "A valid API key."
+                  }
+              }
+          ]
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "environment": {
+                  "id": "5daabc50-8451-43f6-922d-96b403b4f28e",
+                  "name": "Test API Environment",
+                  "owner": "12345678",
+                  "createdAt": "2025-03-10T15:37:00.000Z",
+                  "updatedAt": "2025-03-10T15:54:02.000Z",
+                  "values": [
+                      {
+                          "key": "x-api-key",
+                          "value": "{{x-api-key}}",
+                          "type": "default",
+                          "enabled": true,
+                          "description": "A valid API key."
+                      }
+                  ],
+                  "uid": "12345678-5daabc50-8451-43f6-922d-96b403b4f28e"
+              }
+          }
+  - name: Invalid PATCH Body
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "op": "replace",
+              "path": "/name",
+              "name": "Test API Environment"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Patch sequence must be an array"
+          }
+  - name: Empty value Property
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/2",
+                  "value": {}
+              }
+          ]
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Patch operations with empty value are not supported"
+          }
+  - name: Invalid value Type
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/1",
+                  "value": {
+                      "key": "userId",
+                      "value": 12345678,
+                      "type": "default",
+                      "enabled": true
+                  }
+              }
+          ]
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": [
+                  "/values/1/value: must be a string"
+              ]
+          }
+  - name: Invalid path
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "replace",
+                  "path": "/variable/1"
+              }
+          ]
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Invalid path in JSON Patch operation",
+              "instance": "/environments/5daabc50-8451-43f6-922d-96b403b4f28e"
+          }
+  - name: path Doesn't Exist
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "replace",
+                  "path": "/variable/1"
+              }
+          ]
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Cannot perform the operation at a path that does not exist",
+              "instance": "/environments/5daabc50-8451-43f6-922d-96b403b4f28e"
+          }
+  - name: Invalid Environment ID
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/2",
+                  "value": {
+                      "key": "x-api-key",
+                      "value": "{{x-api-key}}",
+                      "type": "default",
+                      "enabled": true
+                  }
+              }
+          ]
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": "Invalid Environment ID",
+              "instance": "/environments/5daabc50-8451-43f6"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/2",
+                  "value": {
+                      "key": "x-api-key",
+                      "value": "{{x-api-key}}",
+                      "type": "default",
+                      "enabled": true
+                  }
+              }
+          ]
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "status": 403,
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "instance": "/environments/5daabc50-8451-43f6-922d-96b403b4f28e"
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/2",
+                  "value": {
+                      "key": "x-api-key",
+                      "value": "{{x-api-key}}",
+                      "type": "default",
+                      "enabled": true
+                  }
+              }
+          ]
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "status": 404,
+              "title": "Not Found",
+              "detail": "Not Found",
+              "instance": "/environments/5daabc50-8451-43f6-922d-96b403b4f28e"
+          }
+  - name: Length Required
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/2",
+                  "value": {
+                      "key": "x-api-key",
+                      "value": "{{x-api-key}}",
+                      "type": "default",
+                      "enabled": true
+                  }
+              }
+          ]
+    response:
+      statusText: "411"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/length-required",
+              "title": "Length Required",
+              "detail": "A valid Content-Length header is required",
+              "status": 411,
+              "instance": "/"
+          }
+  - name: Payload Too Large
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          [
+              {
+                  "op": "add",
+                  "path": "/values/2",
+                  "value": {
+                      "key": "x-api-key",
+                      "value": "{{x-api-key}}",
+                      "type": "default",
+                      "enabled": true
+                  }
+              }
+          ]
+    response:
+      statusText: "413"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/payload-too-large",
+              "title": "Payload Too Large",
+              "detail": "Request size limit exceeded",
+              "status": 413,
+              "instance": "/"
+          }
+  - name: Rate Limit Exceeded
+    request:
+      url: https://api.getpostman.com/environments/:environmentId
+      method: PATCH
+      params:
+        - name: environmentId
+          value: 5daabc50-8451-43f6-922d-96b403b4f28e
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "environment": {
+                  "name": "Test A Environment",
+                  "values": [
+                      null,
+                      {
+                          "key": "variable_a",
+                          "value": "The variable_a value.",
+                          "enabled": true,
+                          "type": "default"
+                      }
+                  ]
+              }
+          }
+    response:
+      statusText: "429"
+      headers:
+        - name: X-RateLimit-Limit
+          value: "60"
+        - name: X-RateLimit-Remaining
+          value: "59"
+        - name: X-RateLimit-Reset
+          value: "1631439621"
+        - name: X-RateLimit-RetryAfter
+          value: "4"
+        - name: RetryAfter
+          value: "4"
+      body:
+        type: text
+        data: |-
+          {
+              "error": "rateLimited",
+              "message": "Rate limit exceeded. Please retry after 1669048687"
+          }
+
+docs: |-
+  Updates specific environment properties, such as its name and variables.
+
+  **Note:**
+
+  - You can only perform one type of operation at a time. For example, you cannot perform an `add` and `replace` operation in the same call.
+      
+  - The request body size cannot exceed the maximum allowed size of 30MB.
+      
+  - If you receive an HTTP `411 Length Required` error response, manually pass the `Content-Length` header and its value in the request header.
+      
+  - To add a description to an existing variable, use the `add` operation.

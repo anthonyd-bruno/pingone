@@ -1,0 +1,11 @@
+info:
+  name: Webhooks
+  type: folder
+  seq: 21
+
+request:
+  auth: inherit
+
+docs:
+  content: The **Webhooks** endpoints enable you to manage [custom webhooks](https://learning.postman.com/docs/running-collections/collection-webhooks/).
+  type: text/markdown

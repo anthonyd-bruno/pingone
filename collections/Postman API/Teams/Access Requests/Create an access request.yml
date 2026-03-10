@@ -1,0 +1,558 @@
+info:
+  name: Create an access request
+  type: http
+  seq: 1
+
+http:
+  method: POST
+  url: "{{baseUrl}}/teams/:teamId/access-requests"
+  headers:
+    - name: identifierType
+      value: scim
+      description: Use SCIM user and group IDs instead of Postman user IDs.
+      disabled: true
+  params:
+    - name: teamId
+      value: ""
+      type: path
+      description: The team's ID.
+  body:
+    type: json
+    data: |-
+      {
+          "entityList": [
+              {
+                  "entityType": "{{entityType}}",
+                  "entityId": "{{entityId}}"
+              }
+          ],
+          "role": "{{entityRole}}",
+          "reason": "{{reason}}",
+          "requestType": "{{reasonType}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Request a Role for User
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "12345678"
+                  }
+              ],
+              "role": "TEAM_MANAGER",
+              "reason": "Needs the manager role.",
+              "requestType": "UPGRADE_ROLE"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "role": "TEAM_MANAGER",
+                      "status": "Skipped",
+                      "reason": "Entity has this role"
+                  }
+              ]
+          }
+  - name: Request User as Guest Viewer
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  }
+              ],
+              "role": "TEAM_GUEST_VIEWER",
+              "reason": "",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 87654321,
+                      "role": "TEAM_GUEST_VIEWER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Request to Add Users as Guest Developers
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "45678123"
+                  }
+              ],
+              "role": "TEAM_GUEST_DEVELOPER",
+              "reason": "Joining for debugging.",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 87654321,
+                      "role": "TEAM_GUEST_DEVELOPER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": 45678123,
+                      "role": "TEAM_GUEST_DEVELOPER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Request a Role Upgrade
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "12345678"
+                  }
+              ],
+              "role": "TEAM_MANAGER",
+              "reason": "I need the team manager role.",
+              "requestType": "UPGRADE_ROLE"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 12345678,
+                      "role": "TEAM_MANAGER",
+                      "previousRole": "TEAM_DEVELOPER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Request Team as Guest Viewer to a Team
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "team",
+                      "entityId": "432"
+                  }
+              ],
+              "role": "TEAM_GUEST_VIEWER",
+              "reason": "",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "team",
+                      "entityId": 432,
+                      "role": "TEAM_GUEST_VIEWER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Request to Add Organization
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "organization",
+                      "entityId": "456"
+                  }
+              ],
+              "role": "TEAM_GUEST_VIEWER",
+              "reason": "",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "organization",
+                      "entityId": 456,
+                      "role": "TEAM_GUEST_VIEWER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Request Organization Role Upgrade
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "organization",
+                      "entityId": "456"
+                  }
+              ],
+              "role": "TEAM_GUEST_DEVELOPER",
+              "reason": "",
+              "requestType": "UPGRADE_ROLE"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "organization",
+                      "entityId": 456,
+                      "role": "TEAM_GUEST_DEVELOPER",
+                      "previousRole": "TEAM_GUEST_VIEWER",
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: Request Accepted With Existing Requests
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "12345678"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": "1234"
+                  }
+              ],
+              "role": "TEAM_DEVELOPER",
+              "reason": "New dev team",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "user",
+                      "entityId": 432,
+                      "role": "TEAM_DEVELOPER",
+                      "previousRole": null,
+                      "status": "Skipped",
+                      "reason": "RFA already exists for this entity"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": 124,
+                      "role": "TEAM_DEVELOPER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": 1234,
+                      "role": "TEAM_DEVELOPER",
+                      "previousRole": null,
+                      "status": "Accepted"
+                  }
+              ]
+          }
+  - name: User Already Has Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "12345678"
+                  }
+              ],
+              "role": "TEAM_MANAGER",
+              "reason": "Needs the manager role.",
+              "requestType": "UPGRADE_ROLE"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "result": [
+                  {
+                      "entityType": "team",
+                      "entityId": 432,
+                      "role": "TEAM_GUEST_DEVELOPER",
+                      "status": "Skipped",
+                      "reason": "Entity has this role"
+                  }
+              ]
+          }
+  - name: Team Request Has Invalid Role
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "team",
+                      "entityId": "123"
+                  }
+              ],
+              "role": "TEAM_MANAGER",
+              "reason": "",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": "Found invalid entities",
+                  "result": [
+                      {
+                          "entityType": "team",
+                          "entityId": "123",
+                          "role": "TEAM_MANAGER",
+                          "status": "Invalid",
+                          "reason": "Members can only be users or usergroups"
+                      }
+                  ]
+              },
+              "instance": "/teams/123/access-requests"
+          }
+  - name: Team Feature Unavailable
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "12345678"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": "1234"
+                  }
+              ],
+              "role": "TEAM_DEVELOPER",
+              "reason": "New dev team",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/bad-request",
+              "status": 400,
+              "title": "Bad Request",
+              "detail": {
+                  "error": {
+                      "name": "BadRequest",
+                      "message": "Team feature is not available for your organization."
+                  }
+              },
+              "instance": "/teams"
+          }
+  - name: API Key Missing
+    request:
+      url: https://api.getpostman.com/teams/:teamId/access-requests
+      method: POST
+      params:
+        - name: teamId
+          value: "123"
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "entityList": [
+                  {
+                      "entityType": "user",
+                      "entityId": "12345678"
+                  },
+                  {
+                      "entityType": "user",
+                      "entityId": "87654321"
+                  },
+                  {
+                      "entityType": "group",
+                      "entityId": "1234"
+                  }
+              ],
+              "role": "TEAM_DEVELOPER",
+              "reason": "New dev team",
+              "requestType": "REQUEST_TO_ADD_MEMBERS"
+          }
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "title": "Unauthorized",
+              "instance": "/teams",
+              "status": 401,
+              "type": "https://api.postman.com/problems/unauthorized",
+              "detail": "Unauthorized"
+          }
+
+docs: |-
+  Creates an access request for a team. Access requests include actions such as request to join a team, upgrading a user's role, adding members, and requesting team role access to another team.
+
+  **Note:**
+
+  If a team discovery is enabled, the team's access request is automatically approved.

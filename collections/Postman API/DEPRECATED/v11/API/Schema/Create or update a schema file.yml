@@ -1,0 +1,445 @@
+info:
+  name: Create or update a schema file
+  type: http
+  seq: 2
+
+http:
+  method: PUT
+  url: "{{baseUrl}}/apis/:apiId/schemas/:schemaId/files/:filePath"
+  headers:
+    - name: Accept
+      value: application/vnd.api.v10+json
+      description: The request header required to use the endpoint.
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+    - name: schemaId
+      value: "{{schemaId}}"
+      type: path
+      description: The API schema's ID.
+    - name: filePath
+      value: "{{filePath}}"
+      type: path
+      description: The path to the schema file.
+  body:
+    type: json
+    data: |-
+      {
+          "content": "{{fileContent}}"
+      }
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: JSON Schema
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"openapi\": \"3.1.0\",\n  \"info\": {\n    \"version\": \"1.0.0\",\n    \"title\": \"Sample API\",\n    \"description\": \"Buy or rent spacecrafts\"\n  },\n  \"paths\": {\n    \"/spacecrafts/{spacecraftId}\": {\n      \"parameters\": [\n        {\n          \"name\": \"spacecraftId\",\n          \"description\": \"The unique identifier of the spacecraft\",\n          \"in\": \"path\",\n          \"required\": true,\n          \"schema\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          }\n        }\n      ],\n      \"get\": {\n        \"summary\": \"Read a spacecraft\",\n        \"responses\": {\n          \"200\": {\n            \"description\": \"The spacecraft corresponding to the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Spacecraft\"\n                }\n              }\n            }\n          },\n          \"404\": {\n            \"description\": \"No spacecraft found for the provided `spacecraftId`\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          },\n          \"500\": {\n            \"description\": \"Unexpected error\",\n            \"content\": {\n              \"application/json\": {\n                \"schema\": {\n                  \"$ref\": \"#/components/schemas/Error\"\n                }\n              }\n            }\n          }\n        }\n      }\n    }\n  },\n  \"components\": {\n    \"schemas\": {\n      \"SpacecraftId\": {\n        \"description\": \"The unique identifier of a spacecraft\",\n        \"type\": \"string\"\n      },\n      \"Spacecraft\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"id\",\n          \"name\",\n          \"type\"\n        ],\n        \"properties\": {\n          \"id\": {\n            \"$ref\": \"#/components/schemas/SpacecraftId\"\n          },\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"capsule\",\n              \"probe\",\n              \"satellite\",\n              \"spaceplane\",\n              \"station\"\n            ]\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      },\n      \"Error\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"message\"\n        ],\n        \"properties\": {\n          \"message\": {\n            \"description\": \"A human readable error message\",\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"securitySchemes\": {\n      \"ApiKey\": {\n        \"type\": \"apiKey\",\n        \"in\": \"header\",\n        \"name\": \"X-Api-Key\"\n      }\n    }\n  },\n  \"security\": [\n    {\n      \"ApiKey\": [\n\n      ]\n    }\n  ]\n}"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdBy": "12345678",
+              "createdAt": "2024-07-18T13:47:39.000Z",
+              "root": {
+                  "enabled": true
+              },
+              "name": "index.json",
+              "path": "index.json",
+              "updatedBy": "12345678",
+              "id": "2fdc8ea1-d02e-4e50-989e-6fa28f42b995",
+              "updatedAt": "2024-07-18T13:48:28.000Z"
+          }
+  - name: YAML Schema
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.yaml
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "openapi: \"3.1.0\"\ninfo:\n  version: \"1.0.0\"\n  title: \"Sample API\"\n  description: Buy or rent spacecrafts\n\npaths:\n  /spacecrafts/{spacecraftId}:\n    parameters:\n      - name: spacecraftId\n        description: The unique identifier of the spacecraft\n        in: path\n        required: true\n        schema:\n          $ref: \"#/components/schemas/SpacecraftId\"\n    get:\n      summary: Read a spacecraft\n      responses:\n        \"200\":\n          description: The spacecraft corresponding to the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Spacecraft\"\n        404:\n          description: No spacecraft found for the provided `spacecraftId`\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Error\"\n        500:\n          description: Unexpected error\n          content:\n            application/json:\n              schema:\n                $ref: \"#/components/schemas/Error\"\ncomponents:\n  schemas:\n    SpacecraftId:\n      description: The unique identifier of a spacecraft\n      type: string\n    Spacecraft:\n      type: object\n      required:\n        - id\n        - name\n        - type\n      properties:\n        id:\n          $ref: \"#/components/schemas/SpacecraftId\"\n        name:\n          type: string\n        type:\n          type: string\n          enum:\n            - capsule\n            - probe\n            - satellite\n            - spaceplane\n            - station\n        description:\n          type: string\n    Error:\n      type: object\n      required:\n        - message\n      properties:\n        message:\n          description: A human readable error message\n          type: string\n  securitySchemes:\n    ApiKey:\n      type: apiKey\n      in: header\n      name: X-Api-Key\nsecurity:\n  - ApiKey: []\n"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "createdBy": "12345678",
+              "createdAt": "2024-07-18T13:28:40.000Z",
+              "root": {
+                  "enabled": true
+              },
+              "updatedAt": "2024-07-18T13:30:42.000Z",
+              "path": "index.yaml",
+              "id": "2fdc8ea1-d02e-4e50-989e-6fa28f42b995",
+              "updatedBy": "12345678",
+              "name": "index.yaml"
+          }
+  - name: GraphQL Schema
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: posts.graphql
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "type Query {\r\n  allPosts: [Post]\r\n  allUsers: [User]\r\n  postById(id: Int!): Post\r\n  userById(id: Int!): User\r\n}\r\n\r\ntype Mutation {\r\n  createPost(input: CreatePostInput!): CreatePostPayload\r\n  createUser(input: CreateUserInput!): CreateUserPayload\r\n}\r\n\r\ntype Post {\r\n  id: Int!\r\n  title: String\r\n  body: String\r\n  createdDate: Datetime\r\n  authorId: Int!\r\n  userByAuthorId: User\r\n}\r\n\r\ntype User {\r\n  id: Int!\r\n  username: String\r\n  createdDate: Datetime\r\n  postsByAuthorId: [Post]\r\n}\r\n\r\ntype CreatePostPayload {\r\n  clientMutationId: String\r\n  post: Post\r\n  userByAuthorId: User\r\n}\r\n\r\ninput CreatePostInput {\r\n  clientMutationId: String\r\n  post: PostInput!\r\n}\r\n\r\ninput PostInput {\r\n  id: Int\r\n  title: String\r\n  body: String\r\n  createdDate: Datetime\r\n  authorId: Int!\r\n}\r\n\r\ntype CreateUserPayload {\r\n  clientMutationId: String\r\n  user: User\r\n}\r\n\r\ninput CreateUserInput {\r\n  clientMutationId: String\r\n  user: UserInput!\r\n}\r\n\r\ninput UserInput {\r\n  id: Int\r\n  username: String\r\n  createdDate: Datetime\r\n}\r\n\r\nscalar Datetime\r\n"
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "updatedAt": "2024-07-18T13:26:22.000Z",
+              "path": "posts.graphql",
+              "updatedBy": "20891195",
+              "createdBy": "20891195",
+              "root": {
+                  "enabled": true
+              },
+              "id": "2fdc8ea1-d02e-4e50-989e-6fa28f42b995",
+              "name": "posts.graphql",
+              "createdAt": "2024-07-18T13:24:55.000Z"
+          }
+  - name: Update root Tag
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "root": {
+                  "enabled": true
+              }
+          }
+    response:
+      statusText: "200"
+      body:
+        type: text
+        data: |-
+          {
+              "id": "2fdc8ea1-d02e-4e50-989e-6fa28f42b995",
+              "createdBy": "12345678",
+              "updatedBy": "12345678",
+              "createdAt": "2022-03-29T11:37:15Z",
+              "updatedAt": "2022-03-29T11:37:15Z",
+              "path": "index.json",
+              "name": "index.json"
+          }
+  - name: Missing v10 Accept Header
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "error": {
+                  "name": "instanceNotFoundError",
+                  "message": "API not found. For v10 and later APIs, ensure that your request sends the \"application/vnd.api.v10+json\" Accept header."
+              }
+          }
+  - name: API Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "detail": "We could not find the API you are looking for"
+          }
+  - name: Schema Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+          }
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "instanceNotFoundError",
+              "title": "Resource not found",
+              "detail": "We could not find the resource you are looking for"
+          }
+  - name: Schema Not Linked to API
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+          }
+    response:
+      statusText: "400"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "invalidParamError",
+              "title": "Invalid param error",
+              "detail": "Schema is not linked to the API"
+          }
+  - name: Git-Linked API Errror
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+          }
+    response:
+      statusText: "422"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "actionNotAllowedError",
+              "title": "Action not allowed",
+              "detail": "This action is not allowed for Git linked APIs"
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "detail": "You do not have access to perform this operation.",
+              "title": "You are not permitted to perform the action.",
+              "type": "forbiddenError"
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/schemas/:schemaId/files/:filePath
+      method: PUT
+      headers:
+        - name: Accept
+          value: application/vnd.api.v10+json
+      params:
+        - name: apiId
+          value: 90ca9f5a-c4c4-11ed-afa1-0242ac120002
+          type: path
+        - name: schemaId
+          value: 2fdc8ea1-d02e-4e50-989e-6fa28f42b995
+          type: path
+        - name: filePath
+          value: index.json
+          type: path
+      body:
+        type: json
+        data: |-
+          {
+              "content": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"id\",\n    \"name\"\n  ],\n  \"properties\": {\n    \"id\": {\n      \"type\": \"integer\",\n      \"format\": \"int64\"\n    },\n    \"name\": {\n      \"type\": \"string\"\n    },\n    \"tag\": {\n      \"type\": \"string\"\n    }\n  }\n}"
+          }
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+
+docs: |-
+  Creates or updates an API schema file. Include the following in the request body:
+
+  - `content` — A **string** value that contains the schema file's stringified contents.
+      
+
+  **Note:**
+
+  - If the provided file path exists, the file is updated with the new contents.
+      
+  - If the provided file path does <u>not</u> exist, then a new schema file is created.
+      
+  - If the file path contains a `/` (forward slash) character, then a folder is created. For example, if the file path is the `dir/schema.json` value, then a `dir` folder is created with the `schema.json` file inside.
+      
+  - You can only update the `root` tag for protobuf specifications.

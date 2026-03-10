@@ -1,0 +1,14 @@
+info:
+  name: Generations
+  type: folder
+  seq: 1
+
+request:
+  auth: inherit
+
+docs:
+  content: |-
+    **These endpoints are deprecated**
+
+    The **Generations** endpoints enable you to use Postbot to generate tool definition code and more from resources on Postman.
+  type: text/markdown

@@ -1,0 +1,177 @@
+info:
+  name: Delete an API's comment
+  type: http
+  seq: 4
+
+http:
+  method: DELETE
+  url: "{{baseUrl}}/apis/:apiId/comments/:commentId"
+  params:
+    - name: apiId
+      value: "{{apiId}}"
+      type: path
+      description: The API's ID.
+    - name: commentId
+      value: "{{commentId}}"
+      type: path
+      description: The comment's ID.
+  body:
+    type: json
+    data: ""
+  auth: inherit
+
+settings:
+  encodeUrl: true
+  timeout: 0
+  followRedirects: true
+  maxRedirects: 5
+
+examples:
+  - name: Comment Deleted
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: DELETE
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "204"
+      body:
+        type: text
+        data: ""
+  - name: Unauthorized
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: DELETE
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "401"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/unauthorized",
+              "title": "Unauthorized",
+              "detail": "Unauthorized",
+              "status": 401
+          }
+  - name: Forbidden
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: DELETE
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "Forbidden",
+              "status": 403
+          }
+  - name: Feature Unavailable
+    request:
+      url: https://api.eu.postman.com/apis/:apiId/comments/:commentId
+      method: DELETE
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "403"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/forbidden",
+              "title": "Forbidden",
+              "detail": "This feature isn't available in your region.",
+              "status": 403
+          }
+  - name: Not Found
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: DELETE
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+      body:
+        type: json
+        data: ""
+    response:
+      statusText: "404"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/not-found",
+              "title": "Not Found",
+              "detail": "Not Found",
+              "status": 404
+          }
+  - name: Internal Server Error
+    request:
+      url: https://api.getpostman.com/apis/:apiId/comments/:commentId
+      method: DELETE
+      params:
+        - name: apiId
+          value: 5360b75f-447e-467c-9299-12fd6c92450d
+          type: path
+        - name: commentId
+          value: "46814"
+          type: path
+    response:
+      statusText: "500"
+      body:
+        type: text
+        data: |-
+          {
+              "type": "https://api.postman.com/problems/internal-server-error",
+              "title": "Internal Server Error",
+              "detail": "Internal Server Error",
+              "status": 500
+          }
+
+docs: |-
+  Deletes a comment from an API. On success, this returns an HTTP `204 No Content` response.
+
+  **Note:**
+
+  Deleting the first comment of a thread deletes all the comments in the thread.
