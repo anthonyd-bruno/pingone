@@ -1,0 +1,164 @@
+name: youtube
+variables:
+  - secret: true
+    name: API_KEY
+  - name: basePath
+    value: https://www.googleapis.com/youtube/v3
+  - name: searchPath
+    value: "{{basePath}}/search"
+  - name: videosPath
+    value: "{{basePath}}/videos"
+  - name: PingChannel
+    value: Ping Identity TV
+  - name: PingHandle
+    value: PingIdentityTV
+  - secret: true
+    name: clientSecret
+  - name: clientID
+    value: 146711338135-0rkq9mdtnclgof1ef21mfb8hspfgnsvi.apps.googleusercontent.com
+  - name: PingChannelID
+    value: UCofSB6d-vT6GAjGoyxTiXuw
+  - name: videoID-1
+    value: ypa8prwEMcc
+  - name: videoID-2
+    value: eg7I8x-u0sc
+  - name: videoID-3
+    value: _zWovo2zv6k
+  - name: videoID-4
+    value: D-yskqXigZQ
+  - name: videoID-5
+    value: T0F5hqXxGOk
+  - name: videoID-6
+    value: PJMjHLzD_Kg
+  - name: videoID-7
+    value: 3yCKQ5b0st8
+  - name: videoID-8
+    value: 9QOpDGLLxIQ
+  - name: videoID-9
+    value: -3nwwH9PgHA
+  - name: videoID-10
+    value: wYrzc4AWCzw
+  - name: videoID-11
+    value: O9lQGwKTEQM
+  - name: videoID-12
+    value: IdtBkGQg2Q8
+  - name: videoID-13
+    value: PeZ-Fz_soFs
+  - name: videoID-14
+    value: 1hs5e7TDwM4
+  - name: videoID-15
+    value: fX5U50VGxtg
+  - name: videoID-16
+    value: 2Mkzy3ZWT6Q
+  - name: videoID-17
+    value: fCbW1YFnm6M
+  - name: videoIDs
+    value: ""
+  - name: videoCount
+    value: ""
+  - name: stats-ypa8prwEMcc
+    value: ""
+  - name: views-ypa8prwEMcc
+    value: ""
+  - name: likes-ypa8prwEMcc
+    value: ""
+  - name: stats-eg7I8x-u0sc
+    value: ""
+  - name: views-eg7I8x-u0sc
+    value: ""
+  - name: likes-eg7I8x-u0sc
+    value: ""
+  - name: stats-_zWovo2zv6k
+    value: ""
+  - name: views-_zWovo2zv6k
+    value: ""
+  - name: likes-_zWovo2zv6k
+    value: ""
+  - name: stats-D-yskqXigZQ
+    value: ""
+  - name: views-D-yskqXigZQ
+    value: ""
+  - name: likes-D-yskqXigZQ
+    value: ""
+  - name: stats-T0F5hqXxGOk
+    value: ""
+  - name: views-T0F5hqXxGOk
+    value: ""
+  - name: likes-T0F5hqXxGOk
+    value: ""
+  - name: stats-PJMjHLzD_Kg
+    value: ""
+  - name: views-PJMjHLzD_Kg
+    value: ""
+  - name: likes-PJMjHLzD_Kg
+    value: ""
+  - name: stats-3yCKQ5b0st8
+    value: ""
+  - name: views-3yCKQ5b0st8
+    value: ""
+  - name: likes-3yCKQ5b0st8
+    value: ""
+  - name: stats-9QOpDGLLxIQ
+    value: ""
+  - name: views-9QOpDGLLxIQ
+    value: ""
+  - name: likes-9QOpDGLLxIQ
+    value: ""
+  - name: stats--3nwwH9PgHA
+    value: ""
+  - name: views--3nwwH9PgHA
+    value: ""
+  - name: likes--3nwwH9PgHA
+    value: ""
+  - name: stats-wYrzc4AWCzw
+    value: ""
+  - name: views-wYrzc4AWCzw
+    value: ""
+  - name: likes-wYrzc4AWCzw
+    value: ""
+  - name: stats-O9lQGwKTEQM
+    value: ""
+  - name: views-O9lQGwKTEQM
+    value: ""
+  - name: likes-O9lQGwKTEQM
+    value: ""
+  - name: stats-IdtBkGQg2Q8
+    value: ""
+  - name: views-IdtBkGQg2Q8
+    value: ""
+  - name: likes-IdtBkGQg2Q8
+    value: ""
+  - name: stats-PeZ-Fz_soFs
+    value: ""
+  - name: views-PeZ-Fz_soFs
+    value: ""
+  - name: likes-PeZ-Fz_soFs
+    value: ""
+  - name: stats-1hs5e7TDwM4
+    value: ""
+  - name: views-1hs5e7TDwM4
+    value: ""
+  - name: likes-1hs5e7TDwM4
+    value: ""
+  - name: stats-fX5U50VGxtg
+    value: ""
+  - name: views-fX5U50VGxtg
+    value: ""
+  - name: likes-fX5U50VGxtg
+    value: ""
+  - name: stats-2Mkzy3ZWT6Q
+    value: ""
+  - name: views-2Mkzy3ZWT6Q
+    value: ""
+  - name: likes-2Mkzy3ZWT6Q
+    value: ""
+  - name: stats-fCbW1YFnm6M
+    value: ""
+  - name: views-fCbW1YFnm6M
+    value: ""
+  - name: likes-fCbW1YFnm6M
+    value: ""
+  - name: totalViews
+    value: ""
+  - name: totalLikes
+    value: ""

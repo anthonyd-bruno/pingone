@@ -1,0 +1,8 @@
+name: Collection Backups copy 3
+variables:
+  - secret: true
+    name: apiKey
+  - name: sourceCollectionId
+    value: ""
+  - name: destinationCollectionId
+    value: ""
